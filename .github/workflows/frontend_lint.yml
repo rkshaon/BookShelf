@@ -25,17 +25,9 @@ jobs:
       - name: Install dependencies
         run: |
           cd frontend
-          npm install
-        # If you're using Yarn, replace the above with:
-        # run: |
-        #   cd frontend
-        #   yarn install
+          npm install --legacy-peer-deps
 
       - name: Run ESLint
         run: |
           cd frontend
           npm run lint
-        # If you're using Yarn, replace the above with:
-        # run: |
-        #   cd frontend
-        #   yarn lint
