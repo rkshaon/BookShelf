@@ -1,5 +1,7 @@
 # BookShelf
-![BookShelf Logo](link-to-your-logo.png)  <!-- Optional: Add a logo if you have one -->
+<!--
+![BookShelf Logo](link-to-your-logo.png)   Optional: Add a logo if you have one
+-->
 
 **BookShelf** is a web application that offers a centralized platform for reading and storing various digital documents. Explore a vast collection of files, organized for easy browsing and discovery.
 
@@ -24,9 +26,9 @@
 
 ## Installation
 
-To get a local copy up and running, follow these steps:
+For detailed installation instructions, please visit our [Wiki](https://github.com/rkshaon/BookShelf/wiki).
 
-### Prerequisites
+<!-- ### Prerequisites
 
 - Python 3.x
 - Django 4.x
@@ -37,13 +39,16 @@ To get a local copy up and running, follow these steps:
 
 ```bash
 git clone https://github.com/rkshaon/BookShelf.git
-cd BookShelf
+cd BookShelf 
 ```
-
+-->
 ## Usage
+<!-- 
 * Navigate to http://127.0.0.1:8000/ in your browser.
 * Register for an account or log in.
-* Start exploring and enjoying your favorite books!
+* Start exploring and enjoying your favorite books! 
+-->
+For detailed usage guidelines, please visit our [Wiki](https://github.com/rkshaon/BookShelf/wiki).
 
 ## Contributing
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
