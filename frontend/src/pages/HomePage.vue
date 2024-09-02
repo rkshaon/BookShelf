@@ -1,6 +1,6 @@
 <template>
     <div class="min-h-screen bg-gray-100">
-        <HeaderComponent />
+        <!-- <HeaderComponent /> -->
         <main class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
             <div class="bg-white shadow rounded-lg p-6">
                 <h1 class="text-2xl font-bold text-gray-800 mb-4">Welcome to BookShelf</h1>
@@ -9,19 +9,19 @@
                 </p>
             </div>
         </main>
-        <FooterComponent />
+        <!-- <FooterComponent /> -->
     </div>
 </template>
 
 <script>
-import HeaderComponent from '@/components/HeaderComponent.vue'
-import FooterComponent from '@/components/FooterComponent.vue'
+// import HeaderComponent from '@/components/HeaderComponent.vue'
+// import FooterComponent from '@/components/FooterComponent.vue'
 
 export default {
   name: 'HomePage',
   components: {
-    HeaderComponent,
-    FooterComponent
+    // HeaderComponent
+    // FooterComponent
   }
 }
 </script>

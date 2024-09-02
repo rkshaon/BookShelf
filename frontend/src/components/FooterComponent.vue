@@ -1,14 +1,4 @@
 <template>
-    <div class="flex flex-col min-h-screen">
-        <!-- Header or Navbar Component -->
-        <!-- <HeaderComponent /> -->
-
-        <!-- Main Content -->
-        <main class="flex-grow">
-            <router-view />
-        </main>
-
-        <!-- Footer -->
         <footer class="bg-gray-800 text-white text-center py-4 sticky bottom-0">
             <div class="container mx-auto px-4">
                 <p>&copy; 2024 BookShelf. All rights reserved.</p>
@@ -19,7 +9,6 @@
                 </div>
             </div>
         </footer>
-    </div>
 </template>
 
 <script>
