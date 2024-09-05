@@ -1,6 +1,8 @@
 <template>
+  <div>
     <TopBarComponent />
     <NavBarComponent />
+  </div>
 </template>
 
 <script>
