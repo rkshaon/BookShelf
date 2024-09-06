@@ -12,4 +12,8 @@ urlpatterns = [
         'login',
         v1.UserLoginView.as_view(),
     ),
+    path(
+        'profile',
+        v1.UserProfileView.as_view(),
+    ),
 ]
