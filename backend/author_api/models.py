@@ -17,9 +17,6 @@ class Author(models.Model):
     added_date_time = models.DateTimeField(auto_now_add=True)
     updated_date_time = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f'{self.first_name} {self.last_name}'
-
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
@@ -27,3 +24,6 @@ class Author(models.Model):
     @property
     def is_alive(self):
         return True if not self.died_date else False
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
