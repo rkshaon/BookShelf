@@ -10,6 +10,6 @@ class AuthorAdmin(admin.ModelAdmin):
         'died_date', 'is_alive',
     ]
     list_display_links = ('id', 'full_name',)
-    # list_filter = ('is_alive',)
+    list_filter = []
     search_fields = ('first_name', 'last_name', 'birth_date')
     readonly_fields = ('id',)

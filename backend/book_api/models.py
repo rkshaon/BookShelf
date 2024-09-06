@@ -1,4 +1,20 @@
 from django.db import models
+from django.utils.timezone import now
+
+import os
+import uuid
+
+
+def book_upload_path(instance, filename):
+    """
+    Generates a unique file path and renames the file with a unique code.
+    """
+    ext = filename.split('.')[-1]
+    current_time = now().strftime('%Y%m%d%H%M%S%f')
+    unique_code = str(uuid.uuid4().int)[:10]
+    new_filename = f'{unique_code}{current_time}.{ext}'
+
+    return os.path.join('books', new_filename)
 
 
 class Book(models.Model):
@@ -17,8 +33,9 @@ class Book(models.Model):
     isbn = models.CharField(max_length=13, blank=True, null=True, unique=True)
     pages = models.PositiveIntegerField(blank=True, null=True)
     published_date = models.DateField(null=True, blank=True)
-    pdf_file = models.FileField(
-        upload_to='books', blank=True, null=True)
+    language = models.CharField(max_length=200, blank=True, null=True)
+    book = models.FileField(
+        upload_to=book_upload_path, blank=True, null=True)
     cover_image = models.ImageField(
         upload_to='book_covers', blank=True, null=True)
     added_by = models.ForeignKey(
