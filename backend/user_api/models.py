@@ -41,7 +41,6 @@ class User(AbstractUser):
     role = models.PositiveIntegerField(choices=ROLE_CHOICES, default=3)
     added_date_time = models.DateTimeField(auto_now_add=True)
     updated_date_time = models.DateTimeField(auto_now=True)
-    is_private = models.BooleanField(default=False)
 
     objects = UserManager()
 
