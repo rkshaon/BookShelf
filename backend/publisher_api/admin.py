@@ -6,7 +6,7 @@ from publisher_api.models import Publisher
 @admin.register(Publisher)
 class PublisherAdmin(admin.ModelAdmin):
     list_display = [
-        'name', 'address', 'website',
+        'id', 'name', 'address', 'website',
         'email', 'phone_number',
         'established_year',
     ]
