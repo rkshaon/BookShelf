@@ -6,6 +6,15 @@ class Author(models.Model):
     last_name = models.CharField(max_length=100)
     biography = models.TextField(blank=True, null=True)  # Optional bio field
     birth_date = models.DateField(null=True, blank=True)
+    added_by = models.ForeignKey(
+        'user_api.User',
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
+    is_deleted = models.BooleanField(default=False)
+    added_date_time = models.DateTimeField(auto_now_add=True)
+    updated_date_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
