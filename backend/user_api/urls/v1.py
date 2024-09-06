@@ -8,4 +8,8 @@ urlpatterns = [
         'registration',
         v1.UserRegistrationView.as_view(),
     ),
+    path(
+        'login',
+        v1.UserLoginView.as_view(),
+    ),
 ]

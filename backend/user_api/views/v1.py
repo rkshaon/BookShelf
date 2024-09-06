@@ -2,6 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from user_api.models import User
+
 from user_api.serializers.v1 import UserSerializer
 
 
@@ -32,3 +36,45 @@ class UserRegistrationView(APIView):
             })
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserLoginView(APIView):
+    def post(self, request, *args, **kwargs):
+        credential = request.data.get('credential', None)
+        password = request.data.get('password', None)
+
+        if not credential:
+            return Response({
+                'errors': ['Log in credential missing.'],
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=credential)
+        except User.DoesNotExist:
+            try:
+                user = User.objects.get(username=credential)
+            except User.DoesNotExist:
+                user = None
+
+        if user is None:
+            return Response({
+                'errors': ['User not found.'],
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        if not user.check_password(password):
+            return Response({
+                'errors': ['Invalid password'],
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+        if user is not None:
+            refresh = RefreshToken.for_user(user)
+
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'message': 'Successfully log in!',
+            })
+        else:
+            return Response({
+                'detail': 'Invalid credentials.'
+            }, status=status.HTTP_401_UNAUTHORIZED)
