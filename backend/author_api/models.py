@@ -6,6 +6,7 @@ class Author(models.Model):
     last_name = models.CharField(max_length=100)
     biography = models.TextField(blank=True, null=True)  # Optional bio field
     birth_date = models.DateField(null=True, blank=True)
+    died_date = models.DateField(null=True, blank=True)
     added_by = models.ForeignKey(
         'user_api.User',
         blank=True,
@@ -22,3 +23,7 @@ class Author(models.Model):
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
+
+    @property
+    def is_alive(self):
+        return True if not self.died_date else False
