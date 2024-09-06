@@ -3,3 +3,4 @@ djangorestframework==3.15.2
 drf-yasg
 flake8
 djangorestframework-simplejwt==5.3.1
+Pillow
