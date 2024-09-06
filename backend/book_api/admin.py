@@ -15,6 +15,16 @@ class GenreAdmin(admin.ModelAdmin):
     readonly_fields = ['id']
 
 
+@admin.register(Topic)
+class TopicAdmin(admin.ModelAdmin):
+    list_display = [
+        'id', 'name',
+    ]
+    list_display_links = ['name']
+    search_fields = ['name']
+    readonly_fields = ['id']
+
+
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = [

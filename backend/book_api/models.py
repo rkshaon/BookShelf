@@ -37,6 +37,10 @@ class Book(models.Model):
         'book_api.Genre',
         related_name='books'
     )
+    topics = models.ManyToManyField(
+        'book_api.Topic',
+        related_name='books'
+    )
     authors = models.ManyToManyField(
         'author_api.Author',
         related_name='books')
