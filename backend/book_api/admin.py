@@ -36,7 +36,7 @@ class BookAdmin(admin.ModelAdmin):
         'title',
     ]
     list_filter = [
-        'genres', 'authors', 'publisher',
+        'genres', 'topics', 'authors', 'publisher',
     ]
     search_fields = [
         'title', 'edition', 'isbn',
