@@ -28,19 +28,23 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
-
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
+LIBRARY_APPS = [
     'rest_framework',
     'drf_yasg',
-    'user_api',
 ]
+PROJECT_APPS = [
+    'user_api',
+    'book_api',
+]
+INSTALLED_APPS = DJANGO_APPS + LIBRARY_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
