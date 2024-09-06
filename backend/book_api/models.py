@@ -17,8 +17,30 @@ def book_upload_path(instance, filename):
     return os.path.join('books', new_filename)
 
 
+class Genre(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class Topic(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Book(models.Model):
     title = models.CharField(max_length=255)
+    genres = models.ManyToManyField(
+        'book_api.Genre',
+        related_name='books'
+    )
+    topics = models.ManyToManyField(
+        'book_api.Topic',
+        related_name='books'
+    )
     authors = models.ManyToManyField(
         'author_api.Author',
         related_name='books')
