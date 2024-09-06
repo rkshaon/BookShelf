@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from rest_framework import status
 
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -10,6 +11,7 @@ from user_api.serializers.v1 import UserSerializer
 
 
 class UserRegistrationView(APIView):
+    permission_classes = [AllowAny]
     """
     post:
     Register a new user.
@@ -39,6 +41,8 @@ class UserRegistrationView(APIView):
 
 
 class UserLoginView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request, *args, **kwargs):
         credential = request.data.get('credential', None)
         password = request.data.get('password', None)
