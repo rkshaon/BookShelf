@@ -26,32 +26,32 @@ export default {
         {
           coverImage: null, // Placeholder for no image
           title: 'Test Book',
-          author: 'Myself'
+          authors: ['Myself', 'Another']
         },
         {
           coverImage: 'https://example.com/book2.jpg',
           title: 'Book Two',
-          author: 'Author Two'
+          authors: ['authors Two']
         },
         {
           coverImage: 'https://example.com/book3.jpg',
           title: 'Book Three',
-          author: 'Author Three'
+          authors: ['authors Three']
         },
         {
           coverImage: null, // Placeholder for no image
           title: 'Test Book',
-          author: 'Myself'
+          authors: ['Myself']
         },
         {
           coverImage: 'https://example.com/book2.jpg',
           title: 'Book Two',
-          author: 'Author Two'
+          authors: ['authors Two']
         },
         {
           coverImage: 'https://example.com/book3.jpg',
           title: 'Book Three',
-          author: 'Author Three'
+          authors: ['authors Three']
         }
       ]
     }
