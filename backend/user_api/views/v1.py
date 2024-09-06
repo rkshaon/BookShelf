@@ -6,6 +6,20 @@ from user_api.serializers.v1 import UserSerializer
 
 
 class UserRegistrationView(APIView):
+    """
+    post:
+    Register a new user.
+
+    Takes in user details and creates a new user in the system.
+
+    Parameters:
+        None
+
+    Returns:
+        message: A success message if the registration is successful.
+        errors: If the validation fails, returns a list of errors with
+            their descriptions.
+    """
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
 
