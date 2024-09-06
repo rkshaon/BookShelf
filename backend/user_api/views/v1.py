@@ -81,6 +81,17 @@ class UserLoginView(APIView):
 
 
 class UserProfileView(APIView):
+    """
+    v1 User Profile API.
+
+    Parameters:
+        None
+
+    Returns:
+        message: A success message if the profile is successful.
+        errors: If the validation fails, returns a list of errors with
+            their descriptions.
+    """
     def get(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
 
