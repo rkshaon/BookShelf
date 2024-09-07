@@ -43,4 +43,4 @@ class BookAdmin(admin.ModelAdmin):
         'published_date', 'language',
         'description',
     ]
-    readonly_fields = ['id',]
+    readonly_fields = ['id', 'book_code']

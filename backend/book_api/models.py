@@ -7,13 +7,11 @@ import uuid
 
 def book_upload_path(instance, filename):
     """
-    Generates a unique file path and renames the file with a unique code.
+    Generates a unique file path
+    and renames the file with the book code.
     """
     ext = filename.split('.')[-1]
     new_filename = f"{instance.book_code}.{ext}"
-    # current_time = now().strftime('%Y%m%d%H%M%S%f')
-    # unique_code = str(uuid.uuid4().int)[:10]
-    # new_filename = f'{unique_code}{current_time}.{ext}'
 
     return os.path.join('books', new_filename)
 
@@ -25,6 +23,7 @@ def generate_book_code():
     current_time = now().strftime('%Y%m%d%H%M%S%f')
     book_code = str(uuid.uuid4().int)[:10]
     book_code = int(f'{book_code}{current_time}')
+
     return book_code
 
 
@@ -43,7 +42,8 @@ class Topic(models.Model):
 
 
 class Book(models.Model):
-    book_code = models.BigIntegerField(
+    book_code = models.CharField(
+        max_length=255,
         default=generate_book_code,
         unique=True,
         editable=False
