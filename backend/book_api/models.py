@@ -73,7 +73,10 @@ class Book(models.Model):
     published_date = models.DateField(null=True, blank=True)
     language = models.CharField(max_length=200, blank=True, null=True)
     book = models.FileField(
-        upload_to=book_upload_path, blank=True, null=True)
+        upload_to=book_upload_path,
+        max_length=255,
+        blank=True,
+        null=True)
     cover_image = models.ImageField(
         upload_to='book_covers', blank=True, null=True)
     added_by = models.ForeignKey(
