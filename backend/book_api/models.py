@@ -7,14 +7,24 @@ import uuid
 
 def book_upload_path(instance, filename):
     """
-    Generates a unique file path and renames the file with a unique code.
+    Generates a unique file path
+    and renames the file with the book code.
     """
     ext = filename.split('.')[-1]
-    current_time = now().strftime('%Y%m%d%H%M%S%f')
-    unique_code = str(uuid.uuid4().int)[:10]
-    new_filename = f'{unique_code}{current_time}.{ext}'
+    new_filename = f"{instance.book_code}.{ext}"
 
     return os.path.join('books', new_filename)
+
+
+def generate_book_code():
+    """
+    Generates a unique book code.
+    """
+    current_time = now().strftime('%Y%m%d%H%M%S%f')
+    book_code = str(uuid.uuid4().int)[:10]
+    book_code = int(f'{book_code}{current_time}')
+
+    return book_code
 
 
 class Genre(models.Model):
@@ -32,6 +42,12 @@ class Topic(models.Model):
 
 
 class Book(models.Model):
+    book_code = models.CharField(
+        max_length=255,
+        default=generate_book_code,
+        unique=True,
+        editable=False
+    )
     title = models.CharField(max_length=255)
     genres = models.ManyToManyField(
         'book_api.Genre',
@@ -57,9 +73,14 @@ class Book(models.Model):
     published_date = models.DateField(null=True, blank=True)
     language = models.CharField(max_length=200, blank=True, null=True)
     book = models.FileField(
-        upload_to=book_upload_path, blank=True, null=True)
+        upload_to=book_upload_path,
+        max_length=255,
+        blank=True,
+        null=True)
     cover_image = models.ImageField(
-        upload_to='book_covers', blank=True, null=True)
+        upload_to='book_covers',
+        blank=True,
+        null=True)
     added_by = models.ForeignKey(
         'user_api.User',
         blank=True,
