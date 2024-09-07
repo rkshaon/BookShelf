@@ -10,11 +10,22 @@ def book_upload_path(instance, filename):
     Generates a unique file path and renames the file with a unique code.
     """
     ext = filename.split('.')[-1]
-    current_time = now().strftime('%Y%m%d%H%M%S%f')
-    unique_code = str(uuid.uuid4().int)[:10]
-    new_filename = f'{unique_code}{current_time}.{ext}'
+    new_filename = f"{instance.book_code}.{ext}"
+    # current_time = now().strftime('%Y%m%d%H%M%S%f')
+    # unique_code = str(uuid.uuid4().int)[:10]
+    # new_filename = f'{unique_code}{current_time}.{ext}'
 
     return os.path.join('books', new_filename)
+
+
+def generate_book_code():
+    """
+    Generates a unique book code.
+    """
+    current_time = now().strftime('%Y%m%d%H%M%S%f')
+    book_code = str(uuid.uuid4().int)[:10]
+    book_code = int(f'{book_code}{current_time}')
+    return book_code
 
 
 class Genre(models.Model):
@@ -32,6 +43,11 @@ class Topic(models.Model):
 
 
 class Book(models.Model):
+    book_code = models.BigIntegerField(
+        default=generate_book_code,
+        unique=True,
+        editable=False
+    )
     title = models.CharField(max_length=255)
     genres = models.ManyToManyField(
         'book_api.Genre',

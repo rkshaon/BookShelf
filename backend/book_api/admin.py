@@ -28,12 +28,12 @@ class TopicAdmin(admin.ModelAdmin):
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'title', 'edition', 'isbn',
-        'published_date', 'language',
+        'id', 'book_code', 'title', 'edition',
+        'isbn', 'published_date', 'language',
         'is_deleted',
     ]
     list_display_links = [
-        'title',
+        'book_code', 'title',
     ]
     list_filter = [
         'genres', 'topics', 'authors', 'publisher',
