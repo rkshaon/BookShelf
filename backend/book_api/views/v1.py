@@ -14,11 +14,11 @@ class BookView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
-        pk = kwargs.get('pk', None)
+        book_code = kwargs.get('book_code', None)
 
-        if pk:
+        if book_code:
             try:
-                book = Book.objects.get(pk=pk, is_deleted=False)
+                book = Book.objects.get(book_code=book_code, is_deleted=False)
             except Book.DoesNotExist:
                 raise NotFound(detail="Book not found.")
 
