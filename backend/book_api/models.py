@@ -78,7 +78,9 @@ class Book(models.Model):
         blank=True,
         null=True)
     cover_image = models.ImageField(
-        upload_to='book_covers', blank=True, null=True)
+        upload_to='book_covers',
+        blank=True,
+        null=True)
     added_by = models.ForeignKey(
         'user_api.User',
         blank=True,
