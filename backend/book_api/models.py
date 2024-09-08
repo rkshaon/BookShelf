@@ -4,6 +4,11 @@ from django.utils.timezone import now
 import os
 import uuid
 
+from BookShelf.utilities.storage import ReplaceExistingFileStorage
+
+
+replace_existing_file_storage = ReplaceExistingFileStorage()
+
 
 def book_upload_path(instance, filename):
     """
@@ -76,7 +81,8 @@ class Book(models.Model):
         upload_to=book_upload_path,
         max_length=255,
         blank=True,
-        null=True)
+        null=True,
+        storage=replace_existing_file_storage)
     cover_image = models.ImageField(
         upload_to='book_covers',
         blank=True,
