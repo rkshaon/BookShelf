@@ -8,15 +8,17 @@ const API_BASE_URL = 'http://localhost:8001'
 console.log('url', API_BASE_URL)
 
 export default {
-  async fetchV1Books (url = `${API_BASE_URL}/book/v1/`) {
-    try {
-      const response = await axios.get(url)
-      console.log(response.data)
+  async fetchV1Books(url) {
+    // Ensure the default URL is used if `url` is null or undefined
+    const finalUrl = url || `${API_BASE_URL}/book/v1/?page_size=8`;
+    console.log("Fetching URL:", finalUrl);
 
-      return response.data
+    try {
+      const response = await axios.get(finalUrl);
+      return response.data;
     } catch (error) {
-      console.error('Error fetching books:', error)
-      throw error
+      console.error("Error fetching books:", error);
+      throw error;
     }
-  }
-}
+  },
+};
