@@ -35,7 +35,7 @@ export default {
     ...mapGetters(['allBooks', 'nextPage', 'previousPage']),
     books () {
       return this.allBooks
-    },
+    }
   },
   mounted () {
     this.fetchBooks()
