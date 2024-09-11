@@ -100,5 +100,7 @@ class Book(models.Model):
     updated_date_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        authors = ", ".join([author.full_name for author in self.authors.all()])
+        authors = ", ".join([
+            author.full_name for author in self.authors.all()
+        ])
         return f"{self.title} by {authors}"
