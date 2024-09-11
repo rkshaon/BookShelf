@@ -16,6 +16,8 @@ import os
 import datetime
 
 from BookShelf.env import DATABASES_SETTINGS
+from BookShelf.env import ALLOWED_HOSTS_SETTINGS
+from BookShelf.env import SECRET_KEY_SETTINGS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,12 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-vopex%6rpp)sa-9vcjl8g5afjb30hzyy1cwynvmrtv2y=^wu&_'   # noqa
+SECRET_KEY = SECRET_KEY_SETTINGS
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ALLOWED_HOSTS_SETTINGS
 
 
 DJANGO_APPS = [

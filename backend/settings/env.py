@@ -9,3 +9,7 @@ DATABASES_SETTINGS = {
         'PORT': '5432',
     }
 }
+
+ALLOWED_HOSTS_SETTINGS = []
+
+SECRET_KEY_SETTINGS = 'yourprojectssecretekey'
