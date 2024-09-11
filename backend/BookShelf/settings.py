@@ -18,6 +18,7 @@ import datetime
 from BookShelf.env import DATABASES_SETTINGS
 from BookShelf.env import ALLOWED_HOSTS_SETTINGS
 from BookShelf.env import SECRET_KEY_SETTINGS
+from BookShelf.env import CORS_ALLOWED_ORIGINS_SETTINGS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,6 +47,7 @@ DJANGO_APPS = [
 LIBRARY_APPS = [
     'rest_framework',
     'drf_yasg',
+    'corsheaders',
 ]
 PROJECT_APPS = [
     'user_api',
@@ -56,6 +58,7 @@ PROJECT_APPS = [
 INSTALLED_APPS = DJANGO_APPS + LIBRARY_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -153,8 +156,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+CORS_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS_SETTINGS
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user_api.User'
