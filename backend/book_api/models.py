@@ -56,11 +56,13 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     genres = models.ManyToManyField(
         'book_api.Genre',
-        related_name='books'
+        related_name='books',
+        blank=True,
     )
     topics = models.ManyToManyField(
         'book_api.Topic',
-        related_name='books'
+        related_name='books',
+        blank=True,
     )
     authors = models.ManyToManyField(
         'author_api.Author',
