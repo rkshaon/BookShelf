@@ -8,7 +8,7 @@ const API_BASE_URL = 'http://localhost:8001'
 console.log('url', API_BASE_URL)
 
 export default {
-  async fetchV1Books (url = `${API_BASE_URL}/books/v1/`) {
+  async fetchV1Books (url = `${API_BASE_URL}/book/v1/`) {
     try {
       const response = await axios.get(url)
       console.log(response.data)
