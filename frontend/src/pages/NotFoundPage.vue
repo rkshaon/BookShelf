@@ -11,8 +11,8 @@
 
 <script>
 export default {
-    name: "NotFoundPage",
-};
+  name: 'NotFoundPage'
+}
 </script>
 
 <!-- Tailwind CSS styles applied through class attributes -->
