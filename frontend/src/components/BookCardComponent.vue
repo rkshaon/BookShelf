@@ -21,8 +21,9 @@ export default {
   },
   methods: {
     getCoverImageUrl (coverImage) {
-      const baseURL = 'http://localhost:8001/'
-      return coverImage ? `${baseURL}${coverImage}` : 'https://fastly.picsum.photos/id/1/200/300.jpg?hmac=jH5bDkLr6Tgy3oAg5khKCHeunZMHq0ehBZr6vGifPLY' // Fallback to default image if cover_image is null
+      // const baseURL = 'http://localhost:8001/'
+      const API_BASE_URL = process.env.VUE_APP_BACKEND_URL
+      return coverImage ? `${API_BASE_URL}${coverImage}` : 'https://fastly.picsum.photos/id/1/200/300.jpg?hmac=jH5bDkLr6Tgy3oAg5khKCHeunZMHq0ehBZr6vGifPLY' // Fallback to default image if cover_image is null
     }
   }
 }
