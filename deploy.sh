@@ -33,14 +33,18 @@ echo -e "${YELLOW}=======================================${RESET}"
 cd /var/www/bookshelf.rkshaon.info/backend
 
 pwd
+sudo su
 
 echo -e "${BLUE}Activating Virtual Environment${RESET}"
 echo -e "${YELLOW}=======================================${RESET}"
 source env/bin/activate
+pip install -r requirements
 
 echo -e "${BLUE}Migrating${RESET}"
 echo -e "${YELLOW}=======================================${RESET}"
 python manage.py migrate
+
+exit
 
 echo -e "${BLUE}Restart Backend Gunicorn Service${RESET}"
 echo -e "${YELLOW}=======================================${RESET}"

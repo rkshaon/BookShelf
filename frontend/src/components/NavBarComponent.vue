@@ -23,7 +23,7 @@
 
                 <!-- Logo -->
                 <div class="flex-shrink-0">
-                    <a href="/" class="text-xl font-bold text-white">BookShelf</a>
+                    <router-link to="/" class="text-xl font-bold text-white">BookShelf</router-link>
                 </div>
 
                 <!-- Desktop Menu -->

@@ -12,4 +12,8 @@ DATABASES_SETTINGS = {
 
 ALLOWED_HOSTS_SETTINGS = []
 
-SECRET_KEY_SETTINGS = 'yourprojectssecretekey'
+SECRET_KEY_SETTINGS = 'projectssecretekey'
+CORS_ALLOWED_ORIGINS_SETTINGS = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+]

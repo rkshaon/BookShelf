@@ -21,6 +21,17 @@ def book_upload_path(instance, filename):
     return os.path.join('books', new_filename)
 
 
+def cover_upload_path(instance, filename):
+    """
+    Generates a unique file path
+    and renames the file with the book code.
+    """
+    ext = filename.split('.')[-1]
+    new_filename = f"{instance.book_code}.{ext}"
+
+    return os.path.join('covers', new_filename)
+
+
 def generate_book_code():
     """
     Generates a unique book code.
@@ -84,11 +95,14 @@ class Book(models.Model):
         max_length=255,
         blank=True,
         null=True,
-        storage=replace_existing_file_storage)
+        storage=replace_existing_file_storage
+    )
     cover_image = models.ImageField(
-        upload_to='book_covers',
+        upload_to=cover_upload_path,
         blank=True,
-        null=True)
+        null=True,
+        storage=replace_existing_file_storage
+    )
     added_by = models.ForeignKey(
         'user_api.User',
         blank=True,
@@ -100,5 +114,7 @@ class Book(models.Model):
     updated_date_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        authors = ", ".join([author.full_name for author in self.authors.all()])
+        authors = ", ".join([
+            author.full_name for author in self.authors.all()
+        ])
         return f"{self.title} by {authors}"
