@@ -28,4 +28,22 @@ echo -e "${BLUE}Building${RESET}"
 echo -e "${YELLOW}=======================================${RESET}"
 sudo npm run build
 
+echo -e "${BLUE}Navigate to the BACKEND directory${RESET}"
+echo -e "${YELLOW}=======================================${RESET}"
+cd /var/www/bookshelf.rkshaon.info/backend
+
+pwd
+
+echo -e "${BLUE}Activating Virtual Environment${RESET}"
+echo -e "${YELLOW}=======================================${RESET}"
+source env/bin/activate
+
+echo -e "${BLUE}Migrating${RESET}"
+echo -e "${YELLOW}=======================================${RESET}"
+python manage.py migrate
+
+echo -e "${BLUE}Restart Backend Gunicorn Service${RESET}"
+echo -e "${YELLOW}=======================================${RESET}"
+sudo systemctl restart gunicorn-bookshelf.service 
+
 echo -e "${RED}Finish${RESET}..."
