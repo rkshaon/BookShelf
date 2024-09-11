@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import BookCardComponent from '@/components/BookCardComponent.vue'
 
 export default {
@@ -20,42 +21,54 @@ export default {
   components: {
     BookCardComponent
   },
-  data () {
-    return {
-      books: [
-        {
-          coverImage: null, // Placeholder for no image
-          title: 'Test Book',
-          authors: ['Myself', 'Another']
-        },
-        {
-          coverImage: 'https://example.com/book2.jpg',
-          title: 'Book Two',
-          authors: ['authors Two']
-        },
-        {
-          coverImage: 'https://example.com/book3.jpg',
-          title: 'Book Three',
-          authors: ['authors Three']
-        },
-        {
-          coverImage: null, // Placeholder for no image
-          title: 'Test Book',
-          authors: ['Myself']
-        },
-        {
-          coverImage: 'https://example.com/book2.jpg',
-          title: 'Book Two',
-          authors: ['authors Two']
-        },
-        {
-          coverImage: 'https://example.com/book3.jpg',
-          title: 'Book Three',
-          authors: ['authors Three']
-        }
-      ]
+  computed: {
+    ...mapGetters(['allBooks']), // Fetch the books from the Vuex store
+    books () {
+      return this.allBooks
     }
+  },
+  mounted () {
+    this.fetchBooks() // Call the API when the component is mounted
+  },
+  methods: {
+    ...mapActions(['fetchBooks']) // Fetch the API data using the Vuex action
   }
+  // data () {
+  //   return {
+  //     books: [
+  //       {
+  //         coverImage: null, // Placeholder for no image
+  //         title: 'Test Book',
+  //         authors: ['Myself', 'Another']
+  //       },
+  //       {
+  //         coverImage: 'https://example.com/book2.jpg',
+  //         title: 'Book Two',
+  //         authors: ['authors Two']
+  //       },
+  //       {
+  //         coverImage: 'https://example.com/book3.jpg',
+  //         title: 'Book Three',
+  //         authors: ['authors Three']
+  //       },
+  //       {
+  //         coverImage: null, // Placeholder for no image
+  //         title: 'Test Book',
+  //         authors: ['Myself']
+  //       },
+  //       {
+  //         coverImage: 'https://example.com/book2.jpg',
+  //         title: 'Book Two',
+  //         authors: ['authors Two']
+  //       },
+  //       {
+  //         coverImage: 'https://example.com/book3.jpg',
+  //         title: 'Book Three',
+  //         authors: ['authors Three']
+  //       }
+  //     ]
+  //   }
+  // }
 }
 </script>
 

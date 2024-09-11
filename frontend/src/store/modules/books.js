@@ -8,6 +8,9 @@ export default {
     nextPageUrl: null,
     previousPageUrl: null
   },
+  getters: {
+    allBooks: (state) => state.books
+  },
   mutations: {
     SET_BOOKS (state, books) {
       state.books = books
@@ -20,9 +23,11 @@ export default {
     }
   },
   actions: {
-    async fetchBooks ({ commit }, url = null) {
+    async fetchBooks ({ commit }) {
       try {
-        const response = await bookAPIService.fetchV1Books(url)
+        console.log("it's working")
+
+        const response = await bookAPIService.fetchV1Books()
         commit('SET_BOOKS', response.results) // Assuming 'results' contains the books array
         commit('SET_NEXT_PAGE', response.next) // Assuming pagination 'next' URL
         commit('SET_PREVIOUS_PAGE', response.previous) // Assuming pagination 'previous' URL
