@@ -15,11 +15,19 @@ class GenreSerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = '__all__'
+        fields = [
+            'id', 'book_code', 'title', 'description', 'edition',
+            'isbn', 'pages', 'published_date', 'language', 'book',
+            'cover_image', 'publisher', 'genres', 'topics', 'authors',
+        ]
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['authors'] = AuthorSerializer(
-            instance.authors, many=True).data
+            instance.authors, many=True
+        ).data
+        representation['genres'] = GenreSerializer(
+            instance.genres, many=True
+        ).data
 
         return representation
