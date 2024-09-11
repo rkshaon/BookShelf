@@ -18,14 +18,14 @@ export default {
       state.books = books
     },
     SET_NEXT_PAGE (state, url) {
-      state.nextPageUrl = url;
+      state.nextPageUrl = url
     },
     SET_PREVIOUS_PAGE (state, url) {
-      state.previousPageUrl = url;
+      state.previousPageUrl = url
     }
   },
   actions: {
-    async fetchBooks({ commit }, url = null) {      
+    async fetchBooks ({ commit }, url = null) {
       try {
         const response = await bookAPIService.fetchV1Books(url)
         commit('SET_BOOKS', response.results)
