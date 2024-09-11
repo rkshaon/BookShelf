@@ -38,7 +38,7 @@ sudo su
 echo -e "${BLUE}Activating Virtual Environment${RESET}"
 echo -e "${YELLOW}=======================================${RESET}"
 source env/bin/activate
-pip install -r requirements
+pip install -r requirements.txt
 
 echo -e "${BLUE}Migrating${RESET}"
 echo -e "${YELLOW}=======================================${RESET}"
