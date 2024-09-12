@@ -32,6 +32,15 @@ class User(AbstractUser):
         (3, 'Reader'),
     )
 
+    first_name = models.CharField(
+        max_length=255, blank=True, null=True
+    )
+    middle_name = models.CharField(
+        max_length=255, blank=True, null=True
+    )
+    last_name = models.CharField(
+        max_length=255, blank=True, null=True
+    )
     email = models.EmailField(unique=True)
     username = models.CharField(
         max_length=50,
@@ -46,6 +55,25 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'role']
+
+    @property
+    def full_name(self) -> str:
+        name = ""
+
+        if self.first_name:
+            name += f"{self.first_name}"
+
+        if self.middle_name:
+            if name:
+                name += f" {self.middle_name}"
+            else:
+                name += f"{self.middle_name}"
+
+        if self.last_name:
+            if name:
+                name += f" {self.last_name}"
+            else:
+                name += f"{self.last_name}"
 
     def __str__(self):
         return self.email

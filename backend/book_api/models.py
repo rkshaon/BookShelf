@@ -117,6 +117,10 @@ class Book(models.Model):
     def cover(self) -> bool:
         return bool(self.cover_image)
 
+    @property
+    def uploader(self):
+        return self.added_by
+
     def __str__(self):
         authors = ", ".join([
             author.full_name for author in self.authors.all()

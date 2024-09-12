@@ -30,7 +30,7 @@ class BookAdmin(admin.ModelAdmin):
     list_display = [
         'id', 'book_code', 'title', 'cover', 'edition',
         'isbn', 'published_date', 'language',
-        'is_deleted',
+        'is_deleted', 'uploader',
     ]
 
     @admin.display(boolean=True)
