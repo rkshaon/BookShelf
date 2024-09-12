@@ -75,5 +75,7 @@ class User(AbstractUser):
             else:
                 name += f"{self.last_name}"
 
+        return name
+
     def __str__(self):
-        return self.email
+        return self.full_name
