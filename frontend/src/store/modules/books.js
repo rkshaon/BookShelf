@@ -6,12 +6,14 @@ export default {
   state: {
     books: [],
     nextPageUrl: null,
-    previousPageUrl: null
+    previousPageUrl: null,
+    pageSize: 8
   },
   getters: {
     allBooks: (state) => state.books,
     nextPage: (state) => state.nextPageUrl,
-    previousPage: (state) => state.previousPageUrl
+    previousPage: (state) => state.previousPageUrl,
+    currentPageSize: (state) => state.pageSize
   },
   mutations: {
     SET_BOOKS (state, books) {
@@ -22,15 +24,19 @@ export default {
     },
     SET_PREVIOUS_PAGE (state, url) {
       state.previousPageUrl = url
+    },
+    SET_PAGE_SIZE (state, pageSize) {
+      state.currentPageSize = pageSize
     }
   },
   actions: {
-    async fetchBooks ({ commit }, url = null) {
+    async fetchBooks ({ commit }, { page = 1, pageSize = 8 }) {
       try {
-        const response = await bookAPIService.fetchV1Books(url)
+        const response = await bookAPIService.fetchV1Books(page, pageSize)
         commit('SET_BOOKS', response.results)
         commit('SET_NEXT_PAGE', response.next)
         commit('SET_PREVIOUS_PAGE', response.previous)
+        commit('SET_PAGE_SIZE', pageSize)
       } catch (error) {
         console.error('Error fetching books:', error)
       }

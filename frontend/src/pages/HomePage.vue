@@ -52,9 +52,18 @@ export default {
     PaginationComponent
   },
   computed: {
-    ...mapGetters(['allBooks', 'nextPage', 'previousPage']),
+    ...mapGetters(['allBooks', 'nextPage', 'previousPage', 'currentPageSize']),
     books () {
       return this.allBooks
+    },
+    nextPage () {
+      return this.nextPageUrl
+    },
+    previousPage () {
+      return this.previousPageUrl
+    },
+    pageSize () {
+      return this.currentPageSize
     }
   },
   mounted () {
