@@ -113,6 +113,10 @@ class Book(models.Model):
     added_date_time = models.DateTimeField(auto_now_add=True)
     updated_date_time = models.DateTimeField(auto_now=True)
 
+    @property
+    def cover(self) -> bool:
+        return bool(self.cover_image)
+
     def __str__(self):
         authors = ", ".join([
             author.full_name for author in self.authors.all()

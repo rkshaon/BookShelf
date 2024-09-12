@@ -28,10 +28,15 @@ class TopicAdmin(admin.ModelAdmin):
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'book_code', 'title', 'edition',
+        'id', 'book_code', 'title', 'cover', 'edition',
         'isbn', 'published_date', 'language',
         'is_deleted',
     ]
+
+    @admin.display(boolean=True)
+    def cover(self, obj):
+        return bool(obj.cover)
+
     list_display_links = [
         'book_code', 'title',
     ]
