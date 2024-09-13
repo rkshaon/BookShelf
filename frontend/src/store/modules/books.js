@@ -11,8 +11,8 @@ export default {
   },
   getters: {
     allBooks: (state) => state.books,
-    nextPage: (state) => state.nextPageUrl,
-    previousPage: (state) => state.previousPageUrl,
+    nextPageUrl: (state) => state.nextPageUrl,
+    previousPageUrl: (state) => state.previousPageUrl,
     currentPageSize: (state) => state.pageSize
   },
   mutations: {
@@ -30,7 +30,7 @@ export default {
     }
   },
   actions: {
-    async fetchBooks ({ commit }, { page = 1, pageSize = 8 }) {
+    async fetchBooks ({ commit }, { page = 1, pageSize = 8 } = {}) {
       try {
         const response = await bookAPIService.fetchV1Books(page, pageSize)
         commit('SET_BOOKS', response.results)

@@ -6,37 +6,18 @@
         Explore a vast collection of books, share your reviews, and connect with other book lovers.
       </p>
     </div>
-    <!-- <div class="flex justify-between mt-8 mb-8">
-      <div v-if="previousPage" class="flex-1">
-        <button @click="fetchBooks(previousPage)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-          Previous
-        </button>
-      </div>
-      <div class="flex-1"></div>
-      <div v-if="nextPage" class="flex-1 text-right">
-        <button @click="fetchBooks(nextPage)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-          Next
-        </button>
-      </div>
-    </div> -->
-    <PaginationComponent :previousPage="previousPage" :nextPage="nextPage" @fetch-page="fetchBooks" />
+
+    <!-- PaginationComponent for navigation -->
+    <PaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="pageSize"
+      @fetch-page="changePage" />
+
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <BookCardComponent v-for="(book, index) in books" :key="index" :book="book" />
     </div>
-    <PaginationComponent :previousPage="previousPage" :nextPage="nextPage" @fetch-page="fetchBooks" />
-    <!-- <div class="flex justify-between mt-8">
-      <div v-if="previousPage" class="flex-1">
-        <button @click="fetchBooks(previousPage)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-          Previous
-        </button>
-      </div>
-      <div class="flex-1"></div>
-      <div v-if="nextPage" class="flex-1 text-right">
-        <button @click="fetchBooks(nextPage)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-          Next
-        </button>
-      </div>
-    </div> -->
+
+    <!-- PaginationComponent at the bottom -->
+    <PaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="pageSize"
+      @fetch-page="changePage" />
   </main>
 </template>
 
@@ -52,29 +33,36 @@ export default {
     PaginationComponent
   },
   computed: {
-    ...mapGetters(['allBooks', 'nextPage', 'previousPage', 'currentPageSize']),
+    ...mapGetters(['allBooks', 'nextPageUrl', 'previousPageUrl', 'currentPageSize']),
     books () {
       return this.allBooks
     },
-    nextPage () {
-      return this.nextPageUrl
-    },
-    previousPage () {
-      return this.previousPageUrl
-    },
     pageSize () {
       return this.currentPageSize
+    }
+  },
+  watch: {
+    '$route.query.page': {
+      immediate: true,
+      handler (newPage) {
+        const page = newPage || 1
+        this.fetchBooks({ page, pageSize: this.pageSize })
+      }
     }
   },
   mounted () {
     this.fetchBooks()
   },
   methods: {
-    ...mapActions(['fetchBooks'])
+    ...mapActions(['fetchBooks']),
+    changePage (page) {
+      this.$router.push({ query: { page } })
+      this.fetchBooks({ page, pageSize: this.pageSize })
+    }
   }
 }
 </script>
 
 <style scoped>
-/* Additional custom styles can go here if needed */
+/* Custom styles for HomePage.vue */
 </style>
