@@ -5,11 +5,9 @@ import axios from 'axios'
 const API_BASE_URL = process.env.VUE_APP_BACKEND_URL
 
 export default {
-  async fetchV1Books (page = 1, pageSize = 4) {
-    // console.log('api call function, at the beginning: ', page, pageSize)
+  async fetchV1Books (page = 1, pageSize = 8) {
     page = page ?? 1
-    pageSize = pageSize ?? 4
-    // console.log('api call function, after validation: ', page, pageSize)
+    pageSize = pageSize ?? 8
     const URL = `${API_BASE_URL}/book/v1/?page_size=${pageSize}&page=${page}`
     console.log('Book API:', URL, page, pageSize)
 

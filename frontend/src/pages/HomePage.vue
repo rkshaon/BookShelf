@@ -36,86 +36,36 @@ export default {
       return this.currentPageSize
     }
   },
-  // watch: {
-  //   '$route.query.page': {
-  //     immediate: true,
-  //     handler (newPage) {
-  //       // const page = newPage || 1
-  //       let page = newPage
-  //       // let page = parseInt(newPage, 10)
-
-  //       if (!page || isNaN(page)) {
-  //         console.log('page number: ', page)
-  //         this.$router.replace({ query: { page: 1 } })
-  //         page = 1
-  //       }
-
-  //       this.fetchBooks({ page, pageSize: this.pageSize })
-  //     }
-  //   }
-  // },
   watch: {
     '$route.query.page': {
       immediate: true,
       handler (newPage) {
-        // If the 'newPage' is undefined, null, or not a number, set it to 1
         let page = parseInt(newPage, 10)
 
         if (!page || isNaN(page)) {
-          console.log('Invalid or missing page number:', page)
           this.$router.replace({ query: { page: 1 } })
           page = 1
+          return
         }
 
-        // Fetch the correct page data
         this.fetchBooks({ page, pageSize: this.pageSize })
       }
     }
   },
-  // mounted () {
-  //   // const currentPage = this.$route.query.page || 1
-  //   // if (!this.$route.query.page) {
-  //   //   this.fetchBooks({ page: currentPage, pageSize: this.pageSize })
-  //   // }
-  //   // When the component is mounted, ensure there's always a valid 'page' parameter
-  //   const currentPage = this.$route.query.page
-
-  //   // If no page query is present, redirect to page 1
-  //   if (!currentPage || isNaN(currentPage)) {
-  //     this.$router.replace({ query: { page: 1 } })
-  //   }
-  //   // else {
-  //   //   // Otherwise, fetch the books for the existing page
-  //   //   console.log('Current Page: ', currentPage)
-
-  //   //   // this.fetchBooks({ page: currentPage, pageSize: this.pageSize })
-  //   // }
-  // },
   mounted () {
-    // When the component is mounted, check if there's no 'page' query
     const currentPage = this.$route.query.page
 
-    // If there's no page parameter, set it to 1 and let the watcher handle the API call
     if (!currentPage || isNaN(currentPage)) {
       this.$router.replace({ query: { page: 1 } })
     }
-    // DO NOT call fetchBooks here because the watcher will handle it
   },
   methods: {
     ...mapActions(['fetchBooks']),
 
-    // This method updates the URL query when the next or previous button is clicked
     changePage (page) {
       this.$router.push({ query: { page } })
-      // No need to call fetchBooks here, the watcher will handle it
     }
   }
-  // methods: {
-  //   ...mapActions(['fetchBooks']),
-  //   changePage (page) {
-  //     this.$router.push({ query: { page } })
-  //   }
-  // }
 }
 </script>
 

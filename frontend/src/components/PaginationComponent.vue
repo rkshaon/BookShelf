@@ -6,10 +6,8 @@
         Previous
       </button>
     </div>
-
     <!-- Spacer to balance layout -->
     <div class="flex-1"></div>
-
     <!-- Next button -->
     <div v-if="nextPage" class="flex-1 text-right">
       <button @click="changePage(nextPage)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
