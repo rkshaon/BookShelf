@@ -8,9 +8,8 @@ export default {
   async fetchV1Books (page = 1, pageSize = 8) {
     page = page ?? 1
     pageSize = pageSize ?? 8
-    console.log(page, pageSize)
-
     const URL = `${API_BASE_URL}/book/v1/?page_size=${pageSize}&page=${page}`
+    console.log('Book API:', URL, page, pageSize)
 
     try {
       const response = await axios.get(URL)

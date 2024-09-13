@@ -6,16 +6,11 @@
         Explore a vast collection of books, share your reviews, and connect with other book lovers.
       </p>
     </div>
-
-    <!-- PaginationComponent for navigation -->
     <PaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="pageSize"
       @fetch-page="changePage" />
-
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <BookCardComponent v-for="(book, index) in books" :key="index" :book="book" />
     </div>
-
-    <!-- PaginationComponent at the bottom -->
     <PaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="pageSize"
       @fetch-page="changePage" />
   </main>
@@ -45,23 +40,30 @@ export default {
     '$route.query.page': {
       immediate: true,
       handler (newPage) {
-        const page = newPage || 1
+        let page = parseInt(newPage, 10)
+
+        if (!page || isNaN(page)) {
+          this.$router.replace({ query: { page: 1 } })
+          page = 1
+          return
+        }
+
         this.fetchBooks({ page, pageSize: this.pageSize })
       }
     }
   },
   mounted () {
-    // this.fetchBooks()
-    const currentPage = this.$route.query.page || 1
-    if (!this.$route.query.page) {
-      this.fetchBooks({ page: currentPage, pageSize: this.pageSize })
+    const currentPage = this.$route.query.page
+
+    if (!currentPage || isNaN(currentPage)) {
+      this.$router.replace({ query: { page: 1 } })
     }
   },
   methods: {
     ...mapActions(['fetchBooks']),
+
     changePage (page) {
       this.$router.push({ query: { page } })
-      // this.fetchBooks({ page, pageSize: this.pageSize })
     }
   }
 }
