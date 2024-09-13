@@ -26,7 +26,7 @@ class BookView(APIView):
 
         books = Book.objects.filter(
             is_deleted=False
-        ).order_by('id')
+        ).order_by('-id')
         paginator = Pagination()
         page = paginator.paginate_queryset(books, request)
         serializer = BookSerializer(page, many=True)
