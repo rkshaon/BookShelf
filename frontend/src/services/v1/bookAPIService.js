@@ -20,7 +20,7 @@ export default {
     }
   },
   async fetchV1BookDetails (bookCode = null) {
-    const URL = `${API_BASE_URL}/book/v1/${bookCode}`
+    const URL = `${API_BASE_URL}/book/v1/${bookCode}/`
     console.log('Book Details API:', URL)
 
     try {

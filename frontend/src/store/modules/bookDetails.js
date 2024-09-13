@@ -30,14 +30,12 @@ export default {
       commit('SET_BOOK_ERROR', null)
       try {
         const bookDetails = await bookAPIService.fetchV1BookDetails(bookCode)
-        console.log('book details', bookDetails)
-        console.log('book cover', bookDetails.cover_image)
         commit('SET_BOOK_DETAILS', bookDetails)
       } catch (error) {
         console.error('Error fetching book details:', error)
         commit(
           'SET_BOOK_ERROR',
-          error.message || 'Failed to fetch book details'
+          error.response.data.detail || 'Failed to fetch book details'
         )
       } finally {
         commit('SET_BOOK_LOADING', false)

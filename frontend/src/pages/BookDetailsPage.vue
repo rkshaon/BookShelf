@@ -9,8 +9,7 @@
       <p class="text-gray-600">{{ bookDetails.description }}</p>
     </div>
     <div v-else-if="error" class="text-red-500">
-      <!-- <p>{{ error }}</p> -->
-      <NotFoundComponent contentType="Book" />
+      <NotFoundComponent contentType="Book" :errorMessage="error" />
     </div>
   </div>
 </template>
