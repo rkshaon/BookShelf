@@ -11,7 +11,10 @@
 
 <script>
 export default {
-  name: 'NotFoundPage'
+  name: 'NotFoundPage',
+  mounted () {
+    document.title = 'Book Shelf | Page Not Found'
+  }
 }
 </script>
 

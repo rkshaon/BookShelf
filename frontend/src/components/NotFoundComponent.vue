@@ -24,6 +24,9 @@ export default {
       type: String,
       default: 'Our System Does Not Have What You Are Looking For.'
     }
+  },
+  mounted () {
+    document.title = `Book Shelf | ${this.errorMessage}`
   }
 }
 </script>

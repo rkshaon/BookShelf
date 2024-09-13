@@ -36,9 +36,17 @@ export default {
       return process.env.VUE_APP_BACKEND_URL
     }
   },
+  watch: {
+    bookDetails (newBookDetails) {
+      if (newBookDetails && newBookDetails.title) {
+        document.title = `Book Shelf | ${newBookDetails.title}`
+      }
+    }
+  },
   mounted () {
     const bookCode = this.$route.params.book_code
     this.fetchBookDetails(bookCode)
+    document.title = 'Book Shelf | Loading ...'
   },
   methods: {
     ...mapActions(['fetchBookDetails']),

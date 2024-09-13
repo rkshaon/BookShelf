@@ -6,7 +6,6 @@
         Explore a vast collection of books, share your reviews, and connect with other book lovers.
       </p>
     </div>
-    <!-- <LoaderComponent /> -->
     <PaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="pageSize"
       @fetch-page="changePage" />
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -69,6 +68,8 @@ export default {
     if (!currentPage || isNaN(currentPage)) {
       this.$router.replace({ query: { page: 1 } })
     }
+
+    document.title = 'Book Shelf'
   },
   methods: {
     ...mapActions(['fetchBooks']),
