@@ -7,7 +7,7 @@ export default {
     books: [],
     nextPageUrl: null,
     previousPageUrl: null,
-    pageSize: 8
+    pageSize: 4
   },
   getters: {
     allBooks: (state) => state.books,
