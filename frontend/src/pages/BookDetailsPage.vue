@@ -1,47 +1,50 @@
 <template>
   <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-    <div v-if="book" class="bg-white shadow rounded-lg p-6">
-      <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ book.title }}</h1>
-      <p class="text-gray-600 mb-2">By {{ book.authors.map(author => author.full_name).join(', ') }}</p>
-      <img v-if="book.coverImage" :src="book.coverImage" alt="Book Cover" class="w-full h-64 object-cover mb-4" />
-      <p class="text-gray-600">{{ book.description }}</p>
+    <LoaderComponent v-if="isLoading" />
+    <div v-else-if="bookDetails" class="bg-white shadow rounded-lg p-6">
+      <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ bookDetails.title }}</h1>
+      <p class="text-gray-600 mb-2">{{ bookDetails.authors.map(author => author.full_name).join(', ') }}</p>
+      <img :src="getCoverImage(bookDetails.cover_image, API_BASE_URL)" alt="Book Cover"
+        class="w-full h-64 object-cover mb-4" />
+      <p class="text-gray-600">{{ bookDetails.description }}</p>
     </div>
-    <div v-else>
-      <LoaderComponent />
+    <div v-else-if="error" class="text-red-500">
+      <p>{{ error }}</p>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import LoaderComponent from '@/components/LoaderComponent.vue'
+import { getCoverImage } from '@/helpers/getCoverImage'
 
 export default {
   name: 'BookDetailsPage',
   components: {
     LoaderComponent
   },
-  data () {
-    return {
-      book: null // Store book data
+  computed: {
+    ...mapGetters({
+      bookDetails: 'getBookDetails',
+      isLoading: 'isBookLoading',
+      error: 'bookDetailsError'
+    }),
+    API_BASE_URL () {
+      return process.env.VUE_APP_BACKEND_URL
     }
   },
   mounted () {
-    // this.fetchBookDetails();
+    const bookCode = this.$route.params.book_code
+    this.fetchBookDetails(bookCode)
   },
   methods: {
-    // async fetchBookDetails() {
-    //   const bookId = this.$route.params.id;
-    //   try {
-    //     const response = await this.$axios.get(`${process.env.VUE_APP_BACKEND_URL}/book/v1/${bookId}/`);
-    //     this.book = response.data;
-    //   } catch (error) {
-    //     console.error('Error fetching book details:', error);
-    //   }
-    // }
+    ...mapActions(['fetchBookDetails']),
+    getCoverImage
   }
 }
 </script>
 
 <style scoped>
-/* Add custom styles here */
+/* Custom styles for BookDetailsPage.vue */
 </style>
