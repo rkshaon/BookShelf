@@ -9,20 +9,23 @@
       <p class="text-gray-600">{{ bookDetails.description }}</p>
     </div>
     <div v-else-if="error" class="text-red-500">
-      <p>{{ error }}</p>
+      <!-- <p>{{ error }}</p> -->
+      <NotFoundComponent contentType="Book" />
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import LoaderComponent from '@/components/LoaderComponent.vue'
 import { getCoverImage } from '@/helpers/getCoverImage'
+import LoaderComponent from '@/components/LoaderComponent.vue'
+import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
 export default {
   name: 'BookDetailsPage',
   components: {
-    LoaderComponent
+    LoaderComponent,
+    NotFoundComponent
   },
   computed: {
     ...mapGetters({
