@@ -51,13 +51,17 @@ export default {
     }
   },
   mounted () {
-    this.fetchBooks()
+    // this.fetchBooks()
+    const currentPage = this.$route.query.page || 1
+    if (!this.$route.query.page) {
+      this.fetchBooks({ page: currentPage, pageSize: this.pageSize })
+    }
   },
   methods: {
     ...mapActions(['fetchBooks']),
     changePage (page) {
       this.$router.push({ query: { page } })
-      this.fetchBooks({ page, pageSize: this.pageSize })
+      // this.fetchBooks({ page, pageSize: this.pageSize })
     }
   }
 }
