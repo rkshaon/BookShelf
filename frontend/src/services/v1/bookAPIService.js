@@ -18,5 +18,17 @@ export default {
       console.error('Error fetching books:', error)
       throw error
     }
+  },
+  async fetchV1BookDetails (bookCode = null) {
+    const URL = `${API_BASE_URL}/book/v1/${bookCode}/`
+    console.log('Book Details API:', URL)
+
+    try {
+      const response = await axios.get(URL)
+      return response.data
+    } catch (error) {
+      console.error('Error fetching books:', error)
+      throw error
+    }
   }
 }
