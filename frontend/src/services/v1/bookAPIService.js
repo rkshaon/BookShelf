@@ -6,8 +6,6 @@ const API_BASE_URL = process.env.VUE_APP_BACKEND_URL
 
 export default {
   async fetchV1Books (page = 1, pageSize = 8) {
-    // console.log(page, pageSize);
-
     page = page ?? 1
     pageSize = pageSize ?? 8
     console.log(page, pageSize)
