@@ -7,14 +7,19 @@
       <p class="text-gray-600">{{ book.description }}</p>
     </div>
     <div v-else>
-      <p>Loading book details...</p>
+      <LoaderComponent />
     </div>
   </div>
 </template>
 
 <script>
+import LoaderComponent from '@/components/LoaderComponent.vue'
+
 export default {
   name: 'BookDetailsPage',
+  components: {
+    LoaderComponent
+  },
   data () {
     return {
       book: null // Store book data
