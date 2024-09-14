@@ -7,7 +7,11 @@
           class="max-w-full h-auto shadow-lg rounded-lg" />
       </div>
       <div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ bookDetails.title }}</h1>
+        <a :href="getBookURL(bookDetails.book, API_BASE_URL)" target="_blank"
+          class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+          Read the Book
+        </a>
+        <h1 class="text-3xl font-bold text-gray-800 mb-4 mt-4">{{ bookDetails.title }}</h1>
         <p class="text-gray-600 mb-4">
           <strong>Authors:</strong> {{ bookDetails.authors.map(author => author.full_name).join(', ') }}
         </p>
@@ -43,6 +47,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { getCoverImage } from '@/helpers/getCoverImage'
+import { getBookURL } from '@/helpers/getBookURL'
 import LoaderComponent from '@/components/LoaderComponent.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
@@ -76,7 +81,8 @@ export default {
   },
   methods: {
     ...mapActions(['fetchBookDetails']),
-    getCoverImage
+    getCoverImage,
+    getBookURL
   }
 }
 </script>
