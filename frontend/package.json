@@ -15,6 +15,7 @@
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
     "vue-router": "^4.0.13",
+    "vue3-pdfjs": "^0.1.6",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
