@@ -29,7 +29,7 @@ class TopicAdmin(admin.ModelAdmin):
 class BookAdmin(admin.ModelAdmin):
     list_display = [
         'id', 'book_code', 'title', 'cover', 'edition',
-        'isbn', 'published_date', 'language',
+        'isbn', 'published_year', 'language',
         'is_deleted', 'uploader',
     ]
 
