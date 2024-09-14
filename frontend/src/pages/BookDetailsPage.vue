@@ -1,12 +1,60 @@
 <template>
   <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
     <LoaderComponent v-if="isLoading" />
-    <div v-else-if="bookDetails" class="bg-white shadow rounded-lg p-6">
-      <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ bookDetails.title }}</h1>
-      <p class="text-gray-600 mb-2">{{ bookDetails.authors.map(author => author.full_name).join(', ') }}</p>
-      <img :src="getCoverImage(bookDetails.cover_image, API_BASE_URL)" alt="Book Cover"
-        class="w-full h-64 object-cover mb-4" />
-      <p class="text-gray-600">{{ bookDetails.description }}</p>
+    <!-- Show Book Details if available -->
+    <div v-else-if="bookDetails" class="bg-white shadow rounded-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- Left Side: Full Book Cover Image -->
+      <div class="flex justify-center">
+        <img :src="getCoverImage(bookDetails.cover_image, API_BASE_URL)" alt="Book Cover"
+          class="max-w-full h-auto shadow-lg rounded-lg" />
+      </div>
+
+      <!-- Right Side: Book Details -->
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ bookDetails.title }}</h1>
+
+        <!-- Authors -->
+        <p class="text-gray-600 mb-4">
+          <strong>Authors:</strong> {{ bookDetails.authors.map(author => author.full_name).join(', ') }}
+        </p>
+
+        <!-- Description -->
+        <p class="text-gray-600 mb-4">{{ bookDetails.description }}</p>
+
+        <!-- Additional Book Information -->
+        <div class="grid grid-cols-1 gap-4">
+          <!-- Publisher -->
+          <div v-if="bookDetails.publisher">
+            <strong>Publisher:</strong> {{ bookDetails.publisher.name }}
+          </div>
+
+          <!-- Edition -->
+          <div v-if="bookDetails.edition">
+            <strong>Edition:</strong> {{ bookDetails.edition }}
+          </div>
+
+          <!-- ISBN -->
+          <div v-if="bookDetails.isbn">
+            <strong>ISBN:</strong> {{ bookDetails.isbn }}
+          </div>
+
+          <!-- Pages -->
+          <div v-if="bookDetails.pages">
+            <strong>Pages:</strong> {{ bookDetails.pages }}
+          </div>
+
+          <!-- Language -->
+          <div v-if="bookDetails.language">
+            <strong>Language:</strong> {{ bookDetails.language }}
+          </div>
+
+          <!-- Published Date -->
+          <div v-if="bookDetails.published_date">
+            <strong>Published Date:</strong> {{ new Date(bookDetails.published_date).toLocaleDateString() }}
+          </div>
+        </div>
+      </div>
     </div>
     <div v-else-if="error" class="text-red-500">
       <NotFoundComponent contentType="Book" :errorMessage="error" />
