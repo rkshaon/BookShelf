@@ -5,7 +5,6 @@
       <div class="flex justify-center">
         <img :src="getCoverImage(bookDetails.cover_image, API_BASE_URL)" alt="Book Cover"
           class="max-w-full h-auto shadow-lg rounded-lg" />
-
       </div>
       <div>
         <router-link :to="{
