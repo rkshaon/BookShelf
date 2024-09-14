@@ -1,16 +1,13 @@
 <template>
     <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <router-link :to="{ name: 'BookDetails', params: { book_code: bookCode } }"
+        <router-link v-if="bookCode" :to="{ name: 'BookDetails', params: { book_code: bookCode } }"
             class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
             Go Back
         </router-link>
-        <a href="#"
-            class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
-            Go Back
-        </a>
+        <LoaderComponent v-else />
         <div class="relative w-full overflow-hidden shadow-lg rounded-lg border border-gray-300 mt-4">
             <iframe :src="bookURL" class="w-full h-96 border-none" />
-        </div>
+    </div>
     </div>
 </template>
 
@@ -18,8 +15,13 @@
 import { getBookURL } from '@/helpers/getBookURL'
 import { getBookURLUsingBookCode } from '@/helpers/getBookURLUsingBookCode'
 
+import LoaderComponent from '@/components/LoaderComponent.vue'
+
 export default {
   name: 'BookPage',
+  components: {
+    LoaderComponent
+  },
   data () {
     return {
       bookURL: '',
