@@ -1,13 +1,15 @@
 <template>
-    <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8 h-screen flex flex-col">
+        <!-- Go Back Button -->
         <router-link v-if="bookCode" :to="{ name: 'BookDetails', params: { book_code: bookCode } }"
-            class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+            class="bg-blue-500 w-32 text-center text-white font-bold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
             Go Back
         </router-link>
         <LoaderComponent v-else />
-        <div class="relative w-full overflow-hidden shadow-lg rounded-lg border border-gray-300 mt-4">
-            <iframe :src="bookURL" class="w-full h-96 border-none" />
-    </div>
+        <!-- Book PDF in iframe -->
+        <div class="relative flex-grow overflow-hidden shadow-lg rounded-lg border border-gray-300 mt-4">
+            <iframe :src="bookURL" class="w-full h-full border-none" />
+        </div>
     </div>
 </template>
 
