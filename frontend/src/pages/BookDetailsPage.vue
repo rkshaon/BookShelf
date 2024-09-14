@@ -5,16 +5,17 @@
       <div class="flex justify-center">
         <img :src="getCoverImage(bookDetails.cover_image, API_BASE_URL)" alt="Book Cover"
           class="max-w-full h-auto shadow-lg rounded-lg" />
+
       </div>
       <div>
-        <a :href="getBookURL(bookDetails.book, API_BASE_URL)" target="_blank"
+        <router-link :to="{
+          name: 'Book',
+          params: { book_code: bookDetails.book_code },
+          state: { bookURL: bookDetails.book }
+        }"
           class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
-          Read the Book
-        </a>
-        <!-- <BookReadComponent /> -->
-        <!-- <Pdf src="http://localhost:8001/media/books/951707775020240911194932198209.pdf"
-          style="width: 100%; height: 100vh;" /> -->
-        <!-- <iframe src="http://localhost:8001/media/books/951707775020240911194932198209.pdf" width="100%" height="500" /> -->
+          Read
+        </router-link>
         <h1 class="text-3xl font-bold text-gray-800 mb-4 mt-4">{{ bookDetails.title }}</h1>
         <p class="text-gray-600 mb-4">
           <strong>Authors:</strong> {{ bookDetails.authors.map(author => author.full_name).join(', ') }}
@@ -51,19 +52,15 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { getCoverImage } from '@/helpers/getCoverImage'
-import { getBookURL } from '@/helpers/getBookURL'
+
 import LoaderComponent from '@/components/LoaderComponent.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'
-// import BookReadComponent from '@/components/BookReadComponent.vue'
-// import { Pdf } from 'vue3-pdfjs'
 
 export default {
   name: 'BookDetailsPage',
   components: {
     LoaderComponent,
     NotFoundComponent
-    // Pdf
-    // BookReadComponent
   },
   computed: {
     ...mapGetters({
@@ -89,8 +86,7 @@ export default {
   },
   methods: {
     ...mapActions(['fetchBookDetails']),
-    getCoverImage,
-    getBookURL
+    getCoverImage
   }
 }
 </script>
