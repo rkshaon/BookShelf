@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 
-import books from '@/store/modules/books'
-import bookDetails from '@/store/modules/bookDetails'
+import books from '@/store/modules/books/books'
+import bookDetails from '@/store/modules/books/bookDetails'
 
 export default new Vuex.Store({
   modules: {

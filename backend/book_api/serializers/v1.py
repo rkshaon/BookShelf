@@ -24,7 +24,7 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = [
             'id', 'book_code', 'title', 'description', 'edition',
-            'isbn', 'pages', 'published_date', 'language', 'book',
+            'isbn', 'pages', 'published_year', 'language', 'book',
             'cover_image', 'publisher', 'genres', 'topics', 'authors',
         ]
 

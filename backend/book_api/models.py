@@ -88,7 +88,8 @@ class Book(models.Model):
     edition = models.CharField(max_length=50, blank=True, null=True)
     isbn = models.CharField(max_length=20, blank=True, null=True, unique=True)
     pages = models.PositiveIntegerField(blank=True, null=True)
-    published_date = models.DateField(null=True, blank=True)
+    # published_date = models.DateField(null=True, blank=True)
+    published_year = models.PositiveIntegerField(null=True, blank=True)
     language = models.CharField(max_length=200, blank=True, null=True)
     book = models.FileField(
         upload_to=book_upload_path,
