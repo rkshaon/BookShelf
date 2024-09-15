@@ -13,6 +13,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "axios": "^1.7.7",
     "core-js": "^3.8.3",
+    "pdfjs-dist": "^4.6.82",
     "vue": "^3.2.13",
     "vue-router": "^4.0.13",
     "vue3-pdfjs": "^0.1.6",
@@ -21,6 +22,10 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.25.1",
+    "@babel/plugin-transform-class-properties": "^7.25.4",
+    "@babel/plugin-transform-class-static-block": "^7.24.7",
+    "@babel/plugin-transform-private-methods": "^7.25.4",
+    "@babel/preset-env": "^7.25.4",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
