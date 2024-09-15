@@ -15,27 +15,29 @@
 </template>
 
 <script>
-import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf'
-import pdfjsWorker from 'pdfjs-dist/legacy/build/pdf.worker.entry' // Corrected worker import
+// Import only the core 'pdf.js' library
+import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf' // No need for pdf.worker.entry
 import LoaderComponent from '@/components/LoaderComponent.vue'
 
 export default {
   name: 'PdfViewer',
-  components: { LoaderComponent },
+  components: {
+    LoaderComponent
+  },
   data () {
     return {
-      pdf: null, // Holds the PDF document
-      currentPage: 1, // Current page number
-      totalPages: 0, // Total number of pages
-      isLoading: true // Loader flag
+      pdf: null,
+      currentPage: 1,
+      totalPages: 0,
+      isLoading: true
     }
   },
   mounted () {
-    // Set the worker source
-    pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
+    // Set the workerSrc directly to the CDN
+    // pdfjsLib.GlobalWorkerOptions.workerSrc = '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js'
 
     // Initialize the PDF viewer
-    this.loadPdf('/path/to/your/pdf/document.pdf') // Replace with your PDF path
+    this.loadPdf('http://127.0.0.1:8001/media/books/228918935320240911201717896799.pdf') // Replace with your PDF path
   },
   methods: {
     async loadPdf (url) {
