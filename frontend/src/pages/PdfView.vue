@@ -1,40 +1,35 @@
 <template>
-    <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <!-- Previous and Next Page Buttons -->
-        <div class="flex justify-between items-center mb-4">
-            <button @click="prevPage" class="bg-blue-500 text-white px-4 py-2 rounded">Previous Page</button>
-            <span>Page {{ currentPage }} of {{ totalPages }}</span>
-            <button @click="nextPage" class="bg-blue-500 text-white px-4 py-2 rounded">Next Page</button>
-        </div>
-
-        <!-- Canvas for PDF Rendering -->
-        <canvas ref="pdfCanvas" class="border border-gray-300 shadow-lg"></canvas>
-
-        <LoaderComponent v-if="isLoading" />
+  <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <!-- Previous and Next Page Buttons -->
+    <div class="flex justify-between items-center mb-4">
+      <button @click="prevPage" class="bg-blue-500 text-white px-4 py-2 rounded">Previous Page</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button @click="nextPage" class="bg-blue-500 text-white px-4 py-2 rounded">Next Page</button>
     </div>
+
+    <!-- Canvas for PDF Rendering -->
+    <canvas ref="pdfCanvas" class="border border-gray-300 shadow-lg"></canvas>
+
+    <LoaderComponent v-if="isLoading" />
+  </div>
 </template>
 
 <script>
-// Import only the core 'pdf.js' library
-import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf' // No need for pdf.worker.entry
-import LoaderComponent from '@/components/LoaderComponent.vue'
+import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf' // Correct import for modern Vue setup
 
 export default {
   name: 'PdfViewer',
-  components: {
-    LoaderComponent
-  },
   data () {
     return {
-      pdf: null,
-      currentPage: 1,
-      totalPages: 0,
-      isLoading: true
+      pdf: null, // Holds the PDF document
+      currentPage: 1, // Current page number
+      totalPages: 0, // Total number of pages
+      isLoading: true // Loader flag
     }
   },
   mounted () {
-    // Set the workerSrc directly to the CDN
-    // pdfjsLib.GlobalWorkerOptions.workerSrc = '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js'
+    // Set the workerSrc to the CDN path
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js'
 
     // Initialize the PDF viewer
     this.loadPdf('http://127.0.0.1:8001/media/books/228918935320240911201717896799.pdf') // Replace with your PDF path
@@ -90,7 +85,7 @@ export default {
 
 <style scoped>
 canvas {
-    width: 100%;
-    max-width: 100%;
+  width: 100%;
+  max-width: 100%;
 }
 </style>
