@@ -878,7 +878,7 @@
     "@babel/helper-create-regexp-features-plugin" "^7.25.2"
     "@babel/helper-plugin-utils" "^7.24.8"
 
-"@babel/preset-env@^7.12.16":
+"@babel/preset-env@^7.12.16", "@babel/preset-env@^7.25.4":
   version "7.25.4"
   resolved "https://registry.npmjs.org/@babel/preset-env/-/preset-env-7.25.4.tgz"
   integrity sha512-W9Gyo+KmcxjGahtt3t9fb14vFRWvPpu5pT6GBlovAK6BTBcxgjfVMSQCfJl4oi35ODrxP6xx2Wr8LNST57Mraw==
@@ -5474,12 +5474,9 @@ path-type@^4.0.0:
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
 pdfjs-dist@^2.10.377:
-  version "2.16.105"
-  resolved "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-2.16.105.tgz"
-  integrity sha512-J4dn41spsAwUxCpEoVf6GVoz908IAA3mYiLmNxg8J9kfRXc2jxpbUepcP0ocp0alVNLFthTAM8DZ1RaHh8sU0A==
-  dependencies:
-    dommatrix "^1.0.3"
-    web-streams-polyfill "^3.2.1"
+  version "2.10.377"
+  resolved "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-2.10.377.tgz"
+  integrity sha512-i0jRShtvgfsVQUNCoFYH4SVhPO3U0yhtiFLfZ0RR0B+68N+Vnwq+8B3cjWjLEwWGh8wg1XQ/sYMYKUlHn/Qpsw==
 
 picocolors@^0.2.1:
   version "0.2.1"
