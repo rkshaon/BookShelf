@@ -19,6 +19,12 @@
         <p class="text-gray-600 mb-4">
           <strong>Authors:</strong> {{ bookDetails.authors.map(author => author.full_name).join(', ') }}
         </p>
+        <p v-if="bookDetails.genres && bookDetails.genres.length > 0" class="text-gray-600 mb-4">
+          <strong>Genre:</strong> {{ bookDetails.genres.map(genre => genre.name).join(', ') }}
+        </p>
+        <p v-if="bookDetails.topics && bookDetails.topics.length > 0" class="text-gray-600 mb-4">
+          <strong>Topic:</strong> {{ bookDetails.topics.map(topic => topic.name).join(', ') }}
+        </p>
         <p class="text-gray-600 mb-4">{{ bookDetails.description }}</p>
         <div class="grid grid-cols-1 gap-4">
           <div v-if="bookDetails.publisher">
@@ -36,8 +42,8 @@
           <div v-if="bookDetails.language">
             <strong>Language:</strong> {{ bookDetails.language }}
           </div>
-          <div v-if="bookDetails.published_date">
-            <strong>Published Date:</strong> {{ new Date(bookDetails.published_date).toLocaleDateString() }}
+          <div v-if="bookDetails.published_year">
+            <strong>Published Year:</strong> {{ bookDetails.published_year }}
           </div>
         </div>
       </div>
