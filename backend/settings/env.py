@@ -17,3 +17,5 @@ CORS_ALLOWED_ORIGINS_SETTINGS = [
     "http://localhost:8080",
     "http://127.0.0.1:8080",
 ]
+
+X_FRAME_OPTIONS_SETTINGS = 'ALLOW-FROM http://localhost:8080'

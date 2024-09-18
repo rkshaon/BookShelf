@@ -19,6 +19,7 @@ from BookShelf.env import DATABASES_SETTINGS
 from BookShelf.env import ALLOWED_HOSTS_SETTINGS
 from BookShelf.env import SECRET_KEY_SETTINGS
 from BookShelf.env import CORS_ALLOWED_ORIGINS_SETTINGS
+from BookShelf.env import X_FRAME_OPTIONS_SETTINGS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -157,8 +158,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CORS_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS_SETTINGS
-X_FRAME_OPTIONS = 'SAMEORIGIN'
-X_FRAME_OPTIONS = 'ALLOW-FROM http://localhost:8080'
+X_FRAME_OPTIONS = X_FRAME_OPTIONS_SETTINGS
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user_api.User'
