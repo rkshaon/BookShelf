@@ -1,5 +1,11 @@
 <template>
   <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="mb-4">
+      <router-link v-if="bookCode" :to="{ name: 'BookDetails', params: { book_code: bookCode } }"
+        class="bg-blue-500 w-32 text-center text-white font-bold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+        Go Back
+      </router-link>
+    </div>
     <div class="flex justify-between items-center mb-4">
       <button @click="prevPage" class="bg-blue-500 text-white px-4 py-2 rounded">Previous Page</button>
       <span>Page {{ currentPage }} of {{ totalPages }}</span>
@@ -20,10 +26,12 @@ export default {
       pdf: null,
       currentPage: 1,
       totalPages: 0,
-      isLoading: true
+      isLoading: true,
+      bookCode: ''
     }
   },
   mounted () {
+    this.bookCode = this.$route.params.book_code
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js'
     this.loadPdf('http://127.0.0.1:8001/media/books/228918935320240911201717896799.pdf')
   },
