@@ -18,10 +18,7 @@ export default {
       state.authorDetails = author
     },
     SET_LOADING (state, isLoading) {
-      console.log('just testing')
-
       state.isLoading = isLoading
-      console.log('loading value', state.isLoading)
     },
     SET_ERROR (state, error) {
       state.error = error
@@ -33,14 +30,11 @@ export default {
       commit('SET_ERROR', null)
       try {
         const response = await authorAPIService.fetchV1AuthorDetails(authorId)
-        console.log('response:', response)
         commit('SET_AUTHOR_DETAILS', response)
       } catch (error) {
         commit('SET_ERROR', 'Error fetching author details')
       } finally {
-        // console.log('loading...', this.state.isLoading)
         commit('SET_LOADING', false)
-        //   console.log("loading...", this.state.isLoading)
       }
     }
   }

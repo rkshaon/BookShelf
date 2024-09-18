@@ -12,7 +12,7 @@ const routes = [
   { path: '/book/:book_code', name: 'BookDetails', component: BookDetailsPage },
   // { path: "/book/:book_code/view", name: "Book", component: BookPage },
   { path: '/book/:book_code/view', name: 'Book', component: PdfView },
-  { path: '/author/:id', name: 'Author', component: AuthorPage },
+  { path: '/author/:id', name: 'AuthorDetails', component: AuthorPage },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundPage }
 ]
 

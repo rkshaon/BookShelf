@@ -16,9 +16,19 @@
           Read
         </router-link>
         <h1 class="text-3xl font-bold text-gray-800 mb-4 mt-4">{{ bookDetails.title }}</h1>
-        <p class="text-gray-600 mb-4">
+        <!-- <p class="text-gray-600 mb-4">
           <strong>Authors:</strong> {{ bookDetails.authors.map(author => author.full_name).join(', ') }}
-        </p>
+        </p> -->
+        <div class="text-gray-600 mb-4">
+          <strong>Authors:</strong>
+        <div class="flex flex-wrap gap-2 mt-2">
+          <router-link v-for="author in bookDetails.authors" :key="author.id"
+            :to="{ name: 'AuthorDetails', params: { id: author.id } }"
+            class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition">
+            {{ author.full_name }}
+          </router-link>
+        </div>
+        </div>
         <p v-if="bookDetails.genres && bookDetails.genres.length > 0" class="text-gray-600 mb-4">
           <strong>Genre:</strong> {{ bookDetails.genres.map(genre => genre.name).join(', ') }}
         </p>
