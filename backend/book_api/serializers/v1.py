@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from author_api.serializers.v1 import AuthorSerializer
+from publisher_api.serializers.v1 import PublisherSerializer
 
 from book_api.models import Genre
 from book_api.models import Topic
@@ -38,6 +39,9 @@ class BookSerializer(serializers.ModelSerializer):
         ).data
         representation['topics'] = TopicSerializer(
             instance.topics, many=True
+        ).data
+        representation['publisher'] = PublisherSerializer(
+            instance.publisher
         ).data
 
         return representation

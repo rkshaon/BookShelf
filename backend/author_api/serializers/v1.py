@@ -8,5 +8,5 @@ class AuthorSerializer(serializers.ModelSerializer):
         model = Author
         fields = [
             'id', 'full_name', 'biography', 'birth_date',
-            'died_date',
+            'died_date', 'is_alive',
         ]

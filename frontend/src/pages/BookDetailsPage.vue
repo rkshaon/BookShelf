@@ -16,8 +16,21 @@
           Read
         </router-link>
         <h1 class="text-3xl font-bold text-gray-800 mb-4 mt-4">{{ bookDetails.title }}</h1>
-        <p class="text-gray-600 mb-4">
-          <strong>Authors:</strong> {{ bookDetails.authors.map(author => author.full_name).join(', ') }}
+        <div class="text-gray-600 mb-4">
+          <strong>Authors:</strong>
+        <div class="flex flex-wrap gap-2 mt-2">
+          <router-link v-for="author in bookDetails.authors" :key="author.id"
+            :to="{ name: 'AuthorDetails', params: { id: author.id } }"
+            class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition">
+            {{ author.full_name }}
+          </router-link>
+        </div>
+        </div>
+        <p v-if="bookDetails.genres && bookDetails.genres.length > 0" class="text-gray-600 mb-4">
+          <strong>Genre:</strong> {{ bookDetails.genres.map(genre => genre.name).join(', ') }}
+        </p>
+        <p v-if="bookDetails.topics && bookDetails.topics.length > 0" class="text-gray-600 mb-4">
+          <strong>Topic:</strong> {{ bookDetails.topics.map(topic => topic.name).join(', ') }}
         </p>
         <p class="text-gray-600 mb-4">{{ bookDetails.description }}</p>
         <div class="grid grid-cols-1 gap-4">
@@ -36,8 +49,8 @@
           <div v-if="bookDetails.language">
             <strong>Language:</strong> {{ bookDetails.language }}
           </div>
-          <div v-if="bookDetails.published_date">
-            <strong>Published Date:</strong> {{ new Date(bookDetails.published_date).toLocaleDateString() }}
+          <div v-if="bookDetails.published_year">
+            <strong>Published Year:</strong> {{ bookDetails.published_year }}
           </div>
         </div>
       </div>
