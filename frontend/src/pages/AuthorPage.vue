@@ -41,7 +41,6 @@
 </template>
 
 <script>
-// import { mapActions } from 'vuex'
 import { mapGetters, mapActions } from 'vuex'
 import LoaderComponent from '@/components/LoaderComponent.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'

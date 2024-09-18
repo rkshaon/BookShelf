@@ -16,9 +16,6 @@
           Read
         </router-link>
         <h1 class="text-3xl font-bold text-gray-800 mb-4 mt-4">{{ bookDetails.title }}</h1>
-        <!-- <p class="text-gray-600 mb-4">
-          <strong>Authors:</strong> {{ bookDetails.authors.map(author => author.full_name).join(', ') }}
-        </p> -->
         <div class="text-gray-600 mb-4">
           <strong>Authors:</strong>
         <div class="flex flex-wrap gap-2 mt-2">
