@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
+from django.utils.text import slugify
 
 import os
 import uuid
@@ -46,6 +47,13 @@ def generate_book_code():
 class Genre(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
+    slug = models.SlugField(max_length=255, null=True, blank=True)
+
+    # def save(self, *args, **kwargs):
+    #     if not self.slug:
+    #         self.slug = slugify(self.name)
+
+    #     super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.name
