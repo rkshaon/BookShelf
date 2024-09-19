@@ -1,16 +1,23 @@
 <template>
-    <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <!-- Genre Title (center-aligned) -->
-        <h1 class="text-4xl font-bold text-center text-gray-800 mb-4">{{ genre.title }}</h1>
-
-        <!-- Genre Description (below title) -->
-        <p class="text-lg text-center text-gray-600 mb-8 max-w-3xl mx-auto">
-            {{ genre.description || 'No description available for this genre.' }}</p>
-
-        <!-- Book List Header -->
-        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Books in {{ genre.title }}</h2>
-
-        <!-- Book List (Grid) -->
+  <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div v-if="isLoading" class="flex justify-center">
+      <LoaderComponent />
+    </div>
+    <div v-else-if="genre">
+      <h1 class="text-4xl font-bold text-center text-gray-800 mb-4">
+        {{ genre.name }}
+      </h1>
+      <p class="text-lg text-center text-gray-600 mb-8 max-w-3xl mx-auto">
+        {{ genre.description || 'No description available for this genre.' }}
+      </p>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-6">
+        Books on {{ genre.name }}
+      </h2>
+    </div>
+    <div v-else-if="error" class="text-red-500">
+      <NotFoundComponent contentType="Genre" :errorMessage="error" />
+    </div>
+    <!-- <h2 class="text-2xl font-semibold text-gray-800 mb-6">Books in {{ genre.name }}</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div v-for="book in genre.books" :key="book.id" class="bg-white shadow-lg rounded-lg overflow-hidden">
                 <router-link :to="{ name: 'BookDetails', params: { book_code: book.book_code } }">
@@ -27,45 +34,44 @@
                     </p>
                 </div>
             </div>
-        </div>
-    </div>
+        </div> -->
+  </div>
 </template>
 
 <script>
-// import { getCoverImage } from '@/helpers/getCoverImage'
+import { mapGetters, mapActions } from 'vuex'
+import LoaderComponent from '@/components/LoaderComponent.vue'
+// import BookCardComponent from '@/components/BookCardComponent.vue'
+import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
 export default {
   name: 'GenrePage',
-  data () {
-    return {
-      genre: {
-        title: 'Test',
-        description: '',
-        books: []
+  components: {
+    LoaderComponent,
+    NotFoundComponent
+  },
+  computed: {
+    ...mapGetters({
+      genre: 'getGenreDetails',
+      isLoading: 'isGenreLoading',
+      error: 'genreDetailsError'
+    })
+  },
+  watch: {
+    genre (newGenre) {
+      if (newGenre && newGenre.name) {
+        document.title = `Book Shelf | ${newGenre.name}`
       }
     }
   },
-  computed: {
-    API_BASE_URL () {
-      return process.env.VUE_APP_BACKEND_URL
-    }
-  },
   mounted () {
-    // this.fetchGenreDetails()
+    const genreId = this.$route.params.id
+    console.log('Genre ID', genreId)
+    this.fetchGenreDetails(genreId)
+    document.title = 'Book Shelf | Loading ...'
   },
   methods: {
-    // fetchGenreDetails() {
-    //     const genreId = this.$route.params.id
-    //     // Make an API call to fetch genre details, including its books
-    //     this.$axios.get(`/genres/${genreId}`).then(response => {
-    //         this.genre = response.data
-    //     }).catch(error => {
-    //         console.error('Error fetching genre details:', error)
-    //     })
-    // },
-    // getCoverImage(image, baseUrl) {
-    //     return image ? `${baseUrl}/media/${image}` : '/default-cover.png'
-    // }
+    ...mapActions(['fetchGenreDetails'])
   }
 }
 </script>
