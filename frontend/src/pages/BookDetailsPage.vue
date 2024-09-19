@@ -30,7 +30,7 @@
           <strong class="mr-2">Genre:</strong>
           <span class="flex flex-wrap gap-2">
             <router-link v-for="genre in bookDetails.genres" :key="genre.id"
-              :to="{ name: 'GenreDetails', params: { id: genre.id, name: genre.name } }"
+              :to="{ name: 'GenreDetails', params: { id: genre.id, slug: genre.slug } }"
               class="inline-block px-2 py-1 bg-green-100 text-green-700 rounded-md text-sm hover:bg-green-200 transition">
               {{ genre.name }}
             </router-link>
