@@ -32,6 +32,7 @@ class BookAdmin(admin.ModelAdmin):
         'isbn', 'published_year', 'language',
         'is_deleted', 'uploader',
     ]
+    list_per_page = 20
 
     @admin.display(boolean=True)
     def cover(self, obj):
