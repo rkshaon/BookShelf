@@ -41,8 +41,9 @@ class BookSerializer(serializers.ModelSerializer):
         representation['topics'] = TopicSerializer(
             instance.topics, many=True
         ).data
-        representation['publisher'] = PublisherSerializer(
-            instance.publisher
-        ).data
+        if instance.publisher:
+            representation['publisher'] = PublisherSerializer(
+                instance.publisher
+            ).data
 
         return representation
