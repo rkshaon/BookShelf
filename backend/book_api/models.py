@@ -47,7 +47,12 @@ def generate_book_code():
 class Genre(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
-    slug = models.SlugField(max_length=255, null=True, blank=True)
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        null=True,
+        blank=True
+    )
 
     def save(self, *args, **kwargs):
         if not self.slug:
