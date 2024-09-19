@@ -18,16 +18,23 @@
         <h1 class="text-3xl font-bold text-gray-800 mb-4 mt-4">{{ bookDetails.title }}</h1>
         <div class="text-gray-600 mb-4">
           <strong>Authors:</strong>
-        <div class="flex flex-wrap gap-2 mt-2">
-          <router-link v-for="author in bookDetails.authors" :key="author.id"
-            :to="{ name: 'AuthorDetails', params: { id: author.id } }"
-            class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition">
-            {{ author.full_name }}
-          </router-link>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <router-link v-for="author in bookDetails.authors" :key="author.id"
+              :to="{ name: 'AuthorDetails', params: { id: author.id } }"
+              class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition">
+              {{ author.full_name }}
+            </router-link>
+          </div>
         </div>
-        </div>
-        <p v-if="bookDetails.genres && bookDetails.genres.length > 0" class="text-gray-600 mb-4">
-          <strong>Genre:</strong> {{ bookDetails.genres.map(genre => genre.name).join(', ') }}
+        <p v-if="bookDetails.genres && bookDetails.genres.length > 0" class="text-gray-600 mb-4 flex items-center">
+          <strong class="mr-2">Genre:</strong>
+          <span class="flex flex-wrap gap-2">
+            <router-link v-for="genre in bookDetails.genres" :key="genre.id"
+              :to="{ name: 'GenreDetails', params: { id: genre.id, name: genre.name } }"
+              class="inline-block px-2 py-1 bg-green-100 text-green-700 rounded-md text-sm hover:bg-green-200 transition">
+              {{ genre.name }}
+            </router-link>
+          </span>
         </p>
         <p v-if="bookDetails.topics && bookDetails.topics.length > 0" class="text-gray-600 mb-4">
           <strong>Topic:</strong> {{ bookDetails.topics.map(topic => topic.name).join(', ') }}

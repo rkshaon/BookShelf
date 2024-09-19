@@ -15,7 +15,6 @@
       }">
         <h3 class="text-lg font-bold text-gray-800">{{ book.title }}</h3>
       </router-link>
-      <!-- <p class="text-gray-600">{{ book.authors.map(author => author.full_name).join(', ') }}</p> -->
       <div class="flex flex-wrap gap-1 mt-2">
         <router-link v-for="author in book.authors" :key="author.id"
           :to="{ name: 'AuthorDetails', params: { id: author.id } }"
