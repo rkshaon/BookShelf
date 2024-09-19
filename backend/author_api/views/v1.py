@@ -22,7 +22,10 @@ class AuthorView(APIView):
             except Author.DoesNotExist:
                 raise NotFound(detail='Author not found.')
 
-            return Response(AuthorSerializer(author).data)
+            return Response(
+                AuthorSerializer(
+                    author, context={'include_books': True}
+                ).data)
 
         authors = Author.objects.filter(
             is_deleted=False
@@ -30,4 +33,5 @@ class AuthorView(APIView):
         paginator = Pagination()
         page = paginator.paginate_queryset(authors, request)
         serializer = AuthorSerializer(page, many=True)
+
         return paginator.get_paginated_response(serializer.data)

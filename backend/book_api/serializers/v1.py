@@ -31,6 +31,7 @@ class BookSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
+
         representation['authors'] = AuthorSerializer(
             instance.authors, many=True
         ).data
