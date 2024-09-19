@@ -29,5 +29,6 @@ class BookView(APIView):
         ).order_by('-id')
         paginator = Pagination()
         page = paginator.paginate_queryset(books, request)
-        serializer = BookSerializer(page, many=True)
-        return paginator.get_paginated_response(serializer.data)
+        return paginator.get_paginated_response(
+            BookSerializer(page, many=True).data
+        )

@@ -56,6 +56,15 @@ class Genre(models.Model):
         null=True,
         blank=True
     )
+    added_by = models.ForeignKey(
+        'user_api.User',
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
+    is_deleted = models.BooleanField(default=False)
+    added_date_time = models.DateTimeField(auto_now_add=True)
+    updated_date_time = models.DateTimeField(auto_now=True)
 
     class Meta:
         constraints = [
