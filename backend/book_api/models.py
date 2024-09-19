@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models.functions import Lower
+
+from django.core.exceptions import ValidationError
 from django.utils.timezone import now
 from django.utils.text import slugify
 
@@ -54,7 +57,24 @@ class Genre(models.Model):
         blank=True
     )
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                Lower('name'),
+                name='Unique Genre name is not case sensitive.'
+            )
+        ]
+
+    def clean(self):
+        if Genre.objects.filter(
+            name__iexact=self.name
+        ).exclude(pk=self.pk).exists():
+            raise ValidationError(
+                "A genre with this name (case-insensitive) already exists.")
+
     def save(self, *args, **kwargs):
+        self.clean()
+
         if not self.slug:
             self.slug = slugify(self.name)
 
