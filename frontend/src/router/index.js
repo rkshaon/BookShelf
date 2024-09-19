@@ -14,7 +14,7 @@ const routes = [
   // { path: "/book/:book_code/view", name: "Book", component: BookPage },
   { path: '/book/:book_code/view', name: 'Book', component: PdfView },
   { path: '/author/:id', name: 'AuthorDetails', component: AuthorPage },
-  { path: '/genre/:id/:name', name: 'GenreDetails', component: GenrePage },
+  { path: '/genre/:id/:slug', name: 'GenreDetails', component: GenrePage },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundPage }
 ]
 
