@@ -9,6 +9,9 @@
       <div class="p-4">
         <h3 class="text-lg font-bold text-gray-800">{{ book.title }}</h3>
         <p class="text-gray-600">{{ book.authors.map(author => author.full_name).join(', ') }}</p>
+        <p v-if="book.published_year" class="text-gray-400">
+          <strog>Published</strog>: {{ book.published_year }}
+        </p>
       </div>
     </router-link>
   </div>
