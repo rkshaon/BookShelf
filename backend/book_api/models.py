@@ -49,11 +49,11 @@ class Genre(models.Model):
     description = models.TextField(null=True, blank=True)
     slug = models.SlugField(max_length=255, null=True, blank=True)
 
-    # def save(self, *args, **kwargs):
-    #     if not self.slug:
-    #         self.slug = slugify(self.name)
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
 
-    #     super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.name

@@ -8,7 +8,7 @@ from book_api.models import Book
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'name',
+        'id', 'name', 'slug',
     ]
     list_display_links = ['name']
     search_fields = ['name']
