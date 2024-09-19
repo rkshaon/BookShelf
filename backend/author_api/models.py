@@ -44,4 +44,4 @@ class Author(models.Model):
         return True if not self.died_date else False
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+        return f'{self.full_name}'

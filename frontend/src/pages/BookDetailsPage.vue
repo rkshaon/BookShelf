@@ -26,13 +26,9 @@
             </router-link>
           </div>
         </div>
-        <!-- <p v-if="bookDetails.genres && bookDetails.genres.length > 0" class="text-gray-600 mb-4">
-          <strong>Genre:</strong> {{ bookDetails.genres.map(genre => genre.name).join(', ') }}
-        </p> -->
         <p v-if="bookDetails.genres && bookDetails.genres.length > 0" class="text-gray-600 mb-4 flex items-center">
           <strong class="mr-2">Genre:</strong>
           <span class="flex flex-wrap gap-2">
-            <!-- {{ genre.name }} -->
             <router-link v-for="genre in bookDetails.genres" :key="genre.id"
               :to="{ name: 'GenreDetails', params: { id: genre.id, name: genre.name } }"
               class="inline-block px-2 py-1 bg-green-100 text-green-700 rounded-md text-sm hover:bg-green-200 transition">
