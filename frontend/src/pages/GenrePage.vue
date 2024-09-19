@@ -4,12 +4,14 @@
       <LoaderComponent />
     </div>
     <div v-else-if="genre">
-      <h1 class="text-4xl font-bold text-center text-gray-800 mb-4">
-        {{ genre.name }}
-      </h1>
-      <p class="text-lg text-center text-gray-600 mb-8 max-w-3xl mx-auto">
-        {{ genre.description || 'No description available for this genre.' }}
-      </p>
+      <div class="bg-white shadow rounded-lg p-6 mb-8">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-4">
+          {{ genre.name }}
+        </h1>
+        <p class="text-lg text-center text-gray-600 mb-8 max-w-3xl mx-auto">
+          {{ genre.description || 'No description available for this genre.' }}
+        </p>
+      </div>
       <h2 class="text-2xl font-semibold text-gray-800 mb-6">
         Books on {{ genre.name }}
       </h2>
@@ -54,7 +56,11 @@ export default {
     ...mapGetters({
       genre: 'getGenreDetails',
       isLoading: 'isGenreLoading',
-      error: 'genreDetailsError'
+      error: 'genreDetailsError',
+      allBooks: 'allBooks',
+      nextPageUrl: 'nextPageUrl',
+      previousPageUrl: 'previousPageUrl',
+      currentPageSize: 'currentPageSize'
     })
   },
   watch: {
