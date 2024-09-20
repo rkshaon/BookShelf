@@ -7,11 +7,15 @@ const content = 'book'
 const version = 'v1'
 
 export default {
-  async fetchV1Books (page = 1, pageSize = 8) {
+  async fetchV1Books (page = 1, pageSize = 8, genre = null) {
     page = page ?? 1
     pageSize = pageSize ?? 8
-    const URL = `${API_BASE_URL}/${content}/${version}/?page_size=${pageSize}&page=${page}`
-    console.log('Book API:', URL, page, pageSize)
+    let URL = `${API_BASE_URL}/${content}/${version}/?page_size=${pageSize}&page=${page}`
+
+    if (genre) {
+      URL += `&genre=${encodeURIComponent(genre)}`
+    }
+    console.log('Books API:', URL, page, pageSize)
 
     try {
       const response = await axios.get(URL)
