@@ -29,24 +29,6 @@
     <div v-else-if="error" class="text-red-500">
       <NotFoundComponent contentType="Genre" :errorMessage="error" />
     </div>
-    <!-- <h2 class="text-2xl font-semibold text-gray-800 mb-6">Books in {{ genre.name }}</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div v-for="book in genre.books" :key="book.id" class="bg-white shadow-lg rounded-lg overflow-hidden">
-                <router-link :to="{ name: 'BookDetails', params: { book_code: book.book_code } }">
-                    <img :src="getCoverImage(book.cover_image, API_BASE_URL)" alt="Book Cover"
-                        class="w-full h-48 object-cover">
-                </router-link>
-                <div class="p-4">
-                    <router-link :to="{ name: 'BookDetails', params: { book_code: book.book_code } }">
-                        <h3 class="text-lg font-bold text-gray-800">{{ book.title }}</h3>
-                    </router-link>
-                    <p class="text-gray-600">{{ book.authors.map(author => author.full_name).join(', ') }}</p>
-                    <p v-if="book.published_year" class="text-gray-400">
-                        <strong>Published:</strong> {{ book.published_year }}
-                    </p>
-                </div>
-            </div>
-        </div> -->
   </div>
 </template>
 
@@ -67,7 +49,8 @@ export default {
   },
   data () {
     return {
-      isBookLoading: false
+      isBookLoading: false,
+      genreId: null
     }
   },
   computed: {
@@ -91,8 +74,6 @@ export default {
     genre (newGenre) {
       if (newGenre && newGenre.name) {
         document.title = `Book Shelf | ${newGenre.name}`
-        console.log('new genre', newGenre)
-        console.log('new genre id', newGenre.id)
       }
     },
     '$route.query.page': {
@@ -106,30 +87,28 @@ export default {
           return
         }
 
-        this.fetchBooks({ page, pageSize: this.pageSize, genre: this.genre.id })
+        this.fetchBooks({ page, pageSize: this.pageSize, genre: this.genreId })
       }
     }
   },
   mounted () {
     const genreId = this.$route.params.id
     const currentPage = this.$route.query.page
+    this.genreId = genreId
 
     if (!currentPage || isNaN(currentPage)) {
       this.$router.replace({ query: { page: 1 } })
     }
 
-    console.log('Genre ID', genreId)
     this.fetchGenreDetails(genreId)
     document.title = 'Book Shelf | Loading ...'
   },
   methods: {
     ...mapActions(['fetchGenreDetails', 'fetchBooks']),
     async fetchBooks (payload) {
-      console.log('PayLoad...', payload)
       this.isBookLoading = true
       this.$store.commit('SET_BOOKS', [])
       try {
-        console.log('PayLoad...', payload)
         await this.$store.dispatch('fetchBooks', payload)
       } catch (error) {
         console.error('Error fetching books:', error)
