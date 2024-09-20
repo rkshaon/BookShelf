@@ -15,6 +15,7 @@ class BookView(APIView):
 
     def get(self, request, *args, **kwargs):
         book_code = kwargs.get('book_code', None)
+        genre = request.query_params.get('genre', None)
 
         if book_code:
             try:
@@ -26,7 +27,12 @@ class BookView(APIView):
 
         books = Book.objects.filter(
             is_deleted=False
-        ).order_by('-id')
+        )
+
+        if genre:
+            books = books.filter(genres__id=genre)
+
+        books = books.order_by('-id')
         paginator = Pagination()
         page = paginator.paginate_queryset(books, request)
         return paginator.get_paginated_response(
