@@ -7,10 +7,14 @@ const content = 'book'
 const version = 'v1'
 
 export default {
-  async fetchV1Books (page = 1, pageSize = 8) {
+  async fetchV1Books (page = 1, pageSize = 8, genre = null) {
     page = page ?? 1
     pageSize = pageSize ?? 8
-    const URL = `${API_BASE_URL}/${content}/${version}/?page_size=${pageSize}&page=${page}`
+    let URL = `${API_BASE_URL}/${content}/${version}/?page_size=${pageSize}&page=${page}`
+
+    if (genre) {
+      URL += `&genre=${encodeURIComponent(genre)}`
+    }
     console.log('Book API:', URL, page, pageSize)
 
     try {
