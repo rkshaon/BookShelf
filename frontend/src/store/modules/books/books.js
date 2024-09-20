@@ -30,9 +30,9 @@ export default {
     }
   },
   actions: {
-    async fetchBooks ({ commit }, { page = 1, pageSize = 8 } = {}) {
+    async fetchBooks ({ commit }, { page = 1, pageSize = 8, genre = null } = {}) {
       try {
-        const response = await bookAPIService.fetchV1Books(page, pageSize)
+        const response = await bookAPIService.fetchV1Books(page, pageSize, genre)
         commit('SET_BOOKS', response.results)
         commit('SET_NEXT_PAGE', response.next)
         commit('SET_PREVIOUS_PAGE', response.previous)
