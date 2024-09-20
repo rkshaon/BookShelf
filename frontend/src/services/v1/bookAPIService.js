@@ -15,7 +15,7 @@ export default {
     if (genre) {
       URL += `&genre=${encodeURIComponent(genre)}`
     }
-    console.log('Book API:', URL, page, pageSize)
+    console.log('Books API:', URL, page, pageSize)
 
     try {
       const response = await axios.get(URL)

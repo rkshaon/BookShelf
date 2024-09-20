@@ -32,7 +32,6 @@ export default {
   actions: {
     async fetchBooks ({ commit }, { page = 1, pageSize = 8, genre = null } = {}) {
       try {
-        console.log('page', page, 'size', pageSize, 'genre', genre)
         const response = await bookAPIService.fetchV1Books(page, pageSize, genre)
         commit('SET_BOOKS', response.results)
         commit('SET_NEXT_PAGE', response.next)
