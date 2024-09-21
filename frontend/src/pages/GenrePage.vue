@@ -49,8 +49,7 @@ export default {
   },
   data () {
     return {
-      isBookLoading: false,
-      genreId: null
+      isBookLoading: false
     }
   },
   computed: {
@@ -87,14 +86,13 @@ export default {
           return
         }
 
-        this.fetchBooks({ page, pageSize: this.pageSize, genre: this.genreId })
+        this.fetchBooks({ page, pageSize: this.pageSize, genre: this.$route.params.id })
       }
     }
   },
   mounted () {
     const genreId = this.$route.params.id
     const currentPage = this.$route.query.page
-    this.genreId = genreId
 
     if (!currentPage || isNaN(currentPage)) {
       this.$router.replace({ query: { page: 1 } })
