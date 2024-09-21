@@ -42,11 +42,11 @@ class BookAdmin(admin.ModelAdmin):
         'book_code', 'title',
     ]
     list_filter = [
-        'genres', 'topics', 'authors', 'publisher',
+        'genres',
     ]
     search_fields = [
         'title', 'edition', 'isbn',
-        'published_date', 'language',
+        'published_year', 'language',
         'description',
     ]
     readonly_fields = ['id', 'book_code']
