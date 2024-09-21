@@ -37,7 +37,13 @@
           </span>
         </p>
         <p v-if="bookDetails.topics && bookDetails.topics.length > 0" class="text-gray-600 mb-4">
-          <strong>Topic:</strong> {{ bookDetails.topics.map(topic => topic.name).join(', ') }}
+          <span class="flex flex-wrap gap-2">
+            <router-link v-for="topic in bookDetails.topics" :key="topic.id"
+              :to="{ name: 'TopicDetails', params: { id: topic.id, slug: topic.slug } }"
+              class="inline-block px-2 py-1 bg-yellow-100 text-yellow-700 rounded-md text-sm hover:bg-green-200 transition">
+              #{{ topic.slug }}
+            </router-link>
+          </span>
         </p>
         <p class="text-gray-600 mb-4">{{ bookDetails.description }}</p>
         <div class="grid grid-cols-1 gap-4">

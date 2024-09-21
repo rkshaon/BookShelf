@@ -7,6 +7,7 @@ import AuthorPage from '@/pages/AuthorPage.vue'
 // import BookPage from '@/pages/BookPage.vue'
 import PdfView from '@/pages/PdfView.vue'
 import GenrePage from '@/pages/GenrePage.vue'
+import TopicPage from '@/pages/TopicPage.vue'
 
 const routes = [
   { path: '/', component: HomePage },
@@ -15,6 +16,7 @@ const routes = [
   { path: '/book/:book_code/view', name: 'Book', component: PdfView },
   { path: '/author/:id', name: 'AuthorDetails', component: AuthorPage },
   { path: '/genre/:id/:slug', name: 'GenreDetails', component: GenrePage },
+  { path: '/topic/:id/:slug', name: 'TopicDetails', component: TopicPage },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundPage }
 ]
 
