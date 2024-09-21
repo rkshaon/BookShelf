@@ -39,9 +39,9 @@
         <p v-if="bookDetails.topics && bookDetails.topics.length > 0" class="text-gray-600 mb-4">
           <span class="flex flex-wrap gap-2">
             <router-link v-for="topic in bookDetails.topics" :key="topic.id"
-              :to="{ name: 'TopicDetails', params: { id: topic.id, slug: topic.name } }"
+              :to="{ name: 'TopicDetails', params: { id: topic.id, slug: topic.slug } }"
               class="inline-block px-2 py-1 bg-yellow-100 text-yellow-700 rounded-md text-sm hover:bg-green-200 transition">
-              #{{ topic.name }}
+              #{{ topic.slug }}
             </router-link>
           </span>
         </p>
