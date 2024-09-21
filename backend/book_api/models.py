@@ -111,6 +111,14 @@ class Topic(models.Model):
     added_date_time = models.DateTimeField(auto_now_add=True)
     updated_date_time = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        self.clean()
+
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        super().save(*args, **kwargs)
+
     def __str__(self) -> str:
         return self.name
 
