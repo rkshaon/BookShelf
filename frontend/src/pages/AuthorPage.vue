@@ -6,8 +6,7 @@
     <div v-else-if="author">
       <div class="bg-white shadow-lg rounded-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="flex justify-center">
-          <!-- <img :src="getAuthorImage(author.image)" alt="Author Image"
-                    class="w-40 h-40 object-cover rounded-full shadow-lg" /> -->
+          <!-- Image Field will appear here -->
         </div>
         <div>
           <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ author.full_name }}</h1>
@@ -30,12 +29,6 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <BookCardComponent v-for="(book, index) in author.books" :key="index" :book="book" />
           </div>
-          <!-- <li v-for="book in author.books" :key="book.title" class="mb-2">
-            <router-link :to="{ name: 'Book', params: { book_code: book.book_code } }"
-              class="text-blue-500 hover:underline">
-              {{ book.title }} - {{ book.published_date || 'Unknown' }}
-            </router-link>
-          </li> -->
         </ul>
       </div>
     </div>
@@ -66,6 +59,12 @@ export default {
     })
   },
   watch: {
+    '$route.params.id': {
+      immediate: true,
+      handler (newAuthorId) {
+        this.fetchAuthorDetails(newAuthorId)
+      }
+    },
     author (newAuthor) {
       if (newAuthor && newAuthor.full_name) {
         document.title = `Book Shelf | ${newAuthor.full_name}`
@@ -79,9 +78,6 @@ export default {
   },
   methods: {
     ...mapActions(['fetchAuthorDetails'])
-    // getAuthorImage (image) {
-    //   return image ? `${process.env.VUE_APP_BACKEND_URL}/media/${image}` : '/default-author.png'
-    // }
   }
 }
 </script>
