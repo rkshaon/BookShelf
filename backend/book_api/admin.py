@@ -18,7 +18,7 @@ class GenreAdmin(admin.ModelAdmin):
 @admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'name',
+        'id', 'name', 'slug',
     ]
     list_display_links = ['name']
     search_fields = ['name']
