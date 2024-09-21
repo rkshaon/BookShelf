@@ -9,6 +9,7 @@ import os
 import uuid
 
 from BookShelf.utilities.storage import ReplaceExistingFileStorage
+from BookShelf.utilities.validator import validate_no_spaces
 
 
 replace_existing_file_storage = ReplaceExistingFileStorage()
@@ -94,7 +95,11 @@ class Genre(models.Model):
 
 
 class Topic(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        validators=[validate_no_spaces]
+    )
     slug = models.SlugField(
         max_length=255,
         unique=True,
