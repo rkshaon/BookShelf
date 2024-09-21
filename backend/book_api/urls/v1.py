@@ -8,4 +8,6 @@ urlpatterns = [
     path('<int:book_code>/', v1.BookView.as_view()),
     path('genre/', v1.GenreView.as_view()),
     path('genre/<int:pk>/', v1.GenreView.as_view()),
+    path('topic/', v1.TopicView.as_view()),
+    path('topic/<int:pk>/', v1.TopicView.as_view()),
 ]
