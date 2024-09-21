@@ -23,9 +23,9 @@ class TopicView(APIView):
                 )
             except Topic.DoesNotExist:
                 raise NotFound(detail='Topic not found.')
-        
+
             return Response(TopicSerializer(topic).data)
-    
+
         topics = Topic.objects.filter(
             is_deleted=False
         ).order_by('-id')
