@@ -1,27 +1,23 @@
 <template>
     <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div class="bg-white shadow rounded-lg p-6 mb-8">
-            <h1 class="text-4xl font-bold text-center text-gray-800 mb-4">
-                <!-- {{ genre.name }} -->
-                  Test Topic
+        <!-- <div class="bg-white shadow rounded-lg p-6 mb-8">
+            <h1 v-if="topic" class="text-4xl font-bold text-center text-gray-800 mb-4">
+                {{ topic.name }}
             </h1>
-        </div>
-        <!-- <div v-if="isGenreLoading" class="flex justify-center">
+        </div> -->
+        <div v-if="isTopicLoading" class="flex justify-center">
                 <LoaderComponent />
             </div>
-            <div v-else-if="genre">
+            <div v-else-if="topic">
                 <div class="bg-white shadow rounded-lg p-6 mb-8">
                     <h1 class="text-4xl font-bold text-center text-gray-800 mb-4">
-                        {{ genre.name }}
+                        #{{ topic.slug }}
                     </h1>
-                    <p class="text-lg text-center text-gray-600 mb-8 max-w-3xl mx-auto">
-                        {{ genre.description || 'No description available for this genre.' }}
-                    </p>
                 </div>
                 <h2 class="text-2xl font-semibold text-gray-800 mb-6">
-                    Books on {{ genre.name }}
+                    Books on #{{ topic.slug }}
                 </h2>
-                <div v-if="isBookLoading" class="flex justify-center">
+                <!-- <div v-if="isBookLoading" class="flex justify-center">
                     <LoaderComponent />
                 </div>
                 <div v-else>
@@ -30,44 +26,44 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         <BookCardComponent v-for="(book, index) in books" :key="index" :book="book" />
                     </div>
-                </div>
+                </div> -->
             </div>
             <div v-else-if="error" class="text-red-500">
                 <NotFoundComponent contentType="Genre" :errorMessage="error" />
-            </div> -->
+            </div>
     </div>
 </template>
 
 <script>
-// import { mapGetters, mapActions } from 'vuex'
-// import LoaderComponent from '@/components/LoaderComponent.vue'
+import { mapGetters, mapActions } from 'vuex'
+import LoaderComponent from '@/components/LoaderComponent.vue'
 // import PaginationComponent from '@/components/PaginationComponent.vue'
 // import BookCardComponent from '@/components/BookCardComponent.vue'
-// import NotFoundComponent from '@/components/NotFoundComponent.vue'
+import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
 export default {
-  name: 'GenrePage',
+  name: 'TopicPage',
   components: {
-    // LoaderComponent,
-    // NotFoundComponent,
+    LoaderComponent,
+    NotFoundComponent
     // PaginationComponent,
     // BookCardComponent
   },
   data () {
-    // return {
-    //     isBookLoading: false
-    // }
+    return {
+      isBookLoading: false
+    }
   },
   computed: {
-    // ...mapGetters({
-    //     genre: 'getGenreDetails',
-    //     isGenreLoading: 'isGenreLoading',
-    //     error: 'genreDetailsError',
-    //     allBooks: 'allBooks',
-    //     nextPageUrl: 'nextPageUrl',
-    //     previousPageUrl: 'previousPageUrl',
-    //     currentPageSize: 'currentPageSize'
-    // }),
+    ...mapGetters({
+      topic: 'getTopicDetails',
+      isTopicLoading: 'isTopicLoading',
+      error: 'topicDetailsError',
+      allBooks: 'allBooks',
+      nextPageUrl: 'nextPageUrl',
+      previousPageUrl: 'previousPageUrl',
+      currentPageSize: 'currentPageSize'
+    })
     // books() {
     //     return this.allBooks
     // },
@@ -76,11 +72,11 @@ export default {
     // }
   },
   watch: {
-    // genre(newGenre) {
-    //     if (newGenre && newGenre.name) {
-    //         document.title = `Book Shelf | ${newGenre.name}`
-    //     }
-    // },
+    topic (newTopic) {
+      if (newTopic && newTopic.name) {
+        document.title = `Book Shelf | ${newTopic.name}`
+      }
+    }
     // '$route.query.page': {
     //     immediate: true,
     //     handler(newPage) {
@@ -97,18 +93,18 @@ export default {
     // }
   },
   mounted () {
-    // const genreId = this.$route.params.id
+    const topicId = this.$route.params.id
     // const currentPage = this.$route.query.page
 
     // if (!currentPage || isNaN(currentPage)) {
     //     this.$router.replace({ query: { page: 1 } })
     // }
 
-    // this.fetchGenreDetails(genreId)
-    // document.title = 'Book Shelf | Loading ...'
+    this.fetchTopicDetails(topicId)
+    document.title = 'Book Shelf | Loading ...'
   },
   methods: {
-    // ...mapActions(['fetchGenreDetails', 'fetchBooks']),
+    ...mapActions(['fetchTopicDetails', 'fetchBooks'])
     // async fetchBooks(payload) {
     //     this.isBookLoading = true
     //     this.$store.commit('SET_BOOKS', [])
