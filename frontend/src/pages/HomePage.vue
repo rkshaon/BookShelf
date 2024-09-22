@@ -27,6 +27,31 @@ import LoaderComponent from '@/components/LoaderComponent.vue'
 
 export default {
   name: 'HomePage',
+  metaInfo: {
+    title: 'Welcome to BookShelf - Your Online Library',
+    meta: [
+      {
+        name: 'description',
+        content: 'Explore a vast collection of books and connect with other book lovers at BookShelf.'
+      },
+      {
+        name: 'keywords',
+        content: 'online library, books, book lovers, authors, reading'
+      },
+      {
+        property: 'og:title',
+        content: 'BookShelf - Explore a Vast Collection of Books'
+      },
+      {
+        property: 'og:description',
+        content: 'Discover new books and connect with fellow readers at BookShelf.'
+      },
+      {
+        property: 'og:type',
+        content: 'website'
+      }
+    ]
+  },
   components: {
     BookCardComponent,
     PaginationComponent,

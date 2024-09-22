@@ -87,6 +87,29 @@ export default {
     LoaderComponent,
     NotFoundComponent
   },
+  metaInfo () {
+    return {
+      title: `${this.book.title} - BookShelf`,
+      meta: [
+        {
+          name: 'description',
+          content: `${this.book.title} by ${this.book.authors.map(a => a.full_name).join(', ')}. Find out more about this book on BookShelf.`
+        },
+        {
+          name: 'keywords',
+          content: `books, ${this.book.title}, ${this.book.authors.map(a => a.full_name).join(', ')}`
+        },
+        {
+          property: 'og:title',
+          content: `${this.book.title} - BookShelf`
+        },
+        {
+          property: 'og:description',
+          content: `${this.book.title} by ${this.book.authors.map(a => a.full_name).join(', ')}.`
+        }
+      ]
+    }
+  },
   computed: {
     ...mapGetters({
       bookDetails: 'getBookDetails',
