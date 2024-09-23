@@ -6,3 +6,5 @@ djangorestframework-simplejwt==5.3.1
 Pillow
 psycopg2-binary
 django-cors-headers
+elasticsearch-dsl
+django-elasticsearch-dsl
