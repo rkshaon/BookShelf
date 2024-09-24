@@ -1,11 +1,11 @@
-from django_elasticsearch_dsl import Document, Index
+from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl.registries import registry
 
 from book_api.models import Book
 from book_api.models import Genre
 from book_api.models import Topic
-from publisher_api.models import Publisher
-from author_api.models import Author
+# from publisher_api.models import Publisher
+# from author_api.models import Author
 
 
 book_index = Index('books')
@@ -15,17 +15,34 @@ topic_index = Index('topics')
 
 @registry.register_document
 class BookDocument(Document):
+    title = fields.TextField()
+    authors = fields.NestedField(properties={
+        'full_name': fields.TextField(),
+    })
+    genres = fields.NestedField(properties={
+        'name': fields.TextField(),
+    })
+    topics = fields.NestedField(properties={
+        'name': fields.TextField(),
+    })
+
     class Index:
         name = 'books'
 
     class Django:
         model = Book
         fields = [
-            'title',
+            # 'title',
             'published_year',
         ]
+        # related_models = [
+        #     Author, Publisher, Genre, Topic,
+        # ]
         related_models = [
-            Author, Publisher, Genre, Topic,
+            'author_api.Author',
+            'publisher_api.Publisher',
+            'book_api.Genre',
+            'book_api.Topic',
         ]
 
 
