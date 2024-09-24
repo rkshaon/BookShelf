@@ -23,15 +23,51 @@ class BookSearchView(APIView):
                 "error": "No search query provided."
             }, status=status.HTTP_400_BAD_REQUEST)
 
+        # search_results = BookDocument.search().query(
+        #     "multi_match",
+        #     query=query,
+        #     fields=[
+        #         "title",
+        #         "authors.name",
+        #         "genres.name",
+        #         "topics.name"
+        #     ],
+        #     fuzziness="AUTO",
+        # )
         search_results = BookDocument.search().query(
-            "multi_match",
-            query=query,
-            fields=[
-                "title",
-                "authors.name",
-                "genres.name",
-                "topics.name"
-            ]
+            "bool",
+            should=[{
+                "multi_match": {
+                    "query": query,
+                    "fields": [
+                        "title",
+                        "authors.name",
+                        "genres.name",
+                        "topics.name"],
+                    "fuzziness": "AUTO"
+                }},
+                {
+                    "wildcard": {
+                        "title": f"*{query.lower()}*"
+                    }
+                },
+                {
+                    "wildcard": {
+                        "authors.name": f"*{query.lower()}*"
+                    }
+                },
+                {
+                    "wildcard": {
+                        "genres.name": f"*{query.lower()}*"
+                    }
+                },
+                {
+                    "wildcard": {
+                        "topics.name": f"*{query.lower()}*"
+                    }
+                }
+            ],
+            minimum_should_match=1
         )
 
         # # results = [hit.to_dict() for hit in search_results]

@@ -17,7 +17,7 @@ topic_index = Index('topics')
 class BookDocument(Document):
     title = fields.TextField()
     authors = fields.NestedField(properties={
-        'name': fields.TextField(),
+        'full_name': fields.TextField(),
     })
     genres = fields.NestedField(properties={
         'name': fields.TextField(),
@@ -38,6 +38,12 @@ class BookDocument(Document):
         # related_models = [
         #     Author, Publisher, Genre, Topic,
         # ]
+        related_models = [
+            'author_api.Author',
+            'publisher_api.Publisher',
+            'book_api.Genre',
+            'book_api.Topic',
+        ]
 
 
 @registry.register_document
