@@ -49,6 +49,7 @@ LIBRARY_APPS = [
     'rest_framework',
     'drf_yasg',
     'corsheaders',
+    'django_elasticsearch_dsl',
 ]
 PROJECT_APPS = [
     'user_api',
@@ -117,8 +118,11 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {

@@ -4,6 +4,8 @@ from django_elasticsearch_dsl.registries import registry
 from book_api.models import Book
 from book_api.models import Genre
 from book_api.models import Topic
+from publisher_api.models import Publisher
+from author_api.models import Author
 
 
 book_index = Index('books')
@@ -23,7 +25,7 @@ class BookDocument(Document):
             'published_year',
         ]
         related_models = [
-            'Author', 'Publisher', 'Genre', 'Topic',
+            Author, Publisher, Genre, Topic,
         ]
 
 

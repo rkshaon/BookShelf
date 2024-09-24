@@ -15,5 +15,7 @@ class AuthorDocument(Document):
     class Django:
         model = Author
         fields = [
-            'name',
+            'first_name',
+            'middle_name',
+            'last_name',
         ]
