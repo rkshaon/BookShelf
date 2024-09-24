@@ -7,7 +7,7 @@ from publisher_api.models import Publisher
 publisher_index = Index('publishers')
 
 
-@registry.register
+@registry.register_document
 class PublisherDocument(Document):
     class Index:
         name = 'publishers'
