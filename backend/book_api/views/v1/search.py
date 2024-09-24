@@ -34,11 +34,20 @@ class BookSearchView(APIView):
             ]
         )
 
+        # # results = [hit.to_dict() for hit in search_results]
+        # paginator = self.pagination_class()
+        # paginated_results = paginator.paginate_queryset(
+        #     search_results, request)
+        # print(paginated_results)
+        # return paginator.get_paginated_response(paginated_results)
+
+        # # return Response(results, status=status.HTTP_200_OK)
+        # Convert the search results to a list of dictionaries
         results = [hit.to_dict() for hit in search_results]
+
+        # Paginate the results
         paginator = self.pagination_class()
-        paginated_results = paginator.paginate_queryset(
-            search_results, request)
+        paginated_results = paginator.paginate_queryset(results, request)
 
+        # Return the paginated results as a JSON response
         return paginator.get_paginated_response(paginated_results)
-
-        return Response(results, status=status.HTTP_200_OK)
