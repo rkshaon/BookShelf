@@ -148,12 +148,13 @@ class Book(models.Model):
     )
     authors = models.ManyToManyField(
         'author_api.Author',
+        blank=True,
         related_name='books')
     publisher = models.ForeignKey(
         'publisher_api.Publisher',
         on_delete=models.SET_NULL,
-        null=True,
         blank=True,
+        null=True,
         related_name='books')
     description = models.TextField(blank=True, null=True)
     edition = models.CharField(max_length=50, blank=True, null=True)
