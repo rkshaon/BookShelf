@@ -99,6 +99,7 @@ SIMPLE_JWT = {
 #         'hosts': 'http://localhost:9200'
 #     },
 # }
+ELASTICSEARCH_DSL = {}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
