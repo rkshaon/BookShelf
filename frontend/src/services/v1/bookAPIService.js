@@ -40,5 +40,21 @@ export default {
       console.error('Error fetching book:', error)
       throw error
     }
+  },
+  async searchV1Books (query = '', page = 1, pageSize = 8) {
+    page = page ?? 1
+    pageSize = pageSize ?? 8
+
+    // Create URL for searching books
+    const URL = `${API_BASE_URL}/${content}/${version}/?search=${encodeURIComponent(query)}&page_size=${pageSize}&page=${page}`
+    console.log('Search Books API:', URL)
+
+    try {
+      const response = await axios.get(URL)
+      return response.data
+    } catch (error) {
+      console.error('Error searching books:', error)
+      throw error
+    }
   }
 }
