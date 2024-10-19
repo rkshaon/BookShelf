@@ -2,14 +2,12 @@
     <nav class="bg-gray-800 text-white">
         <div class="container mx-auto px-2 sm:px-6 lg:px-8">
             <div class="relative flex items-center justify-between h-16">
-                <!-- Logo -->
                 <div class="flex-shrink-0">
                     <router-link to="/" class="text-xl font-bold text-white">BookShelf</router-link>
                 </div>
-                <!-- Search Box -->
                 <div class="flex-grow flex justify-end">
                     <div class="relative w-full max-w-md">
-                        <input type="text"
+                        <input v-model="searchQuery" @input="performSearch" type="text"
                             class="w-full px-4 py-2 pl-10 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:bg-gray-600 focus:ring-2 focus:ring-blue-500"
                             placeholder="Search books, authors, genres..." />
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -27,8 +25,25 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
-  name: 'NavBarComponent'
+  name: 'NavBarComponent',
+  data () {
+    return {
+      searchQuery: '' // Binding search input
+    }
+  },
+  methods: {
+    ...mapActions(['searchBooks']), // Map the searchBooks action from Vuex store
+
+    performSearch () {
+      console.log(this.searchQuery)
+    //   if (this.searchQuery.trim()) {
+    //     this.searchBooks({ query: this.searchQuery }) // Call the Vuex action
+    //   }
+    }
+  }
 }
 </script>
 
