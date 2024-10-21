@@ -18,11 +18,13 @@
               </svg>
             </div>
             <ul v-if="searchResults.length > 0 && searchQuery"
-              class="absolute w-full bg-white text-black shadow-md mt-2 rounded-lg z-10">
-              <li v-for="(book, index) in searchResults" :key="index"
+              class="absolute w-full text-black shadow-md mt-2 rounded-lg z-10">
+              <!-- <li v-for="(book, index) in searchResults" :key="index"
                 class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                 {{ book.title }}
-              </li>
+              </li> -->
+              <SearchItemComponent v-for="(result, index) in searchResults" :key="index" :result="result"
+                @select-result="navigateToResult" />
             </ul>
           </div>
         </div>
@@ -33,9 +35,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import SearchItemComponent from '@/components/SearchItemComponent.vue'
 
 export default {
   name: 'NavBarComponent',
+  components: {
+    SearchItemComponent
+  },
   data () {
     return {
       searchQuery: '',
