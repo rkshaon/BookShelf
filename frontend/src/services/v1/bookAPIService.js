@@ -51,6 +51,7 @@ export default {
 
     try {
       const response = await axios.get(URL)
+      console.log(response.data)
       return response.data
     } catch (error) {
       console.error('Error searching books:', error)
