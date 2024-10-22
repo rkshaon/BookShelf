@@ -1,12 +1,13 @@
 <template>
-    <li @click="handleClick" class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-        <h3 class="font-semibold">{{ result.title }}</h3>
-        <p class="text-sm text-gray-600">
-            <span v-for="(author, index) in result.authors" :key="index">
-                {{ author.full_name }}<span v-if="index < result.authors.length - 1">, </span>
-            </span>
-        </p>
-    </li>
+  <li @click="handleClick"
+    class="px-4 py-2 bg-white-600 hover:bg-gray-800 hover:text-white border border-gray-300 shadow-sm rounded-lg cursor-pointer">
+    <h3 class="font-semibold">{{ result.title }}</h3>
+    <p class="text-sm">
+      <span v-for="(author, index) in result.authors" :key="index">
+        {{ author.full_name }}<span v-if="index < result.authors.length - 1">, </span>
+      </span>
+    </p>
+  </li>
 </template>
 
 <script>
