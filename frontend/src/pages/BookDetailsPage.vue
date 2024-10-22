@@ -121,6 +121,12 @@ export default {
     }
   },
   watch: {
+    '$route.params.book_code': {
+      immediate: true,
+      handler (newBookCode) {
+        this.fetchBookDetails(newBookCode)
+      }
+    },
     bookDetails (newBookDetails) {
       if (newBookDetails && newBookDetails.title) {
         document.title = `Book Shelf | ${newBookDetails.title}`

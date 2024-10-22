@@ -19,11 +19,21 @@ export default {
     }
   },
   methods: {
+    // handleClick () {
+    //   // Emit an event or perform any action when the item is clicked
+    //   this.$emit('select-result', this.result)
+    //   console.log('clickked')
+    //   this.$router.push(`/book/${this.result.book_code}`)
+    // }
     handleClick () {
       // Emit an event or perform any action when the item is clicked
       this.$emit('select-result', this.result)
-      console.log('clickked')
-      this.$router.push(`/book/${this.result.book_code}`)
+
+      // Force the router to reload even if the path is the same
+      this.$router.push({
+        path: `/book/${this.result.book_code}`,
+        query: { reload: new Date().getTime() } // Adding a timestamp query to force reload
+      })
     }
   }
 }
