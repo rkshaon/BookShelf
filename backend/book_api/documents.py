@@ -16,6 +16,7 @@ topic_index = Index('topics')
 @registry.register_document
 class BookDocument(Document):
     title = fields.TextField()
+    book_code = fields.TextField()
     authors = fields.NestedField(properties={
         'full_name': fields.TextField(),
     })
