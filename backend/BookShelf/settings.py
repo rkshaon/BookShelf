@@ -94,12 +94,12 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# ELASTICSEARCH_DSL = {
-#     'default': {
-#         'hosts': 'http://localhost:9200'
-#     },
-# }
-ELASTICSEARCH_DSL = {}
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'http://localhost:9200'
+    },
+}
+# ELASTICSEARCH_DSL = {}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
