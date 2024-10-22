@@ -34,41 +34,42 @@ class BookSearchView(APIView):
         #     ],
         #     fuzziness="AUTO",
         # )
-        search_results = BookDocument.search().query(
-            "bool",
-            should=[{
-                "multi_match": {
-                    "query": query,
-                    "fields": [
-                        "title",
-                        "authors.name",
-                        "genres.name",
-                        "topics.name"],
-                    "fuzziness": "AUTO"
-                }},
-                {
-                    "wildcard": {
-                        "title": f"*{query.lower()}*"
-                    }
-                },
-                {
-                    "wildcard": {
-                        "authors.name": f"*{query.lower()}*"
-                    }
-                },
-                {
-                    "wildcard": {
-                        "genres.name": f"*{query.lower()}*"
-                    }
-                },
-                {
-                    "wildcard": {
-                        "topics.name": f"*{query.lower()}*"
-                    }
-                }
-            ],
-            minimum_should_match=1
-        )
+        # old code
+        # search_results = BookDocument.search().query(
+        #     "bool",
+        #     should=[{
+        #         "multi_match": {
+        #             "query": query,
+        #             "fields": [
+        #                 "title",
+        #                 "authors.name",
+        #                 "genres.name",
+        #                 "topics.name"],
+        #             "fuzziness": "AUTO"
+        #         }},
+        #         {
+        #             "wildcard": {
+        #                 "title": f"*{query.lower()}*"
+        #             }
+        #         },
+        #         {
+        #             "wildcard": {
+        #                 "authors.name": f"*{query.lower()}*"
+        #             }
+        #         },
+        #         {
+        #             "wildcard": {
+        #                 "genres.name": f"*{query.lower()}*"
+        #             }
+        #         },
+        #         {
+        #             "wildcard": {
+        #                 "topics.name": f"*{query.lower()}*"
+        #             }
+        #         }
+        #     ],
+        #     minimum_should_match=1
+        # )
 
         # # results = [hit.to_dict() for hit in search_results]
         # paginator = self.pagination_class()
@@ -79,7 +80,20 @@ class BookSearchView(APIView):
 
         # # return Response(results, status=status.HTTP_200_OK)
         # Convert the search results to a list of dictionaries
+        # Use multi_match with the correct field names
+        search_results = BookDocument.search().query(
+            "multi_match",
+            query=query,
+            fields=[
+                "title",
+                "authors.full_name",  # Correct field name
+                "genres.name",
+                "topics.name"
+            ],
+            fuzziness="AUTO"
+        )
         results = [hit.to_dict() for hit in search_results]
+        print(search_results.to_dict())
 
         # Paginate the results
         paginator = self.pagination_class()
