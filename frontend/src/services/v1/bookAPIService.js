@@ -45,8 +45,11 @@ export default {
     page = page ?? 1
     pageSize = pageSize ?? 8
 
-    // Create URL for searching books
-    const URL = `${API_BASE_URL}/${content}/${version}/?search=${encodeURIComponent(query)}&page_size=${pageSize}&page=${page}`
+    // const URL = `${API_BASE_URL}/${content}/${version}/?search=${encodeURIComponent(query)}&page_size=${pageSize}&page=${page}`
+    const URL = `${API_BASE_URL}/${content}/${version}/search?q=${encodeURIComponent(
+      query
+    )}`
+
     console.log('Search Books API:', URL)
 
     try {

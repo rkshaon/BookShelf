@@ -16,8 +16,6 @@
                   d="M21 21l-4.35-4.35m1.42-4.61A7.5 7.5 0 1115.3 15.3z" />
               </svg>
             </div>
-
-            <!-- Dropdown with search results -->
             <ul v-if="isDropdownVisible && searchResults.length > 0 && searchQuery"
               class="absolute w-full bg-white text-black shadow-md mt-2 rounded-lg z-10">
               <SearchItemComponent v-for="(result, index) in searchResults" :key="index" :result="result"
@@ -43,7 +41,7 @@ export default {
     return {
       searchQuery: '',
       searchTimeout: null,
-      isDropdownVisible: false // State to control the visibility of the dropdown
+      isDropdownVisible: false
     }
   },
   computed: {
@@ -65,24 +63,20 @@ export default {
     },
 
     navigateToResult (result) {
-      // Hide the dropdown when navigating to a new page
       this.isDropdownVisible = false
       this.$router.push(`/book/${result.book_code}`)
     },
 
     handleClickOutside (event) {
-      // Check if the click happened outside the dropdown
       if (!this.$el.contains(event.target)) {
         this.isDropdownVisible = false
       }
     }
   },
   mounted () {
-    // Listen for clicks outside of the component
     document.addEventListener('click', this.handleClickOutside)
   },
   beforeUnmount () {
-    // Clean up the event listener
     document.removeEventListener('click', this.handleClickOutside)
   }
 }
