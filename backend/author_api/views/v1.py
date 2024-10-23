@@ -3,6 +3,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.exceptions import NotFound
 
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+
 from BookShelf.utilities.pagination import Pagination
 
 from author_api.models import Author
@@ -10,6 +13,7 @@ from author_api.models import Author
 from author_api.serializers.v1 import AuthorSerializer
 
 
+@method_decorator(cache_page(60*15), name='get')
 class AuthorView(APIView):
     permission_classes = [AllowAny]
 
