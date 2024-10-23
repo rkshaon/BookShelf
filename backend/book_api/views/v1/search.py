@@ -93,7 +93,7 @@ class BookSearchView(APIView):
             fuzziness="AUTO"
         )
         results = [hit.to_dict() for hit in search_results]
-        print(search_results.to_dict())
+        # print(search_results.to_dict())
 
         # Paginate the results
         paginator = self.pagination_class()

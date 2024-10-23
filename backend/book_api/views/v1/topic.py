@@ -3,6 +3,9 @@ from rest_framework.permissions import AllowAny
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+
 from book_api.models import Topic
 
 from book_api.serializers.v1 import TopicSerializer
@@ -10,6 +13,7 @@ from book_api.serializers.v1 import TopicSerializer
 from BookShelf.utilities.pagination import Pagination
 
 
+@method_decorator(cache_page(60*15), name='get')
 class TopicView(APIView):
     permission_classes = [AllowAny]
 
