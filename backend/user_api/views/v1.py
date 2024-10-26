@@ -15,26 +15,27 @@ from user_api.serializers.v1 import UserSerializer
 
 class UserRegistrationView(APIView):
     permission_classes = [AllowAny]
-    """
-    post:
-    Register a new user.
 
-    Takes in user details and creates a new user in the system.
-
-    Parameters:
-        None
-
-    Returns:
-        message: A success message if the registration is successful.
-        errors: If the validation fails, returns a list of errors with
-            their descriptions.
-    """
+    @swagger_auto_schema(
+        operation_description="Register a new user.",
+        request_body=UserSerializer,
+        responses={
+            201: openapi.Response(
+                description="User registered successfully",
+                examples={
+                    "application/json": {
+                        "message": "User registered successfully"
+                    }
+                }
+            ),
+            400: "Bad Request - Validation errors"
+        }
+    )
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save()
-            print(f"Serializer Data: {serializer.data}")
 
             return Response({
                 'message': 'User registered successfully',
@@ -130,6 +131,15 @@ class UserLoginView(APIView):
 class UserProfileView(APIView):
     @swagger_auto_schema(
         operation_description="Retrieve user's profile",
+        manual_parameters=[
+            openapi.Parameter(
+                'Authorization',
+                openapi.IN_HEADER,
+                description="Bearer <JWT Token>",
+                type=openapi.TYPE_STRING,
+                required=True,
+            ),
+        ],
         responses={
             200: openapi.Response(
                 description="User profile data", schema=openapi.Schema(
