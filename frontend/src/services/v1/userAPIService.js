@@ -8,7 +8,7 @@ const version = 'v1'
 
 // Register user
 export const registerUser = async (userData) => {
-  const URL = `${API_BASE_URL}/${content}/${version}/register`
+  const URL = `${API_BASE_URL}/${content}/${version}/registration`
   try {
     const response = await axios.post(URL, userData)
     return response.data
