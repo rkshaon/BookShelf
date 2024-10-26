@@ -1,36 +1,40 @@
 <template>
-    <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div v-if="isTopicLoading" class="flex justify-center">
-                <LoaderComponent />
-            </div>
-            <div v-else-if="topic">
-                <div class="bg-white shadow rounded-lg p-6 mb-8">
-                    <h1 class="text-4xl font-bold text-center text-gray-800 mb-4">
-                        #{{ topic.slug }}
-                    </h1>
-                </div>
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6">
-                    Books on #{{ topic.slug }}
-                </h2>
-                <div v-if="isBookLoading" class="flex justify-center">
-                    <LoaderComponent />
-                </div>
-                <div v-else>
-                    <PaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="pageSize"
-                        @fetch-page="changePage" />
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        <BookCardComponent v-for="(book, index) in books" :key="index" :book="book" />
-                    </div>
-                </div>
-            </div>
-            <div v-else-if="error" class="text-red-500">
-                <NotFoundComponent contentType="Genre" :errorMessage="error" />
-            </div>
+  <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div v-if="isTopicLoading" class="flex justify-center">
+      <LoaderComponent />
     </div>
+    <div v-else-if="topic">
+      <div class="bg-white shadow rounded-lg p-6 mb-8">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-4">
+          #{{ topic.slug }}
+        </h1>
+      </div>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-6">
+        Books on #{{ topic.slug }}
+      </h2>
+      <div v-if="isBookLoading" class="flex justify-center">
+        <LoaderComponent />
+      </div>
+      <div v-else>
+        <PaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="pageSize"
+          @fetch-page="changePage" />
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <BookCardComponent v-for="(book, index) in books" :key="index" :book="book" />
+        </div>
+      </div>
+    </div>
+    <div v-else-if="errors" class="text-red-500">
+      <div v-for="(error, index) in errors" :key="index">
+        <NotFoundComponent contentType="Genre" :errorMessage="error" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { useToast } from 'vue-toastification'
+
 import LoaderComponent from '@/components/LoaderComponent.vue'
 import PaginationComponent from '@/components/PaginationComponent.vue'
 import BookCardComponent from '@/components/BookCardComponent.vue'
@@ -53,7 +57,7 @@ export default {
     ...mapGetters({
       topic: 'getTopicDetails',
       isTopicLoading: 'isTopicLoading',
-      error: 'topicDetailsError',
+      errors: 'topicDetailsError',
       allBooks: 'allBooks',
       nextPageUrl: 'nextPageUrl',
       previousPageUrl: 'previousPageUrl',
@@ -84,6 +88,14 @@ export default {
         }
 
         this.fetchBooks({ page, pageSize: this.pageSize, topic: this.$route.params.id })
+      }
+    },
+    errors (newErrors) {
+      const toast = useToast()
+      if (newErrors && newErrors.length) {
+        newErrors.forEach(error => {
+          toast.error(error)
+        })
       }
     }
   },
