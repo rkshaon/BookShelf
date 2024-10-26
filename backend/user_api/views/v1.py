@@ -3,6 +3,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from user_api.models import User
@@ -85,17 +88,29 @@ class UserLoginView(APIView):
 
 
 class UserProfileView(APIView):
-    """
-    v1 User Profile API.
-
-    Parameters:
-        None
-
-    Returns:
-        message: A success message if the profile is successful.
-        errors: If the validation fails, returns a list of errors with
-            their descriptions.
-    """
+    @swagger_auto_schema(
+        operation_description="Retrieve user's profile",
+        responses={
+            200: openapi.Response(
+                description="User profile data", schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "id": openapi.Schema(
+                            type=openapi.TYPE_INTEGER, description="User ID"
+                        ),
+                        "username": openapi.Schema(
+                            type=openapi.TYPE_STRING, description="Username"
+                        ),
+                        "email": openapi.Schema(
+                            type=openapi.TYPE_STRING, description="Email"
+                        ),
+                    }
+                )
+            ),
+            401: openapi.Response(description="User is not authenticated"),
+            404: openapi.Response(description="User not found"),
+        },
+    )
     def get(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
 
