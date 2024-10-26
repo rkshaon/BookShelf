@@ -32,11 +32,12 @@ export default {
         const bookDetails = await bookAPIService.fetchV1BookDetails(bookCode)
         commit('SET_BOOK_DETAILS', bookDetails)
       } catch (error) {
-        console.error('Error fetching book details:', error)
-        commit(
-          'SET_BOOK_ERROR',
-          error.response.data.detail || 'Failed to fetch book details'
-        )
+        const errorMessages = []
+        for (const [key, value] of Object.entries(error.response.data)) {
+          errorMessages.push(value)
+          console.log(`Book fetch... ${key}: ${value}`)
+        }
+        commit('SET_BOOK_ERROR', errorMessages)
       } finally {
         commit('SET_BOOK_LOADING', false)
       }

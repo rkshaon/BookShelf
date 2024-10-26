@@ -68,14 +68,17 @@
         </div>
       </div>
     </div>
-    <div v-else-if="error" class="text-red-500">
-      <NotFoundComponent contentType="Book" :errorMessage="error" />
+    <div v-else-if="errors" class="text-red-500">
+      <div v-for="(error, index) in errors" :key="index">
+        <NotFoundComponent contentType="Book" :errorMessage="error" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { useToast } from 'vue-toastification'
 import { getCoverImage } from '@/helpers/getCoverImage'
 
 import LoaderComponent from '@/components/LoaderComponent.vue'
@@ -114,7 +117,7 @@ export default {
     ...mapGetters({
       bookDetails: 'getBookDetails',
       isLoading: 'isBookLoading',
-      error: 'bookDetailsError'
+      errors: 'bookDetailsError'
     }),
     API_BASE_URL () {
       return process.env.VUE_APP_BACKEND_URL
@@ -130,6 +133,14 @@ export default {
     bookDetails (newBookDetails) {
       if (newBookDetails && newBookDetails.title) {
         document.title = `Book Shelf | ${newBookDetails.title}`
+      }
+    },
+    errors (newErrors) {
+      const toast = useToast()
+      if (newErrors && newErrors.length) {
+        newErrors.forEach(error => {
+          toast.error(error)
+        })
       }
     }
   },
