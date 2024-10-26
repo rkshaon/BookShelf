@@ -33,6 +33,10 @@ class UserRegistrationView(APIView):
     )
     def post(self, request, *args, **kwargs):
         print(request.data)
+        # from datetime import time
+        import time
+        # sleep for 3 seconds
+        time.sleep(3)
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():

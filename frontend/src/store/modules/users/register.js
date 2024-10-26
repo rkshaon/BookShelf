@@ -10,8 +10,8 @@ export default {
   },
   getters: {
     user: (state) => state.user,
-    error: (state) => state.error,
-    loading: (state) => state.loading
+    registerError: (state) => state.error,
+    isLoading: (state) => state.loading
   },
   mutations: {
     setUser (state, user) {
@@ -32,7 +32,10 @@ export default {
         commit('setUser', response.data)
         commit('setError', null)
       } catch (error) {
-        commit('setError', error.response.data.message)
+        console.log(error)
+        // commit('setError', error.response.data.message)
+        // commit('setError', error.response.data.detail || 'Failed to register user')
+        commit('setError', 'Failed to register user')
       } finally {
         commit('setLoading', false)
       }
