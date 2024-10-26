@@ -6,12 +6,12 @@ export default {
   state: {
     genreDetails: null,
     isLoading: false,
-    error: null
+    errors: null
   },
   getters: {
     getGenreDetails: (state) => state.genreDetails,
     isGenreLoading: (state) => state.isLoading,
-    genreDetailsError: (state) => state.error
+    genreDetailsError: (state) => state.errors
   },
   mutations: {
     SET_GENRE_DETAILS (state, genre) {
@@ -21,7 +21,7 @@ export default {
       state.isLoading = isLoading
     },
     SET_ERROR (state, error) {
-      state.error = error
+      state.errors = error
     }
   },
   actions: {
@@ -32,7 +32,12 @@ export default {
         const response = await genreAPIService.fetchV1GenreDetails(genreId)
         commit('SET_GENRE_DETAILS', response)
       } catch (error) {
-        commit('SET_ERROR', 'Error fetching genre details')
+        const errorMessages = []
+        for (const [key, value] of Object.entries(error.response.data)) {
+          errorMessages.push(value)
+          console.log(`Genre fetch... ${key}: ${value}`)
+        }
+        commit('SET_ERROR', errorMessages)
       } finally {
         commit('SET_LOADING', false)
       }

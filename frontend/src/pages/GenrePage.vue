@@ -26,14 +26,18 @@
         </div>
       </div>
     </div>
-    <div v-else-if="error" class="text-red-500">
-      <NotFoundComponent contentType="Genre" :errorMessage="error" />
+    <div v-else-if="errors" class="text-red-500">
+      <div v-for="(error, index) in errors" :key="index">
+        <NotFoundComponent contentType="Genre" :errorMessage="error" />
+        </div>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { useToast } from 'vue-toastification'
+
 import LoaderComponent from '@/components/LoaderComponent.vue'
 import PaginationComponent from '@/components/PaginationComponent.vue'
 import BookCardComponent from '@/components/BookCardComponent.vue'
@@ -56,7 +60,7 @@ export default {
     ...mapGetters({
       genre: 'getGenreDetails',
       isGenreLoading: 'isGenreLoading',
-      error: 'genreDetailsError',
+      errors: 'genreDetailsError',
       allBooks: 'allBooks',
       nextPageUrl: 'nextPageUrl',
       previousPageUrl: 'previousPageUrl',
@@ -87,6 +91,14 @@ export default {
         }
 
         this.fetchBooks({ page, pageSize: this.pageSize, genre: this.$route.params.id })
+      }
+    },
+    errors (newErrors) {
+      const toast = useToast()
+      if (newErrors && newErrors.length) {
+        newErrors.forEach(error => {
+          toast.error(error)
+        })
       }
     }
   },
