@@ -1,4 +1,4 @@
-// src/store/modules/books.js
+// src/store/modules/books/books.js
 
 import bookAPIService from '@/services/v1/bookAPIService'
 
