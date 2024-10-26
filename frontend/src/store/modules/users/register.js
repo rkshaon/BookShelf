@@ -5,20 +5,21 @@ import { registerUser } from '@/services/v1/userAPIService'
 export default {
   state: {
     user: null,
-    error: null,
+    errors: null,
+    successMessage: null,
     loading: false
   },
   getters: {
     user: (state) => state.user,
-    registerError: (state) => state.error,
+    registerError: (state) => state.errors,
     isLoading: (state) => state.loading
   },
   mutations: {
     setUser (state, user) {
       state.user = user
     },
-    setError (state, error) {
-      state.error = error
+    SET_ERROR (state, error) {
+      state.errors = error
     },
     setLoading (state, loading) {
       state.loading = loading
@@ -30,12 +31,16 @@ export default {
       try {
         const response = await registerUser(userData)
         commit('setUser', response.data)
-        commit('setError', null)
+        commit('SET_ERROR', null)
       } catch (error) {
-        console.log(error)
-        // commit('setError', error.response.data.message)
-        // commit('setError', error.response.data.detail || 'Failed to register user')
-        commit('setError', 'Failed to register user')
+        const errorMessages = []
+        for (const [field, messages] of Object.entries(error)) {
+          messages.forEach((message) => {
+            console.log(`${field}: ${message}`)
+            errorMessages.push(message)
+          })
+        }
+        commit('SET_ERROR', errorMessages)
       } finally {
         commit('setLoading', false)
       }
