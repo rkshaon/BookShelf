@@ -46,6 +46,46 @@ class UserRegistrationView(APIView):
 class UserLoginView(APIView):
     permission_classes = [AllowAny]
 
+    @swagger_auto_schema(
+        operation_description="Log in a user",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "credential": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="User email or username"
+                ),
+                "password": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="User password"
+                ),
+            }
+        ),
+        responses={
+            200: openapi.Response(
+                description="User login data", schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "refresh": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Refresh token"
+                        ),
+                        "access": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Access token"
+                        ),
+                        "message": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Success message"
+                        ),
+                    }
+                )
+            ),
+            400: openapi.Response(description="Log in credential missing"),
+            401: openapi.Response(description="Invalid password"),
+            404: openapi.Response(description="User not found"),
+        },
+    )
     def post(self, request, *args, **kwargs):
         credential = request.data.get('credential', None)
         password = request.data.get('password', None)
@@ -73,18 +113,18 @@ class UserLoginView(APIView):
                 'errors': ['Invalid password'],
             }, status=status.HTTP_401_UNAUTHORIZED)
 
-        if user is not None:
-            refresh = RefreshToken.for_user(user)
-
-            return Response({
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-                'message': 'Successfully log in!',
-            })
-        else:
+        if not user:
             return Response({
                 'detail': 'Invalid credentials.'
             }, status=status.HTTP_401_UNAUTHORIZED)
+
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'message': 'Successfully log in!',
+        })
 
 
 class UserProfileView(APIView):
