@@ -4,33 +4,34 @@ import { registerUser } from '@/services/v1/userAPIService'
 
 export default {
   state: {
-    user: null,
     errors: null,
     successMessage: null,
     loading: false
   },
   getters: {
-    user: (state) => state.user,
     registerError: (state) => state.errors,
-    isLoading: (state) => state.loading
+    isLoading: (state) => state.loading,
+    registerSuccess: (state) => state.successMessage
   },
   mutations: {
-    setUser (state, user) {
-      state.user = user
-    },
     SET_ERROR (state, error) {
       state.errors = error
     },
-    setLoading (state, loading) {
+    SET_LOADING (state, loading) {
       state.loading = loading
+    },
+    SET_SUCCESS_MESSAGE (state, message) {
+      state.successMessage = message
     }
   },
   actions: {
     async register ({ commit }, userData) {
-      commit('setLoading', true)
+      commit('SET_LOADING', true)
       try {
         const response = await registerUser(userData)
-        commit('setUser', response.data)
+        console.log(response)
+        console.log(response.data)
+        commit('SET_SUCCESS_MESSAGE', response.message)
         commit('SET_ERROR', null)
       } catch (error) {
         const errorMessages = []
@@ -42,7 +43,7 @@ export default {
         }
         commit('SET_ERROR', errorMessages)
       } finally {
-        commit('setLoading', false)
+        commit('SET_LOADING', false)
       }
     }
   }

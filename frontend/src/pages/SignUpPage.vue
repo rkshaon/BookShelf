@@ -66,7 +66,8 @@ export default {
   computed: {
     ...mapGetters({
       errors: 'registerError',
-      isLoading: 'isLoading'
+      isLoading: 'isLoading',
+      successMessage: 'registerSuccess'
     })
   },
   watch: {
@@ -77,26 +78,18 @@ export default {
           toast.error(error)
         })
       }
-      this.username = ''
-      this.email = ''
-      this.password = ''
-      this.first_name = ''
-      this.middle_name = ''
-      this.last_name = ''
+    },
+    successMessage (newMessage) {
+      const toast = useToast()
+      if (newMessage) {
+        toast.success(newMessage)
+        this.$router.push('/login')
+      }
     }
   },
   methods: {
     ...mapActions(['register']),
-    // register({
-    //   username: username,
-    //   email: email,
-    //   first_name: first_name,
-    //   middle_name: middle_name,
-    //   last_name: last_name,
-    //   password: password
-    // })
     async registerUser () {
-      // const toast = useToast()
       const userData = {
         username: this.username,
         email: this.email,
@@ -106,27 +99,6 @@ export default {
         password: this.password
       }
       this.register(userData)
-
-      // try {
-      //   console.log(this.isLoading)
-      //   console.log('User:', userData)
-      //   // const response = await this.$store.dispatch('register', user)
-      //   this.register(userData)
-      //   this.username = ''
-      //   this.email = ''
-      //   this.password = ''
-      //   this.first_name = ''
-      //   this.middle_name = ''
-      //   this.last_name = ''
-      //   // console.log(response)
-      //   // toast.success(response.data.message)
-      //   // toast.success('Registration successful. Please login.')
-      //   // this.$router.push('/login')
-      //   console.log(this.isLoading)
-      // } catch (error) {
-      //   console.error('Error:', error)
-      //   // this.errorMessage = error.response?.data?.detail || 'Registration failed. Please try again.'
-      // }
     }
   }
 }
