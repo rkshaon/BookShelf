@@ -11,7 +11,9 @@
       </div>
       <!-- Right Part: Buttons -->
       <div class="flex space-x-4">
-        <a href="/signup" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Sign Up</a>
+        <router-link to="signup" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+          Sign Up
+        </router-link>
         <a href="/login" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Sign In</a>
         <button class="px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">Language</button>
       </div>

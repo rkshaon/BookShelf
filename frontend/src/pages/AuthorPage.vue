@@ -32,14 +32,17 @@
         </ul>
       </div>
     </div>
-    <div v-else-if="error" class="text-red-500">
-      <NotFoundComponent contentType="Author" :errorMessage="error" />
+    <div v-else-if="errors" class="text-red-500">
+      <div v-for="(error, index) in errors" :key="index">
+        <NotFoundComponent contentType="Author" :errorMessage="error" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { useToast } from 'vue-toastification'
 import LoaderComponent from '@/components/LoaderComponent.vue'
 import BookCardComponent from '@/components/BookCardComponent.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'
@@ -55,7 +58,7 @@ export default {
     ...mapGetters({
       author: 'getAuthorDetails',
       isLoading: 'isAuthorLoading',
-      error: 'authorDetailsError'
+      errors: 'authorDetailsError'
     })
   },
   watch: {
@@ -68,6 +71,14 @@ export default {
     author (newAuthor) {
       if (newAuthor && newAuthor.full_name) {
         document.title = `Book Shelf | ${newAuthor.full_name}`
+      }
+    },
+    errors (newErrors) {
+      const toast = useToast()
+      if (newErrors && newErrors.length) {
+        newErrors.forEach(error => {
+          toast.error(error)
+        })
       }
     }
   },

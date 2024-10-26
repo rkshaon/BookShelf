@@ -6,12 +6,12 @@ export default {
   state: {
     topicDetails: null,
     isLoading: false,
-    error: null
+    errors: null
   },
   getters: {
     getTopicDetails: (state) => state.topicDetails,
     isTopicLoading: (state) => state.isLoading,
-    topicDetailsError: (state) => state.error
+    topicDetailsError: (state) => state.errors
   },
   mutations: {
     SET_TOPIC_DETAILS (state, topic) {
@@ -21,7 +21,7 @@ export default {
       state.isLoading = isLoading
     },
     SET_ERROR (state, error) {
-      state.error = error
+      state.errors = error
     }
   },
   actions: {
@@ -32,7 +32,12 @@ export default {
         const response = await topicAPIService.fetchV1TopicDetails(topicId)
         commit('SET_TOPIC_DETAILS', response)
       } catch (error) {
-        commit('SET_ERROR', 'Error fetching topic details')
+        const errorMessages = []
+        for (const [key, value] of Object.entries(error.response.data)) {
+          errorMessages.push(value)
+          console.log(`Topic fetch... ${key}: ${value}`)
+        }
+        commit('SET_ERROR', errorMessages)
       } finally {
         commit('SET_LOADING', false)
       }

@@ -32,7 +32,12 @@ export default {
         const response = await authorAPIService.fetchV1AuthorDetails(authorId)
         commit('SET_AUTHOR_DETAILS', response)
       } catch (error) {
-        commit('SET_ERROR', 'Error fetching author details')
+        const errorMessages = []
+        for (const [key, value] of Object.entries(error.response.data)) {
+          errorMessages.push(value)
+          console.log(`Author fetch... ${key}: ${value}`)
+        }
+        commit('SET_ERROR', errorMessages)
       } finally {
         commit('SET_LOADING', false)
       }
