@@ -42,15 +42,13 @@
                     class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
                     Sign Up
                 </button>
-                <div v-if="errorMessage" class="mt-4 text-red-500 text-center">{{ errorMessage }}</div>
-                <div v-if="successMessage" class="mt-4 text-green-500 text-center">{{ successMessage }}</div>
             </form>
         </div>
     </div>
 </template>
 
 <script>
-// import { useStore } from "vuex";
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'SignUpPage',
@@ -61,15 +59,12 @@ export default {
       first_name: '',
       middle_name: '',
       last_name: '',
-      password: '',
-      errorMessage: null,
-      successMessage: null
+      password: ''
     }
   },
   methods: {
     async registerUser () {
-      this.errorMessage = null
-      this.successMessage = null
+      const toast = useToast()
       const user = {
         username: this.username,
         email: this.email,
@@ -80,36 +75,22 @@ export default {
       }
 
       try {
-        // Call store function to register the user
-        await this.$store.dispatch('register', user)
-
-        // Show success message and clear form fields
-        this.successMessage = 'Registration successful!'
+        console.log('User:', user)
+        const response = await this.$store.dispatch('register', user)
         this.username = ''
         this.email = ''
         this.password = ''
+        this.first_name = ''
+        this.middle_name = ''
+        this.last_name = ''
+        console.log(response)
+        // toast.success(response.data.message)
+        toast.success('Registration successful. Please login.')
+        this.$router.push('/login')
       } catch (error) {
         console.error('Error:', error)
         this.errorMessage = error.response?.data?.detail || 'Registration failed. Please try again.'
       }
-
-      //   try {
-      //     // Call store function to register the user
-      //     await this.$store.dispatch("registerUser", {
-      //       username: this.username,
-      //       email: this.email,
-      //       password: this.password,
-      //     });
-
-      //     // Show success message and clear form fields
-      //     this.successMessage = "Registration successful!";
-      //     this.username = "";
-      //     this.email = "";
-      //     this.password = "";
-      //   } catch (error) {
-      //     console.error("Error:", error);
-      //     this.errorMessage = error.response?.data?.detail || "Registration failed. Please try again.";
-      //   }
     }
   }
 }
