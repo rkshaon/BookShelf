@@ -3,6 +3,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from user_api.models import User
@@ -12,26 +15,27 @@ from user_api.serializers.v1 import UserSerializer
 
 class UserRegistrationView(APIView):
     permission_classes = [AllowAny]
-    """
-    post:
-    Register a new user.
 
-    Takes in user details and creates a new user in the system.
-
-    Parameters:
-        None
-
-    Returns:
-        message: A success message if the registration is successful.
-        errors: If the validation fails, returns a list of errors with
-            their descriptions.
-    """
+    @swagger_auto_schema(
+        operation_description="Register a new user.",
+        request_body=UserSerializer,
+        responses={
+            201: openapi.Response(
+                description="User registered successfully",
+                examples={
+                    "application/json": {
+                        "message": "User registered successfully"
+                    }
+                }
+            ),
+            400: "Bad Request - Validation errors"
+        }
+    )
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save()
-            print(f"Serializer Data: {serializer.data}")
 
             return Response({
                 'message': 'User registered successfully',
@@ -43,6 +47,46 @@ class UserRegistrationView(APIView):
 class UserLoginView(APIView):
     permission_classes = [AllowAny]
 
+    @swagger_auto_schema(
+        operation_description="Log in a user",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "credential": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="User email or username"
+                ),
+                "password": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="User password"
+                ),
+            }
+        ),
+        responses={
+            200: openapi.Response(
+                description="User login data", schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "refresh": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Refresh token"
+                        ),
+                        "access": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Access token"
+                        ),
+                        "message": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Success message"
+                        ),
+                    }
+                )
+            ),
+            400: openapi.Response(description="Log in credential missing"),
+            401: openapi.Response(description="Invalid password"),
+            404: openapi.Response(description="User not found"),
+        },
+    )
     def post(self, request, *args, **kwargs):
         credential = request.data.get('credential', None)
         password = request.data.get('password', None)
@@ -70,32 +114,53 @@ class UserLoginView(APIView):
                 'errors': ['Invalid password'],
             }, status=status.HTTP_401_UNAUTHORIZED)
 
-        if user is not None:
-            refresh = RefreshToken.for_user(user)
-
-            return Response({
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-                'message': 'Successfully log in!',
-            })
-        else:
+        if not user:
             return Response({
                 'detail': 'Invalid credentials.'
             }, status=status.HTTP_401_UNAUTHORIZED)
 
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'message': 'Successfully log in!',
+        })
+
 
 class UserProfileView(APIView):
-    """
-    v1 User Profile API.
-
-    Parameters:
-        None
-
-    Returns:
-        message: A success message if the profile is successful.
-        errors: If the validation fails, returns a list of errors with
-            their descriptions.
-    """
+    @swagger_auto_schema(
+        operation_description="Retrieve user's profile",
+        manual_parameters=[
+            openapi.Parameter(
+                'Authorization',
+                openapi.IN_HEADER,
+                description="Bearer <JWT Token>",
+                type=openapi.TYPE_STRING,
+                required=True,
+            ),
+        ],
+        responses={
+            200: openapi.Response(
+                description="User profile data", schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "id": openapi.Schema(
+                            type=openapi.TYPE_INTEGER, description="User ID"
+                        ),
+                        "username": openapi.Schema(
+                            type=openapi.TYPE_STRING, description="Username"
+                        ),
+                        "email": openapi.Schema(
+                            type=openapi.TYPE_STRING, description="Email"
+                        ),
+                    }
+                )
+            ),
+            401: openapi.Response(description="User is not authenticated"),
+            404: openapi.Response(description="User not found"),
+        },
+    )
     def get(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
 
