@@ -17,6 +17,8 @@ const routes = [
   { path: '/author/:id', name: 'AuthorDetails', component: AuthorPage },
   { path: '/genre/:id/:slug', name: 'GenreDetails', component: GenrePage },
   { path: '/topic/:id/:slug', name: 'TopicDetails', component: TopicPage },
+  // user
+  { path: '/signup', name: 'SignUp', component: () => import('@/pages/SignUpPage.vue') },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundPage }
 ]
 
