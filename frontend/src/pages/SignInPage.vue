@@ -64,12 +64,6 @@ export default {
         this.$router.push({ name: 'Home' })
       }
     }
-    // If the user is authenticated, redirect to the home page
-    // '$store.state.auth.isAuthenticated' (val) {
-    //   if (val) {
-    //     this.$router.push({ name: 'Home' })
-    //   }
-    // }
   },
   methods: {
     ...mapActions(['login']),
@@ -80,12 +74,6 @@ export default {
       }
       console.log(userCredential)
       this.login(userCredential)
-      // Call the login action from the store
-      // await this.$store.dispatch('auth/login', { credential: this.credential, password: this.password })
-      // If the user is authenticated, redirect to the home page
-      // if (this.$store.state.auth.isAuthenticated) {
-      //   this.$router.push({ name: 'Home' })
-      // }
     }
   }
 }

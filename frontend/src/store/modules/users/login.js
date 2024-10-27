@@ -31,7 +31,6 @@ export default {
       commit('SET_LOADING', true)
       try {
         const response = await loginUser(credentials)
-        console.log(response)
         commit('SET_TOKEN', response)
         commit('SET_ERROR', null)
       } catch (error) {
