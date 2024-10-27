@@ -3,7 +3,7 @@
         <LoaderComponent v-if="isLoading" />
         <div v-else class="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Sign Up for BookShelf</h2>
-            <form @submit.prevent="registerUser">
+            <form @submit.prevent="logInUser">
                 <div class="mb-4">
                     <label for="credential" class="block text-gray-700 font-semibold mb-2">Credential</label>
                     <input type="text" id="credential" v-model="credential"
@@ -55,7 +55,21 @@ export default {
     //   }
     // }
   },
-  methods: { }
+  methods: {
+    async logInUser () {
+      const userCredential = {
+        credential: this.credential,
+        password: this.password
+      }
+      console.log(userCredential)
+      // Call the login action from the store
+      // await this.$store.dispatch('auth/login', { credential: this.credential, password: this.password })
+      // If the user is authenticated, redirect to the home page
+      // if (this.$store.state.auth.isAuthenticated) {
+      //   this.$router.push({ name: 'Home' })
+      // }
+    }
+  }
 }
 </script>
 
