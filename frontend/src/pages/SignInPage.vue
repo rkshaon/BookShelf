@@ -56,6 +56,13 @@ export default {
           toast.error(error)
         })
       }
+    },
+    isAuthenticated (val) {
+      const toast = useToast()
+      if (val) {
+        toast.success('You have successfully logged in')
+        this.$router.push({ name: 'Home' })
+      }
     }
     // If the user is authenticated, redirect to the home page
     // '$store.state.auth.isAuthenticated' (val) {

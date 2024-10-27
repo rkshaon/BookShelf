@@ -9,6 +9,7 @@ const version = 'v1'
 // Register user
 export const registerUser = async (userData) => {
   const URL = `${API_BASE_URL}/${content}/${version}/registration`
+  console.log(URL)
   try {
     const response = await axios.post(URL, userData)
     return response.data
@@ -21,6 +22,7 @@ export const registerUser = async (userData) => {
 export const loginUser = async (credentials) => {
   try {
     const URL = `${API_BASE_URL}/${content}/${version}/login`
+    console.log(URL)
     const response = await axios.post(URL, credentials)
     return response.data
   } catch (error) {

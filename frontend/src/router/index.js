@@ -10,7 +10,7 @@ import GenrePage from '@/pages/GenrePage.vue'
 import TopicPage from '@/pages/TopicPage.vue'
 
 const routes = [
-  { path: '/', component: HomePage },
+  { path: '/', name: 'Home', component: HomePage },
   { path: '/book/:book_code', name: 'BookDetails', component: BookDetailsPage },
   // { path: "/book/:book_code/view", name: "Book", component: BookPage },
   { path: '/book/:book_code/view', name: 'Book', component: PdfView },
