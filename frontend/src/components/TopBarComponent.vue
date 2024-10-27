@@ -14,7 +14,7 @@
         <router-link to="signup" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
           Sign Up
         </router-link>
-        <a href="/login" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Sign In</a>
+        <router-link to="signin" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Sign In</router-link>
         <button class="px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">Language</button>
       </div>
     </div>
