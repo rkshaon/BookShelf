@@ -30,16 +30,18 @@ export const loginUser = async (credentials) => {
   }
 }
 
-// // Get user profile
-// export const getUserProfile = async (token) => {
-//     try {
-//         const response = await axios.get(`${API_BASE_URL}/profile`, {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-//         return response.data;
-//     } catch (error) {
-//         throw error.response.data;
-//     }
-// };
+// Get user profile
+export const getUserProfile = async (token) => {
+  try {
+    const URL = `${API_BASE_URL}/${content}/${version}/profile`
+    console.log(URL)
+    const response = await axios.get(URL, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    return response.data
+  } catch (error) {
+    throw error.response.data
+  }
+}
