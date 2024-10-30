@@ -38,9 +38,9 @@
 import { mapGetters, mapActions } from 'vuex'
 import { useToast } from 'vue-toastification'
 
-import LoaderComponent from '@/components/LoaderComponent.vue'
+import LoaderComponent from '@/components/general/LoaderComponent.vue'
 import PaginationComponent from '@/components/PaginationComponent.vue'
-import BookCardComponent from '@/components/BookCardComponent.vue'
+import BookCardComponent from '@/components/books/BookCardComponent.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
 export default {

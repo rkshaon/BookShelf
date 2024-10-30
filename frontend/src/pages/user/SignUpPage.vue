@@ -46,7 +46,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { useToast } from 'vue-toastification'
-import LoaderComponent from '@/components/LoaderComponent.vue'
+import LoaderComponent from '@/components/general/LoaderComponent.vue'
 
 export default {
   name: 'SignUpPage',

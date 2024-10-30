@@ -36,7 +36,7 @@ const routes = [
   {
     path: '/signup',
     name: 'SignUp',
-    component: () => import('@/pages/NotFoundPage.vue')
+    component: () => import('@/pages/user/SignUpPage.vue')
   },
   {
     path: '/signin',

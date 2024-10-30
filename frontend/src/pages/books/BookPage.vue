@@ -15,7 +15,7 @@
 import { getBookURL } from '@/helpers/getBookURL'
 import { getBookURLUsingBookCode } from '@/helpers/getBookURLUsingBookCode'
 
-import LoaderComponent from '@/components/LoaderComponent.vue'
+import LoaderComponent from '@/components/general/LoaderComponent.vue'
 
 export default {
   name: 'BookPage',

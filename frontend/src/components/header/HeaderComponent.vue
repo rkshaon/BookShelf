@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import TopBarComponent from '@/components/TopBarComponent'
-import NavBarComponent from './NavBarComponent.vue'
+import TopBarComponent from '@/components/header/TopBarComponent'
+import NavBarComponent from '@/components/header/NavBarComponent'
 
 export default {
   name: 'HeaderComponent',

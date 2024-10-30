@@ -81,7 +81,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { useToast } from 'vue-toastification'
 import { getCoverImage } from '@/helpers/getCoverImage'
 
-import LoaderComponent from '@/components/LoaderComponent.vue'
+import LoaderComponent from '@/components/general/LoaderComponent.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
 export default {

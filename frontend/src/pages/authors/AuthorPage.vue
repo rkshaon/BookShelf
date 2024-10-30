@@ -43,8 +43,8 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { useToast } from 'vue-toastification'
-import LoaderComponent from '@/components/LoaderComponent.vue'
-import BookCardComponent from '@/components/BookCardComponent.vue'
+import LoaderComponent from '@/components/general/LoaderComponent.vue'
+import BookCardComponent from '@/components/books/BookCardComponent.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
 export default {
