@@ -1,7 +1,6 @@
 <template>
   <div class="bg-gray-600 text-white py-2">
     <div class="container mx-auto px-4 flex justify-between items-center">
-      <!-- Left Part: Sliding Text Ad -->
       <div class="overflow-hidden h-6">
         <div class="flex flex-col animate-slide">
           <span v-for="(item, index) in adList" :key="index">
@@ -9,27 +8,7 @@
           </span>
         </div>
       </div>
-      <!-- Right Part: Buttons -->
       <div class="flex space-x-4">
-        <!-- <div v-if="isAuthenticated">
-          <button @click="toggleDropdown" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
-            <img src="path/to/profile-icon.png" alt="Profile" class="w-8 h-8 rounded-full">
-            <span class="text-white">Profile</span>
-          </button>
-        </div>
-        <div v-else>
-          <router-link to="signup" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
-            Sign Up
-          </router-link>
-          <router-link to="signin" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Sign
-            In</router-link>
-        </div> -->
-        <!-- <router-link to="signup" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
-          Sign Up
-        </router-link>
-        <router-link to="signin" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Sign
-          In
-        </router-link> -->
         <div v-if="isAuthenticated" class="flex space-x-4">
           <div class="flex space-x-4">
             <button @click="toggleDropdown" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center">

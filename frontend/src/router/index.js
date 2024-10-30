@@ -1,34 +1,53 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import HomePage from '@/pages/HomePage.vue'
-import NotFoundPage from '@/pages/NotFoundPage.vue'
-import BookDetailsPage from '@/pages/BookDetailsPage.vue'
-import AuthorPage from '@/pages/AuthorPage.vue'
-// import BookPage from '@/pages/BookPage.vue'
-import PdfView from '@/pages/PdfView.vue'
-import GenrePage from '@/pages/GenrePage.vue'
-import TopicPage from '@/pages/TopicPage.vue'
-
 const routes = [
-  { path: '/', name: 'Home', component: HomePage },
-  { path: '/book/:book_code', name: 'BookDetails', component: BookDetailsPage },
+  {
+    path: '/',
+    name: 'Home',
+    component: () => import('@/pages/HomePage.vue')
+  },
+  {
+    path: '/book/:book_code',
+    name: 'BookDetails',
+    component: () => import('@/pages/books/BookDetailsPage.vue')
+  },
   // { path: "/book/:book_code/view", name: "Book", component: BookPage },
-  { path: '/book/:book_code/view', name: 'Book', component: PdfView },
-  { path: '/author/:id', name: 'AuthorDetails', component: AuthorPage },
-  { path: '/genre/:id/:slug', name: 'GenreDetails', component: GenrePage },
-  { path: '/topic/:id/:slug', name: 'TopicDetails', component: TopicPage },
+  {
+    path: '/book/:book_code/view',
+    name: 'Book',
+    component: () => import('@/pages/books/PdfView.vue')
+  },
+  {
+    path: '/author/:id',
+    name: 'AuthorDetails',
+    component: () => import('@/pages/authors/AuthorPage.vue')
+  },
+  {
+    path: '/genre/:id/:slug',
+    name: 'GenreDetails',
+    component: () => import('@/pages/genres/GenrePage.vue')
+  },
+  {
+    path: '/topic/:id/:slug',
+    name: 'TopicDetails',
+    component: () => import('@/pages/topics/TopicPage.vue')
+  },
   // user
   {
     path: '/signup',
     name: 'SignUp',
-    component: () => import('@/pages/SignUpPage.vue')
+    component: () => import('@/pages/NotFoundPage.vue')
   },
   {
     path: '/signin',
     name: 'SignIn',
-    component: () => import('@/pages/SignInPage.vue')
+    component: () => import('@/pages/user/SignInPage.vue')
   },
-  { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundPage }
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('@/pages/user/SignInPage.vue')
+  }
 ]
 
 const router = createRouter({
