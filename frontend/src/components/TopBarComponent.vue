@@ -11,17 +11,11 @@
       </div>
       <!-- Right Part: Buttons -->
       <div class="flex space-x-4">
-        <div v-if="isAuthenticated">
+        <!-- <div v-if="isAuthenticated">
           <button @click="toggleDropdown" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
             <img src="path/to/profile-icon.png" alt="Profile" class="w-8 h-8 rounded-full">
             <span class="text-white">Profile</span>
           </button>
-          <!-- <div>
-            <router-link to="/profile" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">My Profile</router-link>
-            <router-link to="/settings" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Settings</router-link>
-            <button @click="logout"
-              class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</button>
-          </div> -->
         </div>
         <div v-else>
           <router-link to="signup" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
@@ -29,6 +23,30 @@
           </router-link>
           <router-link to="signin" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Sign
             In</router-link>
+        </div> -->
+        <!-- <router-link to="signup" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+          Sign Up
+        </router-link>
+        <router-link to="signin" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Sign
+          In
+        </router-link> -->
+        <div v-if="isAuthenticated" class="flex space-x-4">
+          <div class="flex space-x-4">
+            <button @click="toggleDropdown" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center">
+              <img src="path/to/profile-icon.png" alt="Profile" class="w-6 h-6 rounded-full">
+              <span class="text-white">Profile</span>
+            </button>
+          </div>
+        </div>
+        <div v-else class="flex space-x-4">
+          <div class="flex space-x-4">
+            <router-link to="signup" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+              Sign Up
+            </router-link>
+            <router-link to="signin" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+              Sign In
+            </router-link>
+          </div>
         </div>
         <button class="px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">Language</button>
       </div>
