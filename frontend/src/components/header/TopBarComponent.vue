@@ -9,23 +9,26 @@
         </div>
       </div>
       <div class="flex space-x-4">
-        <div v-if="isAuthenticated" class="flex space-x-4">
-          <div class="flex space-x-4">
-            <button @click="toggleDropdown" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center">
-              <img src="path/to/profile-icon.png" alt="Profile" class="w-6 h-6 rounded-full">
-              <span class="text-white">Profile</span>
-            </button>
+        <div v-if="isAuthenticated" class="relative">
+          <button @click="toggleDropdown"
+            class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center">
+            <img src="path/to/profile-icon.png" alt="Profile" class="w-6 h-6 rounded-full">
+            <span class="text-white ml-2">Profile</span>
+          </button>
+          <div v-if="dropdownOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+            <router-link to="/profile" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Profile</router-link>
+            <router-link to="/dashboard" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Dashboard</router-link>
+            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Account Settings</a>
+            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Logout</a>
           </div>
         </div>
         <div v-else class="flex space-x-4">
-          <div class="flex space-x-4">
-            <router-link to="signup" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
-              Sign Up
-            </router-link>
-            <router-link to="signin" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
-              Sign In
-            </router-link>
-          </div>
+          <router-link to="signup" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+            Sign Up
+          </router-link>
+          <router-link to="signin" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+            Sign In
+          </router-link>
         </div>
         <button class="px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">Language</button>
       </div>
@@ -35,6 +38,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+
 export default {
   name: 'TopBarComponent',
   data () {
@@ -55,13 +59,19 @@ export default {
           title: 'Join our community of book lovers!',
           url: 'https://rkshaon.info'
         }
-      ]
+      ],
+      dropdownOpen: false
     }
   },
   computed: {
     ...mapGetters({
       isAuthenticated: 'isAuthenticated'
     })
+  },
+  methods: {
+    toggleDropdown () {
+      this.dropdownOpen = !this.dropdownOpen
+    }
   }
 }
 </script>
@@ -69,24 +79,24 @@ export default {
 <style scoped>
 /* Animation for sliding text */
 @keyframes slide {
-    0% {
-        transform: translateY(0);
-    }
+  0% {
+    transform: translateY(0);
+  }
 
-    33% {
-        transform: translateY(-100%);
-    }
+  33% {
+    transform: translateY(-100%);
+  }
 
-    66% {
-        transform: translateY(-200%);
-    }
+  66% {
+    transform: translateY(-200%);
+  }
 
-    100% {
-        transform: translateY(0);
-    }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .animate-slide {
-    animation: slide 9s linear infinite;
+  animation: slide 9s linear infinite;
 }
 </style>
