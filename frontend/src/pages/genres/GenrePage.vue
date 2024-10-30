@@ -1,16 +1,19 @@
 <template>
   <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-    <div v-if="isTopicLoading" class="flex justify-center">
+    <div v-if="isGenreLoading" class="flex justify-center">
       <LoaderComponent />
     </div>
-    <div v-else-if="topic">
+    <div v-else-if="genre">
       <div class="bg-white shadow rounded-lg p-6 mb-8">
         <h1 class="text-4xl font-bold text-center text-gray-800 mb-4">
-          #{{ topic.slug }}
+          {{ genre.name }}
         </h1>
+        <p class="text-lg text-center text-gray-600 mb-8 max-w-3xl mx-auto">
+          {{ genre.description || 'No description available for this genre.' }}
+        </p>
       </div>
       <h2 class="text-2xl font-semibold text-gray-800 mb-6">
-        Books on #{{ topic.slug }}
+        Books on {{ genre.name }}
       </h2>
       <div v-if="isBookLoading" class="flex justify-center">
         <LoaderComponent />
@@ -26,22 +29,22 @@
     <div v-else-if="errors" class="text-red-500">
       <div v-for="(error, index) in errors" :key="index">
         <NotFoundComponent contentType="Genre" :errorMessage="error" />
+        </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { useToast } from 'vue-toastification'
 
-import LoaderComponent from '@/components/LoaderComponent.vue'
+import LoaderComponent from '@/components/general/LoaderComponent.vue'
 import PaginationComponent from '@/components/PaginationComponent.vue'
-import BookCardComponent from '@/components/BookCardComponent.vue'
+import BookCardComponent from '@/components/books/BookCardComponent.vue'
 import NotFoundComponent from '@/components/NotFoundComponent.vue'
 
 export default {
-  name: 'TopicPage',
+  name: 'GenrePage',
   components: {
     LoaderComponent,
     NotFoundComponent,
@@ -55,9 +58,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      topic: 'getTopicDetails',
-      isTopicLoading: 'isTopicLoading',
-      errors: 'topicDetailsError',
+      genre: 'getGenreDetails',
+      isGenreLoading: 'isGenreLoading',
+      errors: 'genreDetailsError',
       allBooks: 'allBooks',
       nextPageUrl: 'nextPageUrl',
       previousPageUrl: 'previousPageUrl',
@@ -71,9 +74,9 @@ export default {
     }
   },
   watch: {
-    topic (newTopic) {
-      if (newTopic && newTopic.name) {
-        document.title = `Book Shelf | ${newTopic.name}`
+    genre (newGenre) {
+      if (newGenre && newGenre.name) {
+        document.title = `Book Shelf | ${newGenre.name}`
       }
     },
     '$route.query.page': {
@@ -87,7 +90,7 @@ export default {
           return
         }
 
-        this.fetchBooks({ page, pageSize: this.pageSize, topic: this.$route.params.id })
+        this.fetchBooks({ page, pageSize: this.pageSize, genre: this.$route.params.id })
       }
     },
     errors (newErrors) {
@@ -100,20 +103,19 @@ export default {
     }
   },
   mounted () {
-    const topicId = this.$route.params.id
+    const genreId = this.$route.params.id
     const currentPage = this.$route.query.page
 
     if (!currentPage || isNaN(currentPage)) {
       this.$router.replace({ query: { page: 1 } })
     }
 
-    this.fetchTopicDetails(topicId)
+    this.fetchGenreDetails(genreId)
     document.title = 'Book Shelf | Loading ...'
   },
   methods: {
-    ...mapActions(['fetchTopicDetails', 'fetchBooks']),
+    ...mapActions(['fetchGenreDetails', 'fetchBooks']),
     async fetchBooks (payload) {
-      console.log(payload)
       this.isBookLoading = true
       this.$store.commit('SET_BOOKS', [])
       try {

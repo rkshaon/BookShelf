@@ -21,9 +21,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import BookCardComponent from '@/components/BookCardComponent.vue'
+import BookCardComponent from '@/components/books/BookCardComponent.vue'
 import PaginationComponent from '@/components/PaginationComponent.vue'
-import LoaderComponent from '@/components/LoaderComponent.vue'
+import LoaderComponent from '@/components/general/LoaderComponent.vue'
 
 export default {
   name: 'HomePage',
