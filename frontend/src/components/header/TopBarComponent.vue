@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-600 text-white py-2">
+  <div class="bg-gray-600 text-white py-2" @click="closeDropdown">
     <div class="container mx-auto px-4 flex justify-between items-center">
       <div class="overflow-hidden h-6">
         <div class="flex flex-col animate-slide">
@@ -9,18 +9,23 @@
         </div>
       </div>
       <div class="flex space-x-4">
-        <div v-if="isAuthenticated" class="relative">
+        <div v-if="isAuthenticated" class="flex space-x-4" @click.stop>
+          <!-- <div class="flex space-x-4"> -->
           <button @click="toggleDropdown"
             class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center">
             <img src="path/to/profile-icon.png" alt="Profile" class="w-6 h-6 rounded-full">
             <span class="text-white ml-2">Profile</span>
           </button>
           <div v-if="dropdownOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
-            <router-link to="/profile" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Profile</router-link>
-            <router-link to="/dashboard" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Dashboard</router-link>
-            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Account Settings</a>
-            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Logout</a>
+            <router-link to="/profile" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+              @click="closeDropdown">Profile</router-link>
+            <router-link to="/dashboard" class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+              @click="closeDropdown">Dashboard</router-link>
+            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" @click="closeDropdown">Account
+              Settings</a>
+            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" @click="closeDropdown">Logout</a>
           </div>
+          <!-- </div> -->
         </div>
         <div v-else class="flex space-x-4">
           <router-link to="signup" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
@@ -71,7 +76,21 @@ export default {
   methods: {
     toggleDropdown () {
       this.dropdownOpen = !this.dropdownOpen
+    },
+    closeDropdown () {
+      this.dropdownOpen = false
+    },
+    handleClickOutside (event) {
+      if (!this.$el.contains(event.target)) {
+        this.dropdownOpen = false
+      }
     }
+  },
+  mounted () {
+    document.addEventListener('click', this.handleClickOutside)
+  },
+  beforeUnmount () {
+    document.removeEventListener('click', this.handleClickOutside)
   }
 }
 </script>
