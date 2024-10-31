@@ -1,6 +1,24 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
+import os
+
+from BookShelf.utilities.storage import ReplaceExistingFileStorage
+
+
+replace_existing_file_storage = ReplaceExistingFileStorage()
+
+
+def profile_upload_path(instance, filename):
+    """
+    Generates a unique file path
+    and renames the file with the User ID.
+    """
+    ext = filename.split('.')[-1]
+    new_filename = f"{instance.id}.{ext}"
+
+    return os.path.join('profile', new_filename)
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -48,6 +66,12 @@ class User(AbstractUser):
         blank=True,
         null=True)  # Optional username
     role = models.PositiveIntegerField(choices=ROLE_CHOICES, default=3)
+    profile_image = models.ImageField(
+        upload_to=profile_upload_path,
+        blank=True,
+        null=True,
+        storage=replace_existing_file_storage
+    )
     added_date_time = models.DateTimeField(auto_now_add=True)
     updated_date_time = models.DateTimeField(auto_now=True)
 
