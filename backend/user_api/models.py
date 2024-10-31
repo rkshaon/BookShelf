@@ -66,7 +66,7 @@ class User(AbstractUser):
         blank=True,
         null=True)  # Optional username
     role = models.PositiveIntegerField(choices=ROLE_CHOICES, default=3)
-    cover_image = models.ImageField(
+    profile_image = models.ImageField(
         upload_to=profile_upload_path,
         blank=True,
         null=True,
