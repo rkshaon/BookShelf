@@ -13,6 +13,7 @@ import topicDetails from '@/store/modules/topics/topicDetails'
 // user modules
 import register from '@/store/modules/users/register'
 import login from '@/store/modules/users/login'
+import profile from '@/store/modules/users/profile'
 
 export default new Vuex.Store({
   modules: {
@@ -23,6 +24,7 @@ export default new Vuex.Store({
     genreDetails,
     topicDetails,
     register,
-    login
+    login,
+    profile
   }
 })
