@@ -1,12 +1,12 @@
 <template>
     <div class="min-h-screen bg-gray-100 flex flex-col items-center">
         <div class="bg-white shadow-md rounded-lg p-6 mt-10 w-full max-w-md">
+            <div v-if="isLoading" class="flex justify-center">
+                <LoaderComponent />
+            </div>
             <div class="flex flex-col items-center">
-                <img
-                    class="w-24 h-24 rounded-full object-cover"
-                    src="https://via.placeholder.com/150"
-                    alt="User Avatar"
-                />
+                <img class="w-24 h-24 rounded-full object-cover" src="https://via.placeholder.com/150"
+                    alt="User Avatar" />
                 <h2 class="mt-4 text-xl font-semibold">John Doe</h2>
                 <p class="text-gray-600">johndoe@example.com</p>
             </div>
@@ -14,26 +14,17 @@
                 <h3 class="text-lg font-medium">Profile Information</h3>
                 <div class="mt-4">
                     <label class="block text-gray-700">Full Name</label>
-                    <input
-                        type="text"
-                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                        value="John Doe"
-                    />
+                    <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                        value="John Doe" />
                 </div>
                 <div class="mt-4">
                     <label class="block text-gray-700">Email</label>
-                    <input
-                        type="email"
-                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                        value="johndoe@example.com"
-                    />
+                    <input type="email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                        value="johndoe@example.com" />
                 </div>
                 <div class="mt-4">
                     <label class="block text-gray-700">Bio</label>
-                    <textarea
-                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                        rows="3"
-                    >
+                    <textarea class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" rows="3">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     </textarea>
                 </div>
@@ -48,8 +39,27 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+import LoaderComponent from '@/components/general/LoaderComponent.vue'
+
 export default {
-  name: 'ProfilePage'
+  name: 'ProfilePage',
+  components: {
+    LoaderComponent
+  },
+  computed: {
+    ...mapGetters({
+      isLoading: 'isAuthorLoading'
+    })
+  },
+  mounted () {
+    // const authorId = this.$route.params.id
+    this.fetchUserProfile()
+    document.title = 'Book Shelf | Loading ...'
+  },
+  methods: {
+    ...mapActions(['fetchUserProfile'])
+  }
 }
 </script>
 
