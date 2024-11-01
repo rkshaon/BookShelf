@@ -14,4 +14,6 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = [
         'username', 'email', 'full_name'
     ]
-    readonly_fields = ('id',)
+    readonly_fields = (
+        'id', 'added_date_time', 'updated_date_time',
+    )

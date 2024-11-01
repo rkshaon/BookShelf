@@ -12,7 +12,9 @@ class GenreAdmin(admin.ModelAdmin):
     ]
     list_display_links = ['name']
     search_fields = ['name']
-    readonly_fields = ['id']
+    readonly_fields = [
+        'id', 'added_date_time', 'updated_date_time',
+    ]
 
 
 @admin.register(Topic)
@@ -22,7 +24,9 @@ class TopicAdmin(admin.ModelAdmin):
     ]
     list_display_links = ['name']
     search_fields = ['name']
-    readonly_fields = ['id']
+    readonly_fields = [
+        'id', 'added_date_time', 'updated_date_time',
+    ]
 
 
 @admin.register(Book)
@@ -49,4 +53,6 @@ class BookAdmin(admin.ModelAdmin):
         'published_year', 'language',
         'description',
     ]
-    readonly_fields = ['id', 'book_code']
+    readonly_fields = [
+        'id', 'book_code', 'added_date_time', 'updated_date_time',
+    ]

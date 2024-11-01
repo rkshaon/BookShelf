@@ -19,4 +19,6 @@ class PublisherAdmin(admin.ModelAdmin):
         'email', 'phone_number',
         'established_year',
     ]
-    readonly_fields = ['id',]
+    readonly_fields = [
+        'id', 'added_date_time', 'updated_date_time',
+    ]
