@@ -56,7 +56,6 @@ export default {
     })
   },
   mounted () {
-    // const authorId = this.$route.params.id
     this.fetchUserProfile()
     document.title = 'Book Shelf | Loading ...'
   },

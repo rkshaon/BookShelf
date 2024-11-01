@@ -6,7 +6,6 @@ from book_api.models import Book
 
 @receiver(post_delete, sender=Book)
 def delete_book_files(sender, instance, *args, **kwargs):
-    print(instance)
     if instance.book:
         instance.book.delete(save=False)
 
