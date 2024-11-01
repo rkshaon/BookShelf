@@ -12,4 +12,6 @@ class AuthorAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'full_name',)
     list_filter = []
     search_fields = ('first_name', 'last_name', 'birth_date')
-    readonly_fields = ('id',)
+    readonly_fields = (
+        'id', 'added_date_time', 'updated_date_time',
+    )
