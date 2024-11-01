@@ -38,13 +38,11 @@ export const getUserProfile = async () => {
     const URL = `${API_BASE_URL}/${content}/${version}/profile`
     const token = getAccessToken()
     console.log('URL', URL)
-    console.log('Token', token)
     const response = await axios.get(URL, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
-    console.log('Response', response.data)
     return response.data
   } catch (error) {
     throw error.response.data

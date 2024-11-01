@@ -4,7 +4,7 @@ import { getUserProfile } from '@/services/v1/userAPIService'
 
 export default {
   state: {
-    user: null,
+    user: {},
     loading: false
   },
   getters: {
@@ -13,7 +13,9 @@ export default {
   },
   mutations: {
     SET_USER (state, user) {
+      console.log('before', state.user)
       state.user = user
+      console.log('after', state.user)
     },
     SET_LOADING (state, loading) {
       state.loading = loading
@@ -24,7 +26,9 @@ export default {
       commit('SET_LOADING', true)
       try {
         const response = await getUserProfile()
+        console.log('User', response)
         commit('SET_USER', response)
+        console.log(this.user)
       } catch (error) {
         console.log(error)
       } finally {
