@@ -12,7 +12,7 @@ import genreDetails from '@/store/modules/genres/genreDetails'
 import topicDetails from '@/store/modules/topics/topicDetails'
 // user modules
 import register from '@/store/modules/users/register'
-import login from '@/store/modules/users/login'
+import authentication from '@/store/modules/users/authentication'
 import profile from '@/store/modules/users/profile'
 
 export default new Vuex.Store({
@@ -24,7 +24,7 @@ export default new Vuex.Store({
     genreDetails,
     topicDetails,
     register,
-    login,
+    authentication,
     profile
   }
 })

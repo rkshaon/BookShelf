@@ -23,7 +23,11 @@
               @click="closeDropdown">Dashboard</router-link>
             <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" @click="closeDropdown">Account
               Settings</a>
-            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" @click="closeDropdown">Logout</a>
+            <!-- <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" @click="closeDropdown">Logout</a> -->
+            <button v-if="isAuthenticated" @click="closeDropdown(); logoutUser()"
+              class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+              Logout
+            </button>
           </div>
           <!-- </div> -->
         </div>
@@ -42,7 +46,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'TopBarComponent',
@@ -74,6 +79,7 @@ export default {
     })
   },
   methods: {
+    ...mapActions(['logout']),
     toggleDropdown () {
       this.dropdownOpen = !this.dropdownOpen
     },
@@ -84,6 +90,15 @@ export default {
       if (!this.$el.contains(event.target)) {
         this.dropdownOpen = false
       }
+    },
+    async logoutUser () {
+      // this.$router.push('/')
+      console.log('Logout')
+      await this.logout()
+      const toast = useToast()
+      toast.info('You have successfully logged out')
+      console.log(this.isAuthenticated)
+      this.$router.push({ name: 'SignIn' })
     }
   },
   mounted () {
