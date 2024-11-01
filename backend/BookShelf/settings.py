@@ -8,6 +8,7 @@ from BookShelf.env import ALLOWED_HOSTS_SETTINGS
 from BookShelf.env import SECRET_KEY_SETTINGS
 from BookShelf.env import CORS_ALLOWED_ORIGINS_SETTINGS
 from BookShelf.env import X_FRAME_OPTIONS_SETTINGS
+from BookShelf.env import ELASTICSEARCH_DSL_SETTINGS
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -94,12 +95,7 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': 'http://localhost:9200'
-    },
-}
-# ELASTICSEARCH_DSL = {}
+ELASTICSEARCH_DSL = ELASTICSEARCH_DSL_SETTINGS
 
 CACHES = {
     'default': {

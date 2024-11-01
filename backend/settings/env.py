@@ -19,3 +19,12 @@ CORS_ALLOWED_ORIGINS_SETTINGS = [
 ]
 
 X_FRAME_OPTIONS_SETTINGS = 'ALLOW-FROM http://localhost:8080'
+
+ELASTICSEARCH_DSL_SETTINGS = {
+    'default': {
+        'hosts': 'https://elastic:UCPixWsUH8WG_cTtad+F@localhost:9200',
+        'http_auth': ('elastic', 'UCPixWsUH8WG_cTtad+F'),
+        'use_ssl': True,
+        'verify_certs': False
+    },
+}
