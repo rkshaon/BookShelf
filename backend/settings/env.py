@@ -24,7 +24,6 @@ ELASTICSEARCH_DSL_SETTINGS = {
     'default': {
         'hosts': 'https://elastic:UCPixWsUH8WG_cTtad+F@localhost:9200',
         'http_auth': ('elastic', 'UCPixWsUH8WG_cTtad+F'),
-        'use_ssl': True,
         'verify_certs': False
     },
 }

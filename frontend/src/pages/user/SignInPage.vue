@@ -61,7 +61,7 @@ export default {
       const toast = useToast()
       if (val) {
         toast.success('You have successfully logged in')
-        this.$router.push({ name: 'Home' })
+        this.$router.push({ name: 'Profile' })
       }
     }
   },

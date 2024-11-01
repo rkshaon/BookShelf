@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useToast } from 'vue-toastification'
 
 const routes = [
   {
@@ -71,6 +72,9 @@ router.beforeEach((to, from, next) => {
     to.matched.some((record) => record.meta.requiresAuth) &&
     !isAdminLoggedIn()
   ) {
+    const toast = useToast()
+    toast.error('You must be logged in to access this page')
+    console.log('Log in is required.')
     next('/signin')
   } else {
     next()
