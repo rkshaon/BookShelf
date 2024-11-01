@@ -13,7 +13,7 @@
           <!-- <div class="flex space-x-4"> -->
           <button @click="toggleDropdown"
             class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center">
-            <img src="path/to/profile-icon.png" alt="Profile" class="w-6 h-6 rounded-full">
+            <img :src="getProfileImage(user.profile_image, API_BASE_URL)" alt="Profile" class="w-6 h-6 rounded-full">
             <span class="text-white ml-2">Profile</span>
           </button>
           <div v-if="dropdownOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
@@ -48,6 +48,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { useToast } from 'vue-toastification'
+import { getProfileImage } from '@/helpers/getProfileImage'
 
 export default {
   name: 'TopBarComponent',
@@ -75,11 +76,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isAuthenticated: 'isAuthenticated'
-    })
+      isAuthenticated: 'isAuthenticated',
+      user: 'userProfile'
+    }),
+    API_BASE_URL () {
+      return process.env.VUE_APP_BACKEND_URL
+    }
   },
   methods: {
     ...mapActions(['logout']),
+    getProfileImage,
     toggleDropdown () {
       this.dropdownOpen = !this.dropdownOpen
     },
