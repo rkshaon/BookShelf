@@ -47,8 +47,8 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
-    component: () => import('@/pages/user/ProfilePage.vue'),
-    meta: { requiresAuth: true }
+    component: () => import('@/pages/user/ProfilePage.vue')
+    // meta: { requiresAuth: true }
   },
   {
     path: '/dashboard',
