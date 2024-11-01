@@ -47,6 +47,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'TopBarComponent',
@@ -91,11 +92,13 @@ export default {
       }
     },
     async logoutUser () {
-      // await this.$store.dispatch('logoutUser')
       // this.$router.push('/')
       console.log('Logout')
       await this.logout()
+      const toast = useToast()
+      toast.info('You have successfully logged out')
       console.log(this.isAuthenticated)
+      this.$router.push({ name: 'SignIn' })
     }
   },
   mounted () {

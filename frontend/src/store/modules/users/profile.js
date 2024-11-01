@@ -20,10 +20,10 @@ export default {
     }
   },
   actions: {
-    async fetchUserProfile ({ commit }, token) {
+    async fetchUserProfile ({ commit }) {
       commit('SET_LOADING', true)
       try {
-        const response = await getUserProfile(token)
+        const response = await getUserProfile()
         commit('SET_USER', response)
       } catch (error) {
         console.log(error)

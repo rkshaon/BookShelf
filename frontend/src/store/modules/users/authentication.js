@@ -7,7 +7,7 @@ export default {
   state: {
     errors: null,
     loading: false,
-    accessToken: null,
+    accessToken: getAccessToken(),
     refreshToken: null
   },
   getters: {
@@ -25,7 +25,6 @@ export default {
     SET_TOKEN (state, token) {
       state.accessToken = token.access
       state.refreshToken = token.refresh
-      // set tokens to localStorage
       localStorage.setItem('accessToken', token.access)
       localStorage.setItem('refreshToken', token.refresh)
     },
