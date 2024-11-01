@@ -46,7 +46,8 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
-    component: () => import('@/pages/user/ProfilePage.vue')
+    component: () => import('@/pages/user/ProfilePage.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/dashboard',
@@ -64,5 +65,27 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  if (
+    to.matched.some((record) => record.meta.requiresAuth) &&
+    !isAdminLoggedIn()
+  ) {
+    next('/signin')
+  } else {
+    next()
+  }
+})
+
+function isAdminLoggedIn () {
+  if (
+    !localStorage.getItem('accessToken') &&
+    !localStorage.getItem('refreshToken')
+  ) {
+    return false
+  }
+
+  return true
+}
 
 export default router
