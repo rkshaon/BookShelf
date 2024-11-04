@@ -15,7 +15,7 @@ api.interceptors.request.use(
   (config) => {
     if (config.requiresAuth) {
       // Check for custom requiresAuth flag
-      const token = getAccessToken() // Retrieve the access token
+      const token = getAccessToken()
       if (token) {
         config.headers.Authorization = `Bearer ${token}`
       }
@@ -48,7 +48,7 @@ api.interceptors.response.use(
           setAccessToken(newAccessToken)
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
 
-          return api(originalRequest) // Retry the original request with the new token
+          return api(originalRequest)
         } else {
           throw new Error('No refresh token available')
         }
