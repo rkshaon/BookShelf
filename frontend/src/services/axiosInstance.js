@@ -7,7 +7,7 @@ import {
 } from '@/helpers/getToken'
 
 const api = axios.create({
-  baseURL: process.env.VUE_APP_API_URL // Your API base URL
+  baseURL: process.env.VUE_APP_BACKEND_URL // Your API base URL
 })
 
 // Request Interceptor: Conditionally attach the access token to headers
@@ -38,7 +38,7 @@ api.interceptors.response.use(
         const refreshToken = getRefreshToken()
         if (refreshToken) {
           const response = await axios.post(
-            `${process.env.VUE_APP_API_URL}/auth/refresh`,
+            `${process.env.VUE_APP_BACKEND_URL}/user/v1/refresh`,
             {
               refresh: refreshToken
             }
