@@ -84,7 +84,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['logout']),
+    ...mapActions(['logout', 'fetchUserProfile']),
     getProfileImage,
     toggleDropdown () {
       this.dropdownOpen = !this.dropdownOpen
@@ -98,7 +98,6 @@ export default {
       }
     },
     async logoutUser () {
-      // this.$router.push('/')
       console.log('Logout')
       await this.logout()
       const toast = useToast()
@@ -109,6 +108,10 @@ export default {
   },
   mounted () {
     document.addEventListener('click', this.handleClickOutside)
+
+    if (!this.user || Object.keys(this.user).length === 0) {
+      this.fetchUserProfile()
+    }
   },
   beforeUnmount () {
     document.removeEventListener('click', this.handleClickOutside)
