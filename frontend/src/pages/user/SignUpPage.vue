@@ -87,6 +87,9 @@ export default {
       }
     }
   },
+  mounted () {
+    document.title = 'Book Shelf | Sign Up'
+  },
   methods: {
     ...mapActions(['register']),
     async registerUser () {

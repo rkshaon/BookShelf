@@ -65,6 +65,9 @@ export default {
       }
     }
   },
+  mounted () {
+    document.title = 'Book Shelf | Sign In'
+  },
   methods: {
     ...mapActions(['login']),
     async logInUser () {
