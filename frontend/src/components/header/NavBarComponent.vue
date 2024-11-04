@@ -3,7 +3,7 @@
     <div class="container mx-auto px-2 sm:px-6 lg:px-8">
       <div class="relative flex items-center justify-between h-16">
         <div class="flex-shrink-0">
-          <router-link to="/" class="text-xl font-bold text-white">BookShelf</router-link>
+          <router-link to="/?page=1" class="text-xl font-bold text-white">BookShelf</router-link>
         </div>
         <div class="flex-grow flex justify-end relative">
           <div class="relative w-full max-w-md">
