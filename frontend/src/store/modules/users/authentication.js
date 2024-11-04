@@ -1,7 +1,10 @@
 // src/store/modules/users/authentication.js
 
 import { loginUser } from '@/services/v1/userAPIService'
-import { getAccessToken, getRefreshToken } from '@/helpers/getToken'
+import {
+  getAccessToken, getRefreshToken, setAccessToken, setRefreshToken,
+  removeAccessToken, removeRefreshToken
+} from '@/helpers/getToken'
 
 export default {
   state: {
@@ -25,14 +28,18 @@ export default {
     SET_TOKEN (state, token) {
       state.accessToken = token.access
       state.refreshToken = token.refresh
-      localStorage.setItem('accessToken', token.access)
-      localStorage.setItem('refreshToken', token.refresh)
+      // localStorage.setItem('accessToken', token.access)
+      // localStorage.setItem('refreshToken', token.refresh)
+      setAccessToken(token.access)
+      setRefreshToken(token.refresh)
     },
     CLEAR_AUTH (state) {
       state.accessToken = null
       state.refreshToken = null
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
+      // localStorage.removeItem('accessToken')
+      // localStorage.removeItem('refreshToken')
+      removeAccessToken()
+      removeRefreshToken()
     }
   },
   actions: {
