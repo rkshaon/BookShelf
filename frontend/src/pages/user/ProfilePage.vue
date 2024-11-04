@@ -77,6 +77,13 @@ export default {
   methods: {
     ...mapActions(['fetchUserProfile']),
     getProfileImage
+  },
+  watch: {
+    user (newProfile) {
+      if (newProfile && Object.keys(newProfile).length > 0) {
+        document.title = `Book Shelf | ${newProfile.full_name || 'User Profile'}`
+      }
+    }
   }
 }
 </script>
