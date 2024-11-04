@@ -2,7 +2,8 @@ import axios from 'axios'
 import store from '@/store'
 import {
   getAccessToken,
-  getRefreshToken
+  getRefreshToken,
+  setAccessToken
 } from '@/helpers/getToken'
 
 const api = axios.create({
