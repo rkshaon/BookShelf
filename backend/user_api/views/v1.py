@@ -192,3 +192,61 @@ class UserProfileView(APIView):
         data = serializer.data
 
         return Response(data)
+
+
+class RefreshTokenView(APIView):
+    permission_classes = [AllowAny]
+
+    @swagger_auto_schema(
+        operation_description="Refresh access token",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "refresh": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="Refresh token"
+                ),
+            }
+        ),
+        responses={
+            200: openapi.Response(
+                description="New access token", schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "access": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Access token"
+                        ),
+                        "message": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Success message"
+                        ),
+                    }
+                )
+            ),
+            400: openapi.Response(description="Refresh token missing"),
+            401: openapi.Response(description="Invalid refresh token"),
+        },
+    )
+    def post(self, request, *args, **kwargs):
+        refresh = request.data.get('refresh', None)
+
+        if not refresh:
+            return Response({
+                'errors': ['Refresh token missing.'],
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            token = RefreshToken(refresh)
+            # token.blacklist()
+            # new_token = RefreshToken.for_user(token.user)
+            new_access_token = token.access_token
+        except Exception:
+            return Response({
+                'errors': ['Invalid refresh token.'],
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+        return Response({
+            'access': str(new_access_token),
+            'message': 'Successfully refreshed access token!',
+        })

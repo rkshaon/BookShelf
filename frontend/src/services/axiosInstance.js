@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
+import { useToast } from 'vue-toastification'
 import {
   getAccessToken,
   getRefreshToken,
@@ -7,7 +8,7 @@ import {
 } from '@/helpers/getToken'
 
 const api = axios.create({
-  baseURL: process.env.VUE_APP_API_URL // Your API base URL
+  baseURL: process.env.VUE_APP_BACKEND_URL
 })
 
 // Request Interceptor: Conditionally attach the access token to headers
@@ -15,7 +16,7 @@ api.interceptors.request.use(
   (config) => {
     if (config.requiresAuth) {
       // Check for custom requiresAuth flag
-      const token = getAccessToken() // Retrieve the access token
+      const token = getAccessToken()
       if (token) {
         config.headers.Authorization = `Bearer ${token}`
       }
@@ -38,7 +39,7 @@ api.interceptors.response.use(
         const refreshToken = getRefreshToken()
         if (refreshToken) {
           const response = await axios.post(
-            `${process.env.VUE_APP_API_URL}/auth/refresh`,
+            `${process.env.VUE_APP_BACKEND_URL}/user/v1/refresh`,
             {
               refresh: refreshToken
             }
@@ -48,12 +49,15 @@ api.interceptors.response.use(
           setAccessToken(newAccessToken)
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
 
-          return api(originalRequest) // Retry the original request with the new token
+          return api(originalRequest)
         } else {
           throw new Error('No refresh token available')
         }
       } catch (refreshError) {
-        store.dispatch('auth/logout') // Optional: dispatch logout if refresh fails
+        const toast = useToast()
+        toast.error('You have successfully logged out')
+        console.log('Invalid Refresh Token')
+        store.dispatch('logout') // Optional: dispatch logout if refresh fails
         return Promise.reject(refreshError)
       }
     }

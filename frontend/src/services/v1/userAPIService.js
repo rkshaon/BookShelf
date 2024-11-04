@@ -1,8 +1,9 @@
 // src/services/v1/userAPIService.js
 
-import axios from 'axios'
+// import axios from 'axios'
 
 import { getAccessToken } from '@/helpers/getToken'
+import api from '@/services/axiosInstance'
 
 const API_BASE_URL = process.env.VUE_APP_BACKEND_URL
 const content = 'user'
@@ -13,7 +14,7 @@ export const registerUser = async (userData) => {
   const URL = `${API_BASE_URL}/${content}/${version}/registration`
   console.log(URL)
   try {
-    const response = await axios.post(URL, userData)
+    const response = await api.post(URL, userData)
     return response.data
   } catch (error) {
     throw error.response.data
@@ -25,7 +26,7 @@ export const loginUser = async (credentials) => {
   try {
     const URL = `${API_BASE_URL}/${content}/${version}/login`
     console.log(URL)
-    const response = await axios.post(URL, credentials)
+    const response = await api.post(URL, credentials)
     return response.data
   } catch (error) {
     throw error.response.data
@@ -38,7 +39,7 @@ export const getUserProfile = async () => {
     const URL = `${API_BASE_URL}/${content}/${version}/profile`
     const token = getAccessToken()
     console.log('URL', URL)
-    const response = await axios.get(URL, {
+    const response = await api.get(URL, {
       headers: {
         Authorization: `Bearer ${token}`
       }
