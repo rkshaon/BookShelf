@@ -109,7 +109,7 @@ export default {
   mounted () {
     document.addEventListener('click', this.handleClickOutside)
 
-    if (!this.user || Object.keys(this.user).length === 0) {
+    if (this.isAuthenticated && (!this.user || Object.keys(this.user).length === 0)) {
       this.fetchUserProfile()
     }
   },
