@@ -84,7 +84,7 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     # Token lifetime, adjust as needed
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=60),
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=1),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
     # Set to True if you want new refresh tokens
     # every time the old ones are used

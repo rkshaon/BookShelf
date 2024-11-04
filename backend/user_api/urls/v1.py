@@ -16,4 +16,5 @@ urlpatterns = [
         'profile',
         v1.UserProfileView.as_view(),
     ),
+    path('refresh', v1.RefreshTokenView.as_view()),
 ]
