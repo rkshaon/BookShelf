@@ -75,6 +75,10 @@ export default {
     document.title = 'Book Shelf | Loading ...'
     if (this.isAuthenticated && (!this.user || Object.keys(this.user).length === 0)) {
       this.fetchUserProfile()
+      document.title = `Book Shelf | ${this.user.full_name || 'User Profile'}`
+    }
+    if (this.user && Object.keys(this.user).length > 0) {
+      document.title = `Book Shelf | ${this.user.full_name || 'User Profile'}`
     }
   },
   methods: {
