@@ -66,13 +66,16 @@ export default {
       return process.env.VUE_APP_BACKEND_URL
     },
     ...mapGetters({
+      isAuthenticated: 'isAuthenticated',
       isLoading: 'isLoading',
       user: 'userProfile'
     })
   },
   mounted () {
-    this.fetchUserProfile()
     document.title = 'Book Shelf | Loading ...'
+    if (this.isAuthenticated && (!this.user || Object.keys(this.user).length === 0)) {
+      this.fetchUserProfile()
+    }
   },
   methods: {
     ...mapActions(['fetchUserProfile']),
