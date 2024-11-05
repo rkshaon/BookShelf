@@ -17,3 +17,9 @@ class UserAdmin(admin.ModelAdmin):
     readonly_fields = (
         'id', 'added_date_time', 'updated_date_time',
     )
+
+    def save_model(self, request, obj, form, change):
+        if "password" in form.changed_data:
+            obj.set_password(obj.password)
+
+        super().save_model(request, obj, form, change)
