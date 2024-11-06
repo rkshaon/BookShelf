@@ -4,14 +4,19 @@ from user_api.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    role_display = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = [
             'id', 'email', 'username', 'password',
             'first_name', 'middle_name', 'last_name',
-            'full_name', 'role', 'profile_image',
+            'full_name', 'role', 'role_display', 'profile_image',
         ]
         extra_kwargs = {'password': {'write_only': True}}
+
+    def get_role_display(self, obj):
+        return obj.get_role_display()
 
     def create(self, validated_data):
         user = User.objects.create_user(
