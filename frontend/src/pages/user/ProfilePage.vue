@@ -10,7 +10,7 @@
                         :src="getProfileImage(user.profile_image, API_BASE_URL)" alt="User Avatar" />
                     <h2 class="mt-4 text-xl font-semibold">{{ user.full_name || 'Full Name' }}</h2>
                     <p class="text-gray-600">{{ user.email || 'yourmail@example.com' }}</p>
-                    <p class="text-gray-600">{{ user.role || 'User Role' }}</p>
+                    <p class="text-gray-600">{{ user.role_display || 'User Role' }}</p>
                 </div>
                 <div class="mt-6">
                     <h3 class="text-lg font-medium">Profile Information</h3>
