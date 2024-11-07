@@ -1,12 +1,7 @@
 <template>
   <div class="flex min-h-screen bg-gray-100">
-    <!-- Sidebar -->
-
-    <!-- Main Content -->
     <main class="flex-1 p-6">
-      <!-- Page Title -->
       <h1 class="text-3xl font-bold mb-6">Welcome to Your Dashboard</h1>
-
       <!-- Metric Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <div class="bg-white shadow rounded-lg p-6 text-center">
@@ -18,6 +13,14 @@
           <h2 class="text-2xl font-semibold">56</h2>
         </div>
         <div class="bg-white shadow rounded-lg p-6 text-center">
+          <p class="text-gray-500 text-sm font-medium">Recently Uploaded Books</p>
+          <h2 class="text-2xl font-semibold">56</h2>
+        </div>
+        <div class="bg-white shadow rounded-lg p-6 text-center">
+          <p class="text-gray-500 text-sm font-medium">Your Uploaded Books</p>
+          <h2 class="text-2xl font-semibold">56</h2>
+        </div>
+        <div class="bg-white shadow rounded-lg p-6 text-center">
           <p class="text-gray-500 text-sm font-medium">Revenue</p>
           <h2 class="text-2xl font-semibold">$12,345</h2>
         </div>
@@ -26,7 +29,6 @@
           <h2 class="text-2xl font-semibold">789</h2>
         </div>
       </div>
-
       <!-- Recent Activity Section -->
       <section>
         <h2 class="text-2xl font-semibold mb-4">Recent Activities</h2>
@@ -42,8 +44,8 @@
 </template>
 
 <script>
-import { useToast } from 'vue-toastification'
-import { mapActions } from 'vuex'
+// import { useToast } from 'vue-toastification'
+// import { mapActions } from 'vuex'
 
 export default {
   name: 'OverviewPage',
@@ -58,13 +60,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['logout']),
-    async handleLogout () {
-      const toast = useToast()
-      await this.logout()
-      toast.info('Logged out successfully')
-      this.$router.push('/login')
-    }
+    // ...mapActions(['logout']),
+    // async handleLogout () {
+    //   const toast = useToast()
+    //   await this.logout()
+    //   toast.info('Logged out successfully')
+    //   this.$router.push('/login')
+    // }
   }
 }
 </script>

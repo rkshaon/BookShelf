@@ -62,11 +62,18 @@ const routes = [
     name: 'Dashboard',
     component: () => import('@/layouts/DashboardLayout.vue'),
     meta: { requiresAuth: true },
-    children: [{
-      path: '',
-      name: 'Overview',
-      component: () => import('@/pages/dashboard/OverviewPage.vue')
-    }]
+    children: [
+      {
+        path: '',
+        name: 'Overview',
+        component: () => import('@/pages/dashboard/OverviewPage.vue')
+      },
+      {
+        path: 'books',
+        name: 'BookList',
+        component: () => import('@/pages/dashboard/BookListPage.vue')
+      }
+    ]
   },
   {
     path: '/:pathMatch(.*)*',
