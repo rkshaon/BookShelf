@@ -55,7 +55,7 @@ api.interceptors.response.use(
         }
       } catch (refreshError) {
         const toast = useToast()
-        toast.error('You have successfully logged out')
+        toast.error('Session expired, login again!')
         console.log('Invalid Refresh Token')
         store.dispatch('logout') // Optional: dispatch logout if refresh fails
         return Promise.reject(refreshError)

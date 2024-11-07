@@ -28,7 +28,6 @@ export default {
         const response = await getUserProfile()
         console.log('User', response)
         commit('SET_USER', response)
-        console.log(this.user)
       } catch (error) {
         console.log(error)
       } finally {
