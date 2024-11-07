@@ -65,53 +65,52 @@ export default {
       isAuthenticated: 'isAuthenticated',
       isLoading: 'isLoading',
       userProfile: 'userProfile',
-      errors: 'editProfileError'
+      errors: 'editProfileError',
+      successMessage: 'editSuccessMessage'
     })
   },
   mounted () {
-    document.title = 'Book Shelf | Loading ...'
+    document.title = 'Book Shelf | Edit Profile'
     if (this.isAuthenticated && (!this.user || Object.keys(this.user).length === 0)) {
       this.fetchUserProfile()
-      document.title = `Book Shelf | ${this.user.full_name || 'User Profile'}`
-    }
-    if (this.user && Object.keys(this.user).length > 0) {
-      document.title = `Book Shelf | ${this.user.full_name || 'Edit Profile'}`
     }
     this.user = { ...this.userProfile }
     this.userData = { ...this.userProfile }
   },
   methods: {
-    ...mapActions(['fetchUserProfile', 'editUserProfile']),
+    ...mapActions([
+      'fetchUserProfile', 'editUserProfile', 'clearSuccessMessage'
+    ]),
     getProfileImage,
     getUpdatedFields () {
       const updatedFields = {}
       for (const key in this.userData) {
         if (this.userData[key] !== this.user[key]) {
-          updatedFields[key] = this.userData[key] // Only add fields that have changed
+          updatedFields[key] = this.userData[key]
         }
       }
       return updatedFields
     },
     async editProfile () {
-      console.log('Edit Profile')
-      // Find which fields are updated this.user and this.userData
-      console.log(this.user)
       const updatedFields = this.getUpdatedFields()
-      console.log(updatedFields)
-      if (Object.keys(updatedFields).length > 0) {
-        await this.editUserProfile(updatedFields)
-      } else {
-        const toast = useToast()
-        toast.info('No changes made')
+      const toast = useToast()
+
+      if (Object.keys(updatedFields).length === 0) {
+        toast.info('No changes to save')
+        return
       }
-      // await this.editUserProfile(updatedFields)
+
+      try {
+        await this.editUserProfile(updatedFields)
+        this.$router.push({ name: 'Profile' })
+        this.clearSuccessMessage()
+      } catch (error) {
+        toast.error('Failed to update profile')
+      }
     }
   },
   watch: {
     user (newProfile) {
-      if (newProfile && Object.keys(newProfile).length > 0) {
-        document.title = `Book Shelf | ${newProfile.full_name || 'User Profile'}`
-      }
       this.userData = { ...newProfile }
     },
     errors (newErrors) {
@@ -120,6 +119,12 @@ export default {
         newErrors.forEach(error => {
           toast.error(error)
         })
+      }
+    },
+    successMessage (newMessage) {
+      const toast = useToast()
+      if (newMessage) {
+        toast.success(newMessage)
       }
     }
   }

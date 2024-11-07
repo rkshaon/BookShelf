@@ -10,13 +10,15 @@ export default {
     user: {},
     loading: false,
     editFailed: false,
+    editSuccessMessage: null,
     errors: null
   },
   getters: {
     userProfile: (state) => state.user,
     isLoading: (state) => state.loading,
     isEditFailed: (state) => state.editFailed,
-    editProfileError: (state) => state.errors
+    editProfileError: (state) => state.errors,
+    editSuccessMessage: (state) => state.editSuccessMessage
   },
   mutations: {
     SET_ERROR (state, error) {
@@ -29,6 +31,12 @@ export default {
     },
     SET_LOADING (state, loading) {
       state.loading = loading
+    },
+    SET_EDIT_SUCCESS_MESSAGE (state, success) {
+      state.editSuccessMessage = success
+    },
+    CLEAR_SUCCESS_MESSAGE (state) {
+      state.editSuccessMessage = null
     }
   },
   actions: {
@@ -50,6 +58,7 @@ export default {
         const response = await editUserProfile(userData)
         console.log('Update User', response)
         commit('SET_USER', response)
+        commit('SET_EDIT_SUCCESS_MESSAGE', 'Profile updated successfully')
       } catch (error) {
         console.log(error)
         const errorMessages = []
@@ -63,6 +72,9 @@ export default {
       } finally {
         commit('SET_LOADING', false)
       }
+    },
+    clearSuccessMessage ({ commit }) {
+      commit('CLEAR_SUCCESS_MESSAGE')
     }
   }
 }
