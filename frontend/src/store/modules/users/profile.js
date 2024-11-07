@@ -1,6 +1,9 @@
 // src/store/modules/users/profile.js
 
-import { getUserProfile } from '@/services/v1/userAPIService'
+import {
+  getUserProfile,
+  editUserProfile
+} from '@/services/v1/userAPIService'
 
 export default {
   state: {
@@ -26,7 +29,19 @@ export default {
       commit('SET_LOADING', true)
       try {
         const response = await getUserProfile()
-        console.log('User', response)
+        console.log('Fetch User', response)
+        commit('SET_USER', response)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        commit('SET_LOADING', false)
+      }
+    },
+    async editUserProfile ({ commit }, userData) {
+      commit('SET_LOADING', true)
+      try {
+        const response = await editUserProfile(userData)
+        console.log('Update User', response)
         commit('SET_USER', response)
       } catch (error) {
         console.log(error)
