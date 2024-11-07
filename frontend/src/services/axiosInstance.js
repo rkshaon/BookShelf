@@ -14,6 +14,7 @@ const api = axios.create({
 // Request Interceptor: Conditionally attach the access token to headers
 api.interceptors.request.use(
   (config) => {
+    console.log('URL', config.url)
     if (config.requiresAuth) {
       // Check for custom requiresAuth flag
       const token = getAccessToken()
@@ -55,7 +56,7 @@ api.interceptors.response.use(
         }
       } catch (refreshError) {
         const toast = useToast()
-        toast.error('You have successfully logged out')
+        toast.error('Session expired, login again!')
         console.log('Invalid Refresh Token')
         store.dispatch('logout') // Optional: dispatch logout if refresh fails
         return Promise.reject(refreshError)

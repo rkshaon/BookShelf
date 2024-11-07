@@ -51,6 +51,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/edit/profile',
+    name: 'EditProfile',
+    component: () => import('@/pages/user/EditProfilePage.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import('@/pages/user/DashboardPage.vue')
