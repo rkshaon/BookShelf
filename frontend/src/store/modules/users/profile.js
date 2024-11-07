@@ -8,13 +8,20 @@ import {
 export default {
   state: {
     user: {},
-    loading: false
+    loading: false,
+    editFailed: false,
+    errors: null
   },
   getters: {
     userProfile: (state) => state.user,
-    isLoading: (state) => state.loading
+    isLoading: (state) => state.loading,
+    isEditFailed: (state) => state.editFailed,
+    editProfileError: (state) => state.errors
   },
   mutations: {
+    SET_ERROR (state, error) {
+      state.errors = error
+    },
     SET_USER (state, user) {
       console.log('before', state.user)
       state.user = user
@@ -45,6 +52,14 @@ export default {
         commit('SET_USER', response)
       } catch (error) {
         console.log(error)
+        const errorMessages = []
+        for (const [field, messages] of Object.entries(error)) {
+          messages.forEach((message) => {
+            console.log(`${field}: ${message}`)
+            errorMessages.push(message)
+          })
+        }
+        commit('SET_ERROR', errorMessages)
       } finally {
         commit('SET_LOADING', false)
       }

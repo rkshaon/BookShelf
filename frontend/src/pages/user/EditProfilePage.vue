@@ -7,7 +7,7 @@
       <div v-else>
         <form @submit.prevent="editProfile">
           <div class="flex flex-col items-center">
-            <img class="w-24 h-24 rounded-full object-cover" :src="getProfileImage(user.profile_image, API_BASE_URL)"
+            <img class="w-24 h-24 rounded-full object-cover" :src="getProfileImage(userData.profile_image, API_BASE_URL)"
               alt="User Avatar" />
           </div>
           <div class="mt-6">
@@ -15,17 +15,17 @@
             <div class="mt-4">
               <label class="block text-gray-700">First Name</label>
               <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                v-model="user.first_name" />
+                v-model="userData.first_name" />
             </div>
             <div class="mt-4">
               <label class="block text-gray-700">Middle Name</label>
               <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                v-model="user.middle_name" />
+                v-model="userData.middle_name" />
             </div>
             <div class="mt-4">
               <label class="block text-gray-700">Last Name</label>
               <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                v-model="user.last_name" />
+                v-model="userData.last_name" />
             </div>
             <div class="mt-6 flex justify-end">
               <button class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600">
@@ -43,12 +43,19 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { getProfileImage } from '@/helpers/getProfileImage'
+import { useToast } from 'vue-toastification'
 import LoaderComponent from '@/components/general/LoaderComponent.vue'
 
 export default {
   name: 'ProfilePage',
   components: {
     LoaderComponent
+  },
+  data () {
+    return {
+      user: { },
+      userData: { }
+    }
   },
   computed: {
     API_BASE_URL () {
@@ -57,7 +64,8 @@ export default {
     ...mapGetters({
       isAuthenticated: 'isAuthenticated',
       isLoading: 'isLoading',
-      user: 'userProfile'
+      userProfile: 'userProfile',
+      errors: 'editProfileError'
     })
   },
   mounted () {
@@ -67,21 +75,51 @@ export default {
       document.title = `Book Shelf | ${this.user.full_name || 'User Profile'}`
     }
     if (this.user && Object.keys(this.user).length > 0) {
-      document.title = `Book Shelf | ${this.user.full_name || 'User Profile'}`
+      document.title = `Book Shelf | ${this.user.full_name || 'Edit Profile'}`
     }
+    this.user = { ...this.userProfile }
+    this.userData = { ...this.userProfile }
   },
   methods: {
-    ...mapActions(['fetchUserProfile']),
+    ...mapActions(['fetchUserProfile', 'editUserProfile']),
     getProfileImage,
+    getUpdatedFields () {
+      const updatedFields = {}
+      for (const key in this.userData) {
+        if (this.userData[key] !== this.user[key]) {
+          updatedFields[key] = this.userData[key] // Only add fields that have changed
+        }
+      }
+      return updatedFields
+    },
     async editProfile () {
       console.log('Edit Profile')
+      // Find which fields are updated this.user and this.userData
       console.log(this.user)
+      const updatedFields = this.getUpdatedFields()
+      console.log(updatedFields)
+      if (Object.keys(updatedFields).length > 0) {
+        await this.editUserProfile(updatedFields)
+      } else {
+        const toast = useToast()
+        toast.info('No changes made')
+      }
+      // await this.editUserProfile(updatedFields)
     }
   },
   watch: {
     user (newProfile) {
       if (newProfile && Object.keys(newProfile).length > 0) {
         document.title = `Book Shelf | ${newProfile.full_name || 'User Profile'}`
+      }
+      this.userData = { ...newProfile }
+    },
+    errors (newErrors) {
+      const toast = useToast()
+      if (newErrors && newErrors.length) {
+        newErrors.forEach(error => {
+          toast.error(error)
+        })
       }
     }
   }
