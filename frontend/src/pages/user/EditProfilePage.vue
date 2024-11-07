@@ -34,12 +34,6 @@
                         <input type="email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
                             :value="user.email" />
                     </div>
-                    <!-- <div class="mt-4">
-                        <label class="block text-gray-700">Bio</label>
-                        <textarea class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" rows="3">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </textarea>
-                    </div> -->
                     <div class="mt-6 flex justify-end">
                         <button class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600">
                             Save Changes
