@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useToast } from 'vue-toastification'
+import { getAccessToken, getRefreshToken } from '@/helpers/getToken'
 
 const routes = [
   {
@@ -59,12 +60,25 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('@/pages/user/DashboardPage.vue')
+    component: () => import('@/layouts/DashboardLayout.vue'),
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: '',
+        name: 'Overview',
+        component: () => import('@/pages/dashboard/OverviewPage.vue')
+      },
+      {
+        path: 'books',
+        name: 'BookList',
+        component: () => import('@/pages/dashboard/BookListPage.vue')
+      }
+    ]
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('@/pages/user/SignInPage.vue')
+    component: () => import('@/pages/NotFoundPage.vue')
   }
 ]
 
@@ -76,22 +90,18 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if (
     to.matched.some((record) => record.meta.requiresAuth) &&
-    !isAdminLoggedIn()
+    !isUserLoggedIn()
   ) {
     const toast = useToast()
     toast.error('You must be logged in to access this page')
-    console.log('Log in is required.')
     next('/signin')
   } else {
     next()
   }
 })
 
-function isAdminLoggedIn () {
-  if (
-    !localStorage.getItem('accessToken') &&
-    !localStorage.getItem('refreshToken')
-  ) {
+function isUserLoggedIn () {
+  if (!getAccessToken() && !getRefreshToken()) {
     return false
   }
 
