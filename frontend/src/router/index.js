@@ -59,7 +59,12 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('@/pages/user/DashboardPage.vue')
+    component: () => import('@/layouts/DashboardLayout.vue'),
+    children: [{
+      path: '',
+      name: 'Overview',
+      component: () => import('@/pages/dashboard/OverviewPage.vue')
+    }]
   },
   {
     path: '/:pathMatch(.*)*',
