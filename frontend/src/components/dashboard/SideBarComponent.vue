@@ -11,6 +11,11 @@
                     </router-link>
                 </li>
                 <li class="p-4 hover:bg-gray-700 cursor-pointer">
+                    <router-link to="/dashboard/authors" class="flex items-center">
+                        <span class="ml-2">Authors</span>
+                    </router-link>
+                </li>
+                <li class="p-4 hover:bg-gray-700 cursor-pointer">
                     <router-link to="/dashboard/books" class="flex items-center">
                         <span class="ml-2">Books</span>
                     </router-link>
@@ -47,7 +52,7 @@ export default {
       const toast = useToast()
       await this.logout()
       toast.info('Logged out successfully')
-      this.$router.push('/signin')
+      this.$router.push({ name: 'SignIn' })
     }
   }
 }
