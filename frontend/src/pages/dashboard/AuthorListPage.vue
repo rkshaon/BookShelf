@@ -1,37 +1,44 @@
 <template>
-  <div class="book-list-page">
-    <button class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600" @click="addAuthor">Add Author</button>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Biography</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="author in authors" :key="author.id">
-          <td>
-            <router-link :to="{ name: 'AuthorDetails', params: { id: author.id } }"
-              class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition">
-              {{ author.full_name }}
-            </router-link>
-          </td>
-          <td>{{ author.biography }}</td>
-          <td>
-            <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Edit</button>
-            <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <DashboardPaginationComponent
-      :previousPage="previousPageUrl"
-      :nextPage="nextPageUrl"
-      :pageSize="pageSize"
-      :currentPage="parseInt(currentPage, 10)"
-      :totalCount="totalAuthorCount"
-      @fetch-page="changePage" />
+  <div class="book-list-page p-6 bg-gray-50 min-h-screen">
+    <div class="flex justify-end mb-4">
+      <button class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
+        Add Author
+      </button>
+    </div>
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+      <table class="table-auto w-full border-collapse">
+        <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+          <tr>
+            <th class="py-3 px-6 text-left">Name</th>
+            <th class="py-3 px-6 text-left">Biography</th>
+            <th class="py-3 px-6 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-700 text-sm">
+          <tr v-for="author in authors" :key="author.id" class="border-b hover:bg-gray-100">
+            <td class="py-3 px-6">
+              <router-link :to="{ name: 'AuthorDetails', params: { id: author.id } }"
+                class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition">
+                {{ author.full_name }}
+              </router-link>
+            </td>
+            <td class="py-3 px-6">{{ author.biography }}</td>
+            <td class="py-3 px-6 text-center space-x-2">
+              <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
+                Edit
+              </button>
+              <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-6">
+      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="pageSize"
+        :currentPage="parseInt(currentPage, 10)" :totalCount="totalAuthorCount" @fetch-page="changePage" />
+    </div>
   </div>
 </template>
 
@@ -109,37 +116,4 @@ export default {
 </script>
 
 <style scoped>
-.book-list-page {
-    padding: 20px;
-}
-
-button {
-    margin-bottom: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th,
-td {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-.pagination {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.pagination button {
-    margin: 0 10px;
-}
 </style>
