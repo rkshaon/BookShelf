@@ -7,13 +7,15 @@ export default {
     authors: [],
     nextPageUrl: null,
     previousPageUrl: null,
-    pageSize: 8
+    pageSize: 8,
+    totalCount: 0
   },
   getters: {
     authors: (state) => state.authors,
     nextPageUrl: (state) => state.nextPageUrl,
     previousPageUrl: (state) => state.previousPageUrl,
-    currentPageSize: (state) => state.pageSize
+    currentPageSize: (state) => state.pageSize,
+    totalAuthorCount: (state) => state.totalCount
   },
   mutations: {
     SET_AUTHORS (state, authors) {
@@ -27,6 +29,9 @@ export default {
     },
     SET_PAGE_SIZE (state, pageSize) {
       state.currentPageSize = pageSize
+    },
+    SET_TOTAL_COUNT (state, totalCount) {
+      state.totalCount = totalCount
     }
   },
   actions: {
@@ -37,6 +42,7 @@ export default {
         commit('SET_NEXT_PAGE', response.next)
         commit('SET_PREVIOUS_PAGE', response.previous)
         commit('SET_PAGE_SIZE', pageSize)
+        commit('SET_TOTAL_COUNT', response.count)
       } catch (error) {
         console.error('Error fetching authors:', error)
       }

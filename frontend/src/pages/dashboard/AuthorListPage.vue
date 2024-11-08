@@ -46,9 +46,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['authors']),
+    ...mapGetters(['authors', 'totalAuthorCount']),
     totalPages () {
-      return Math.ceil(this.authors.length / this.pageSize)
+      return Math.ceil(this.totalAuthorCount / this.pageSize)
     },
     paginatedAuthors () {
       const start = (this.currentPage - 1) * this.pageSize
