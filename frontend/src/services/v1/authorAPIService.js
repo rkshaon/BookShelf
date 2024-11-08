@@ -16,3 +16,14 @@ export const fetchV1AuthorDetails = async (id = null) => {
     throw error
   }
 }
+
+export const fetchV1Authors = async () => {
+  const URL = `${API_BASE_URL}/${content}/${version}/`
+  try {
+    const response = await api.get(URL, { requireAuth: true })
+    return response.data
+  } catch (error) {
+    console.error('Error fetching authors:', error)
+    throw error
+  }
+}
