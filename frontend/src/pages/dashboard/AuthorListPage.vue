@@ -1,7 +1,7 @@
 <template>
   <div class="book-list-page p-6 bg-gray-50 min-h-screen">
     <div class="flex justify-end mb-4">
-      <button class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
+      <button @click="addAuthor()" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
         Add Author
       </button>
     </div>
@@ -53,7 +53,7 @@ export default {
   },
   data () {
     return {
-      isLoading: false,
+      // isLoading: false,
       currentPage: 0
     }
   },
@@ -97,17 +97,17 @@ export default {
     addAuthor () {
       alert('Add Author Coming Soon...')
     },
-    async fetchAuthors (payload) {
-      this.isLoading = true
-      this.$store.commit('SET_AUTHORS', [])
-      try {
-        await this.$store.dispatch('fetchAuthors', payload)
-      } catch (error) {
-        console.error('Error fetching authors:', error)
-      } finally {
-        this.isLoading = false
-      }
-    },
+    // async fetchAuthors (payload) {
+    //   this.isLoading = true
+    //   this.$store.commit('SET_AUTHORS', [])
+    //   try {
+    //     await this.$store.dispatch('fetchAuthors', payload)
+    //   } catch (error) {
+    //     console.error('Error fetching authors:', error)
+    //   } finally {
+    //     this.isLoading = false
+    //   }
+    // },
     changePage (page) {
       this.$router.push({ query: { page } })
     }
