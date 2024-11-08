@@ -27,53 +27,101 @@
         </tr>
       </tbody>
     </table>
-    <div class="pagination">
+    <!-- <div class="pagination">
       <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
       <span>Page {{ currentPage }} of {{ totalPages }}</span>
       <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
-    </div>
+    </div> -->
+    <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="pageSize"
+      @fetch-page="changePage" />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import DashboardPaginationComponent from '@/components/dashboard/DashboardPaginationComponent .vue'
 
 export default {
+  name: 'AuthorListPage',
+  components: {
+    DashboardPaginationComponent
+  },
   data () {
     return {
-      currentPage: 1,
-      pageSize: 10
+      isLoading: false
     }
   },
   computed: {
-    ...mapGetters(['authors', 'totalAuthorCount']),
+    ...mapGetters([
+      'authors', 'nextPageUrl', 'previousPageUrl', 'totalAuthorCount'
+    ]),
     totalPages () {
       return Math.ceil(this.totalAuthorCount / this.pageSize)
     },
-    paginatedAuthors () {
-      const start = (this.currentPage - 1) * this.pageSize
-      const end = start + this.pageSize
-      return this.authors.slice(start, end)
+    // paginatedAuthors () {
+    //   const start = (this.currentPage - 1) * this.pageSize
+    //   const end = start + this.pageSize
+    //   return this.authors.slice(start, end)
+    // }
+    pageSize () {
+      return this.currentPageSize
+    }
+  },
+  watch: {
+    '$route.query.page': {
+      immediate: true,
+      handler (newPage) {
+        let page = parseInt(newPage, 10)
+
+        if (!page || isNaN(page)) {
+          this.$router.replace({ query: { page: 1 } })
+          page = 1
+          return
+        }
+
+        this.fetchAuthors({ page, pageSize: this.pageSize })
+      }
     }
   },
   mounted () {
-    this.fetchAuthors()
+    // this.fetchAuthors()
+    const currentPage = this.$route.query.page
+
+    if (!currentPage || isNaN(currentPage)) {
+      this.$router.replace({ query: { page: 1 } })
+    }
+
+    document.title = 'Book Shelf'
   },
   methods: {
     ...mapActions(['fetchAuthors']),
     addAuthor () {
       alert('Add Author Coming Soon...')
     },
-    prevPage () {
-      if (this.currentPage > 1) {
-        this.currentPage--
+    async fetchAuthors (payload) {
+      this.isLoading = true
+      this.$store.commit('SET_AUTHORS', [])
+      try {
+        await this.$store.dispatch('fetchAuthors', payload)
+      } catch (error) {
+        console.error('Error fetching authors:', error)
+      } finally {
+        this.isLoading = false
       }
     },
-    nextPage () {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++
-      }
+    changePage (page) {
+      this.$router.push({ query: { page } })
     }
+    // prevPage () {
+    //   if (this.currentPage > 1) {
+    //     this.currentPage--
+    //   }
+    // },
+    // nextPage () {
+    //   if (this.currentPage < this.totalPages) {
+    //     this.currentPage++
+    //   }
+    // }
   }
 }
 </script>
