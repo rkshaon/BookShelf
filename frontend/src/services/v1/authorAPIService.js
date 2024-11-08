@@ -17,8 +17,13 @@ export const fetchV1AuthorDetails = async (id = null) => {
   }
 }
 
-export const fetchV1Authors = async () => {
-  const URL = `${API_BASE_URL}/${content}/${version}/`
+export const fetchV1Authors = async (
+  page = 1,
+  pageSize = 10
+) => {
+  page = page ?? 1
+  pageSize = pageSize ?? 10
+  const URL = `${API_BASE_URL}/${content}/${version}/?page_size=${pageSize}&page=${page}`
   try {
     const response = await api.get(URL, { requireAuth: true })
     return response.data

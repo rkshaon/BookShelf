@@ -35,7 +35,7 @@ export default {
     }
   },
   actions: {
-    async fetchAuthors ({ commit }, { page = 1, pageSize = 8 } = {}) {
+    async fetchAuthors ({ commit }, { page = 1, pageSize = 10 } = {}) {
       try {
         const response = await fetchV1Authors(page, pageSize)
         commit('SET_AUTHORS', response.results)
