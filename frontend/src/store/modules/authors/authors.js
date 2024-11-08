@@ -8,14 +8,16 @@ export default {
     nextPageUrl: null,
     previousPageUrl: null,
     pageSize: 8,
-    totalCount: 0
+    totalCount: 0,
+    loading: false
   },
   getters: {
     authors: (state) => state.authors,
     nextPageUrl: (state) => state.nextPageUrl,
     previousPageUrl: (state) => state.previousPageUrl,
     currentPageSize: (state) => state.pageSize,
-    totalAuthorCount: (state) => state.totalCount
+    totalAuthorCount: (state) => state.totalCount,
+    isAuthorLoading: (state) => state.loading
   },
   mutations: {
     SET_AUTHORS (state, authors) {
@@ -32,10 +34,14 @@ export default {
     },
     SET_TOTAL_COUNT (state, totalCount) {
       state.totalCount = totalCount
+    },
+    SET_LOADING (state, loading) {
+      state.loading = loading
     }
   },
   actions: {
     async fetchAuthors ({ commit }, { page = 1, pageSize = 10 } = {}) {
+      commit('SET_LOADING', true)
       try {
         const response = await fetchV1Authors(page, pageSize)
         commit('SET_AUTHORS', response.results)
@@ -45,6 +51,8 @@ export default {
         commit('SET_TOTAL_COUNT', response.count)
       } catch (error) {
         console.error('Error fetching authors:', error)
+      } finally {
+        commit('SET_LOADING', false)
       }
     }
   }

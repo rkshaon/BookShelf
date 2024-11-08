@@ -6,7 +6,10 @@
       </button>
     </div>
     <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-      <table class="table-auto w-full border-collapse">
+      <div v-if="isAuthorLoading" class="p-4">
+        <LoaderComponent />
+      </div>
+      <table v-else class="table-auto w-full border-collapse">
         <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
           <tr>
             <th class="py-3 px-6 text-left">Name</th>
@@ -45,11 +48,13 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import DashboardPaginationComponent from '@/components/dashboard/DashboardPaginationComponent .vue'
+import LoaderComponent from '@/components/general/LoaderComponent.vue'
 
 export default {
   name: 'AuthorListPage',
   components: {
-    DashboardPaginationComponent
+    DashboardPaginationComponent,
+    LoaderComponent
   },
   data () {
     return {
@@ -59,7 +64,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'authors', 'nextPageUrl', 'previousPageUrl', 'totalAuthorCount', 'currentPageSize'
+      'authors', 'nextPageUrl', 'previousPageUrl', 'totalAuthorCount', 'currentPageSize', 'isAuthorLoading'
     ]),
     pageSize () {
       return this.currentPageSize
