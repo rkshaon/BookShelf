@@ -10,7 +10,7 @@ export default {
     pageSize: 8
   },
   getters: {
-    allAuthors: (state) => state.authors,
+    authors: (state) => state.authors,
     nextPageUrl: (state) => state.nextPageUrl,
     previousPageUrl: (state) => state.previousPageUrl,
     currentPageSize: (state) => state.pageSize

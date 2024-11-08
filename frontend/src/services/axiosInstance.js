@@ -14,7 +14,7 @@ const api = axios.create({
 // Request Interceptor: Conditionally attach the access token to headers
 api.interceptors.request.use(
   (config) => {
-    console.log('URL', config.url)
+    console.log('\nURL', config.url)
     if (config.requiresAuth) {
       // Check for custom requiresAuth flag
       const token = getAccessToken()
