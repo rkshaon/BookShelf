@@ -28,7 +28,7 @@
             </ul>
         </nav>
         <div class="p-4">
-            <button class="bg-red-500 px-4 py-2 rounded text-white w-full hover:bg-red-600">
+            <button @click="logoutUser()" class="bg-red-500 px-4 py-2 rounded text-white w-full hover:bg-red-600">
                 Logout
             </button>
         </div>
@@ -36,7 +36,19 @@
 </template>
 
 <script>
+import { useToast } from 'vue-toastification'
+import { mapActions } from 'vuex'
+
 export default {
-  name: 'SideBarComponent'
+  name: 'SideBarComponent',
+  methods: {
+    ...mapActions(['logout']),
+    async logoutUser () {
+      const toast = useToast()
+      await this.logout()
+      toast.info('Logged out successfully')
+      this.$router.push('/signin')
+    }
+  }
 }
 </script>
