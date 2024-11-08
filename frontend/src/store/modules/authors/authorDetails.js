@@ -1,6 +1,6 @@
 // src/store/modules/bookDetails.js
 
-import authorAPIService from '@/services/v1/authorAPIService'
+import { fetchV1AuthorDetails } from '@/services/v1/authorAPIService'
 
 export default {
   state: {
@@ -29,7 +29,7 @@ export default {
       commit('SET_LOADING', true)
       commit('SET_ERROR', null)
       try {
-        const response = await authorAPIService.fetchV1AuthorDetails(authorId)
+        const response = await fetchV1AuthorDetails(authorId)
         commit('SET_AUTHOR_DETAILS', response)
       } catch (error) {
         const errorMessages = []

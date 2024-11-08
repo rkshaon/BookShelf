@@ -6,6 +6,7 @@ import bookDetails from '@/store/modules/books/bookDetails'
 import bookSearch from '@/store/modules/books/bookSearch'
 // author modules
 import authorDetails from '@/store/modules/authors/authorDetails'
+import authors from '@/store/modules/authors/authors'
 // genre modules
 import genreDetails from '@/store/modules/genres/genreDetails'
 // topic modules
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     bookDetails,
     bookSearch,
     authorDetails,
+    authors,
     genreDetails,
     topicDetails,
     register,

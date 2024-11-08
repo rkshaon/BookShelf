@@ -23,7 +23,6 @@
               @click="closeDropdown">Dashboard</router-link>
             <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" @click="closeDropdown">Account
               Settings</a>
-            <!-- <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100" @click="closeDropdown">Logout</a> -->
             <button v-if="isAuthenticated" @click="closeDropdown(); logoutUser()"
               class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
               Logout
@@ -102,7 +101,6 @@ export default {
       await this.logout()
       const toast = useToast()
       toast.info('You have successfully logged out')
-      console.log(this.isAuthenticated)
       this.$router.push({ name: 'SignIn' })
     }
   },

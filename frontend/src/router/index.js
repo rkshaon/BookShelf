@@ -72,6 +72,11 @@ const routes = [
         path: 'books',
         name: 'BookList',
         component: () => import('@/pages/dashboard/BookListPage.vue')
+      },
+      {
+        path: 'authors',
+        name: 'AuthorList',
+        component: () => import('@/pages/dashboard/AuthorListPage.vue')
       }
     ]
   },
