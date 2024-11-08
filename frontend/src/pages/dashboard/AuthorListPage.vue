@@ -4,18 +4,18 @@
         <table>
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Genre</th>
-                    <th>Published Date</th>
+                    <th>Name</th>
+                    <th>Biography</th>
+                    <th>Total Books</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="book in paginatedBooks" :key="book.id">
-                    <td>{{ book.title }}</td>
-                    <td>{{ book.author }}</td>
-                    <td>{{ book.genre }}</td>
-                    <td>{{ book.publishedDate }}</td>
+                <tr v-for="author in paginatedAuthors" :key="author.id">
+                    <td>{{ author.title }}</td>
+                    <td>{{ author.author }}</td>
+                    <td>{{ author.genre }}</td>
+                    <td>Delete / Edit</td>
                 </tr>
             </tbody>
         </table>
@@ -31,19 +31,19 @@
 export default {
   data () {
     return {
-      books: [], // This should be populated with the list of books
+      authors: [],
       currentPage: 1,
       pageSize: 10
     }
   },
   computed: {
     totalPages () {
-      return Math.ceil(this.books.length / this.pageSize)
+      return Math.ceil(this.authors.length / this.pageSize)
     },
-    paginatedBooks () {
+    paginatedAuthors () {
       const start = (this.currentPage - 1) * this.pageSize
       const end = start + this.pageSize
-      return this.books.slice(start, end)
+      return this.authors.slice(start, end)
     }
   },
   methods: {
