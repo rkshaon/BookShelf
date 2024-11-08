@@ -6,7 +6,6 @@
         <tr>
           <th>Name</th>
           <th>Biography</th>
-          <!-- <th>Total Books</th> -->
           <th>Action</th>
         </tr>
       </thead>
@@ -32,7 +31,12 @@
       <span>Page {{ currentPage }} of {{ totalPages }}</span>
       <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
     </div> -->
-    <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="pageSize"
+    <DashboardPaginationComponent
+      :previousPage="previousPageUrl"
+      :nextPage="nextPageUrl"
+      :pageSize="pageSize"
+      :currentPage="currentPage"
+      :totalPages="totalPages"
       @fetch-page="changePage" />
   </div>
 </template>
@@ -48,21 +52,18 @@ export default {
   },
   data () {
     return {
-      isLoading: false
+      isLoading: false,
+      currentPage: 0
+      // totalPages: 0
     }
   },
   computed: {
     ...mapGetters([
-      'authors', 'nextPageUrl', 'previousPageUrl', 'totalAuthorCount'
+      'authors', 'nextPageUrl', 'previousPageUrl', 'totalAuthorCount', 'currentPageSize'
     ]),
     totalPages () {
       return Math.ceil(this.totalAuthorCount / this.pageSize)
     },
-    // paginatedAuthors () {
-    //   const start = (this.currentPage - 1) * this.pageSize
-    //   const end = start + this.pageSize
-    //   return this.authors.slice(start, end)
-    // }
     pageSize () {
       return this.currentPageSize
     }
@@ -84,8 +85,8 @@ export default {
     }
   },
   mounted () {
-    // this.fetchAuthors()
     const currentPage = this.$route.query.page
+    this.currentPage = currentPage
 
     if (!currentPage || isNaN(currentPage)) {
       this.$router.replace({ query: { page: 1 } })
@@ -112,16 +113,6 @@ export default {
     changePage (page) {
       this.$router.push({ query: { page } })
     }
-    // prevPage () {
-    //   if (this.currentPage > 1) {
-    //     this.currentPage--
-    //   }
-    // },
-    // nextPage () {
-    //   if (this.currentPage < this.totalPages) {
-    //     this.currentPage++
-    //   }
-    // }
   }
 }
 </script>

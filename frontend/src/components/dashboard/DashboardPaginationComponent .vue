@@ -1,14 +1,11 @@
 <template>
   <div class="flex justify-between mt-8 mb-8">
-    <!-- Previous button -->
     <div v-if="previousPage" class="flex-1">
       <button @click="changePage(previousPage)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
         Previous
       </button>
     </div>
-    <!-- Spacer to balance layout -->
-    <div class="flex-1"></div>
-    <!-- Next button -->
+    <div class="flex-1">Page {{ currentPage }} of {{ totalPages }}</div>
     <div v-if="nextPage" class="flex-1 text-right">
       <button @click="changePage(nextPage)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
         Next
@@ -32,6 +29,14 @@ export default {
     pageSize: {
       type: Number,
       default: 8
+    },
+    currentPage: {
+      type: Number,
+      default: 1
+    },
+    totalPages: {
+      type: Number,
+      default: 0
     }
   },
   methods: {
