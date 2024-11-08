@@ -1,42 +1,52 @@
 <template>
-    <div class="book-list-page">
-        <button @click="uploadBook">Upload Book</button>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Biography</th>
-                    <th>Total Books</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="author in paginatedAuthors" :key="author.id">
-                    <td>{{ author.title }}</td>
-                    <td>{{ author.author }}</td>
-                    <td>{{ author.genre }}</td>
-                    <td>Delete / Edit</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="pagination">
-            <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
-            <span>Page {{ currentPage }} of {{ totalPages }}</span>
-            <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
-        </div>
+  <div class="book-list-page">
+    <button class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600" @click="addAuthor">Add Author</button>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Biography</th>
+          <!-- <th>Total Books</th> -->
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="author in authors" :key="author.id">
+          <td>
+            <router-link :to="{ name: 'AuthorDetails', params: { id: author.id } }"
+              class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition">
+              {{ author.full_name }}
+            </router-link>
+          </td>
+          <td>{{ author.biography }}</td>
+          <!-- <td>Coming Soon</td> -->
+          <td>
+            <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Edit</button>
+            <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
     </div>
+  </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   data () {
     return {
-      authors: [],
       currentPage: 1,
       pageSize: 10
     }
   },
   computed: {
+    ...mapGetters(['authors']),
     totalPages () {
       return Math.ceil(this.authors.length / this.pageSize)
     },
@@ -46,9 +56,13 @@ export default {
       return this.authors.slice(start, end)
     }
   },
+  mounted () {
+    this.fetchAuthors()
+  },
   methods: {
-    uploadBook () {
-      // Logic to upload a book
+    ...mapActions(['fetchAuthors']),
+    addAuthor () {
+      alert('Add Author Coming Soon...')
     },
     prevPage () {
       if (this.currentPage > 1) {

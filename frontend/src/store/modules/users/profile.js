@@ -25,9 +25,7 @@ export default {
       state.errors = error
     },
     SET_USER (state, user) {
-      console.log('before', state.user)
       state.user = user
-      console.log('after', state.user)
     },
     SET_LOADING (state, loading) {
       state.loading = loading
@@ -44,7 +42,6 @@ export default {
       commit('SET_LOADING', true)
       try {
         const response = await getUserProfile()
-        console.log('Fetch User', response)
         commit('SET_USER', response)
       } catch (error) {
         console.log(error)
@@ -56,7 +53,6 @@ export default {
       commit('SET_LOADING', true)
       try {
         const response = await editUserProfile(userData)
-        console.log('Update User', response)
         commit('SET_USER', response)
         commit('SET_EDIT_SUCCESS_MESSAGE', 'Profile updated successfully')
       } catch (error) {
