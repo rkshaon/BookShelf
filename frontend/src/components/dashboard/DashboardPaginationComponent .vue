@@ -1,13 +1,13 @@
 <template>
-  <div class="flex justify-between mt-8 mb-8">
-    <div v-if="previousPage" class="flex-1">
-      <button @click="changePage(previousPage)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+  <div class="flex justify-between items-center mt-8 mb-8">
+    <div class="flex-1">
+      <button v-if="previousPage" @click="changePage(previousPage)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
         Previous
       </button>
     </div>
-    <div class="flex-1">Page {{ currentPage }} of {{ totalPages }}</div>
-    <div v-if="nextPage" class="flex-1 text-right">
-      <button @click="changePage(nextPage)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+    <div class="flex-1 text-center">Page {{ currentPage }} of {{ totalPages }}</div>
+    <div class="flex-1 text-right">
+      <button v-if="nextPage" @click="changePage(nextPage)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
         Next
       </button>
     </div>

@@ -54,7 +54,6 @@ export default {
     return {
       isLoading: false,
       currentPage: 0
-      // totalPages: 0
     }
   },
   computed: {
