@@ -32,11 +32,17 @@ export default {
     },
     currentPage: {
       type: Number,
+      required: true,
       default: 1
     },
-    totalPages: {
+    totalCount: {
       type: Number,
       default: 0
+    }
+  },
+  computed: {
+    totalPages () {
+      return Math.ceil(this.totalCount / this.pageSize)
     }
   },
   methods: {

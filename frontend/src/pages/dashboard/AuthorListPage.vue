@@ -18,7 +18,6 @@
             </router-link>
           </td>
           <td>{{ author.biography }}</td>
-          <!-- <td>Coming Soon</td> -->
           <td>
             <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Edit</button>
             <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Delete</button>
@@ -26,17 +25,12 @@
         </tr>
       </tbody>
     </table>
-    <!-- <div class="pagination">
-      <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
-      <span>Page {{ currentPage }} of {{ totalPages }}</span>
-      <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
-    </div> -->
     <DashboardPaginationComponent
       :previousPage="previousPageUrl"
       :nextPage="nextPageUrl"
       :pageSize="pageSize"
-      :currentPage="currentPage"
-      :totalPages="totalPages"
+      :currentPage="parseInt(currentPage, 10)"
+      :totalCount="totalAuthorCount"
       @fetch-page="changePage" />
   </div>
 </template>
@@ -60,9 +54,6 @@ export default {
     ...mapGetters([
       'authors', 'nextPageUrl', 'previousPageUrl', 'totalAuthorCount', 'currentPageSize'
     ]),
-    totalPages () {
-      return Math.ceil(this.totalAuthorCount / this.pageSize)
-    },
     pageSize () {
       return this.currentPageSize
     }
@@ -72,6 +63,7 @@ export default {
       immediate: true,
       handler (newPage) {
         let page = parseInt(newPage, 10)
+        this.currentPage = Number(page)
 
         if (!page || isNaN(page)) {
           this.$router.replace({ query: { page: 1 } })
