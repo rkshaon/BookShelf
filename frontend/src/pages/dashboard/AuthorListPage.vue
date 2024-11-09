@@ -83,7 +83,7 @@ export default {
           page = 1
           return
         }
-        console.log('Fetching authors for page:', this.currentAuthorPageSize)
+
         this.fetchAuthors({ page, pageSize: this.currentAuthorPageSize })
       }
     }

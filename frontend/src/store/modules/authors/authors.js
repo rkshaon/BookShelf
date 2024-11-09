@@ -30,9 +30,7 @@ export default {
       state.previousPageUrl = url
     },
     SET_PAGE_SIZE (state, pageSize) {
-      console.log('Before Store Set - Page Size:', pageSize)
       state.currentAuthorPageSize = pageSize
-      console.log('After Store Set - Page Size:', pageSize)
     },
     SET_TOTAL_COUNT (state, totalCount) {
       state.totalCount = totalCount
@@ -46,7 +44,6 @@ export default {
       commit('SET_LOADING', true)
       try {
         const response = await fetchV1Authors(page, pageSize)
-        console.log('Store - Page Size:', pageSize)
         commit('SET_AUTHORS', response.results)
         commit('SET_NEXT_PAGE', response.next)
         commit('SET_PREVIOUS_PAGE', response.previous)
