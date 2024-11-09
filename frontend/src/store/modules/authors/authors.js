@@ -1,6 +1,9 @@
 // src/store/modules/authors/authorList.js
 
-import { fetchV1Authors } from '@/services/v1/authorAPIService'
+import {
+  fetchV1Authors,
+  createV1Author
+} from '@/services/v1/authorAPIService'
 
 export default {
   state: {
@@ -53,6 +56,15 @@ export default {
         console.error('Error fetching authors:', error)
       } finally {
         commit('SET_LOADING', false)
+      }
+    },
+    async createAuthor ({ commit }, author) {
+      try {
+        const response = await createV1Author(author)
+        return response
+      } catch (error) {
+        console.error('Error creating author:', error)
+        throw error
       }
     }
   }

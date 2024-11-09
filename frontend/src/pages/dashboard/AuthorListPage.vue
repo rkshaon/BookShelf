@@ -1,6 +1,12 @@
 <template>
   <div class="book-list-page p-6 bg-gray-50 min-h-screen">
-    <AddAuthor :visible="showModal" title="Add Author" @close="showModal = false" @confirm="handleConfirm" />
+    <AddAuthor
+      :visible="showModal"
+      :author="author"
+      title="Add Author"
+      @close="showModal = false"
+      @confirm="handleConfirm"
+    />
     <div class="flex justify-end mb-4">
       <button @click="showModal = true" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
         Add Author
@@ -63,7 +69,15 @@ export default {
   data () {
     return {
       currentPage: 0,
-      showModal: false
+      showModal: false,
+      author: {
+        first_name: '',
+        middle_name: '',
+        last_name: '',
+        biography: '',
+        birth_date: '',
+        died_date: ''
+      }
     }
   },
   computed: {
@@ -106,8 +120,8 @@ export default {
     changePage (page) {
       this.$router.push({ query: { page } })
     },
-    handleConfirm () {
-      console.log('Author name:', this.authorName)
+    handleConfirm (updatedAuthor) {
+      console.log('Author:', updatedAuthor)
       this.showModal = false
     }
   }
