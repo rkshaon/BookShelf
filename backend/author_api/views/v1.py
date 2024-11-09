@@ -46,7 +46,6 @@ class AuthorView(APIView):
         self.permission_classes = [IsAuthenticated, IsAdminUser]
         self.check_permissions(request)
         request.data['added_by'] = request.user.id
-        print(request.data)
         serializer = AuthorSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()

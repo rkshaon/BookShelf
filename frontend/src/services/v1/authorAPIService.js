@@ -32,3 +32,14 @@ export const fetchV1Authors = async (
     throw error
   }
 }
+
+export const createV1Author = async (data) => {
+  const URL = `${API_BASE_URL}/${content}/${version}/`
+  try {
+    const response = await api.post(URL, data)
+    return response.data
+  } catch (error) {
+    console.error('Error creating author:', error)
+    throw error
+  }
+}
