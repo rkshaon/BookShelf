@@ -1,7 +1,8 @@
 <template>
   <div class="book-list-page p-6 bg-gray-50 min-h-screen">
+    <AddAuthor :visible="showModal" title="Add Author" @close="showModal = false" @confirm="handleConfirm" />
     <div class="flex justify-end mb-4">
-      <button @click="addAuthor()" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
+      <button @click="showModal = true" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
         Add Author
       </button>
     </div>
@@ -39,8 +40,9 @@
       </table>
     </div>
     <div class="mt-6">
-      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="currentAuthorPageSize"
-        :currentPage="parseInt(currentPage, 10)" :totalCount="totalAuthorCount" @fetch-page="changePage" />
+      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl"
+        :pageSize="currentAuthorPageSize" :currentPage="parseInt(currentPage, 10)" :totalCount="totalAuthorCount"
+        @fetch-page="changePage" />
     </div>
   </div>
 </template>
@@ -49,16 +51,19 @@
 import { mapActions, mapGetters } from 'vuex'
 import DashboardPaginationComponent from '@/components/dashboard/DashboardPaginationComponent .vue'
 import LoaderComponent from '@/components/general/LoaderComponent.vue'
+import AddAuthor from '@/modals/author/AddAuthorModal.vue'
 
 export default {
   name: 'AuthorListPage',
   components: {
     DashboardPaginationComponent,
-    LoaderComponent
+    LoaderComponent,
+    AddAuthor
   },
   data () {
     return {
-      currentPage: 0
+      currentPage: 0,
+      showModal: false
     }
   },
   computed: {
@@ -100,6 +105,10 @@ export default {
     },
     changePage (page) {
       this.$router.push({ query: { page } })
+    },
+    handleConfirm () {
+      console.log('Author name:', this.authorName)
+      this.showModal = false
     }
   }
 }
