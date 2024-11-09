@@ -39,7 +39,7 @@
       </table>
     </div>
     <div class="mt-6">
-      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="pageSize"
+      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="currentAuthorPageSize"
         :currentPage="parseInt(currentPage, 10)" :totalCount="totalAuthorCount" @fetch-page="changePage" />
     </div>
   </div>
@@ -58,17 +58,13 @@ export default {
   },
   data () {
     return {
-      // isLoading: false,
       currentPage: 0
     }
   },
   computed: {
     ...mapGetters([
-      'authors', 'nextPageUrl', 'previousPageUrl', 'totalAuthorCount', 'currentPageSize', 'isAuthorLoading'
-    ]),
-    pageSize () {
-      return this.currentPageSize
-    }
+      'authors', 'nextPageUrl', 'previousPageUrl', 'totalAuthorCount', 'currentAuthorPageSize', 'isAuthorLoading'
+    ])
   },
   watch: {
     '$route.query.page': {
@@ -82,8 +78,8 @@ export default {
           page = 1
           return
         }
-
-        this.fetchAuthors({ page, pageSize: this.pageSize })
+        console.log('Fetching authors for page:', this.currentAuthorPageSize)
+        this.fetchAuthors({ page, pageSize: this.currentAuthorPageSize })
       }
     }
   },
@@ -102,17 +98,6 @@ export default {
     addAuthor () {
       alert('Add Author Coming Soon...')
     },
-    // async fetchAuthors (payload) {
-    //   this.isLoading = true
-    //   this.$store.commit('SET_AUTHORS', [])
-    //   try {
-    //     await this.$store.dispatch('fetchAuthors', payload)
-    //   } catch (error) {
-    //     console.error('Error fetching authors:', error)
-    //   } finally {
-    //     this.isLoading = false
-    //   }
-    // },
     changePage (page) {
       this.$router.push({ query: { page } })
     }

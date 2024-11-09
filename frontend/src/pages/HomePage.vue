@@ -6,15 +6,15 @@
         Explore a vast collection of books, share your reviews, and connect with other book lovers.
       </p>
     </div>
-    <PaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="pageSize"
+    <PaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="currentBookPageSize"
       @fetch-page="changePage" />
     <div v-if="isBookloading">
       <LoaderComponent />
     </div>
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      <BookCardComponent v-for="(book, index) in books" :key="index" :book="book" />
+      <BookCardComponent v-for="(book, index) in allBooks" :key="index" :book="book" />
     </div>
-    <PaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="pageSize"
+    <PaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="currentBookPageSize"
       @fetch-page="changePage" />
   </main>
 </template>
@@ -57,21 +57,10 @@ export default {
     PaginationComponent,
     LoaderComponent
   },
-  // data () {
-  //   return {
-  //     isLoading: false
-  //   }
-  // },
   computed: {
     ...mapGetters([
-      'allBooks', 'nextPageUrl', 'previousPageUrl', 'currentPageSize', 'isBookloading'
-    ]),
-    books () {
-      return this.allBooks
-    },
-    pageSize () {
-      return this.currentPageSize
-    }
+      'allBooks', 'nextPageUrl', 'previousPageUrl', 'currentBookPageSize', 'isBookloading'
+    ])
   },
   watch: {
     '$route.query.page': {
@@ -85,7 +74,7 @@ export default {
           return
         }
 
-        this.fetchBooks({ page, pageSize: this.pageSize })
+        this.fetchBooks({ page, pageSize: this.currentBookPageSize })
       }
     }
   },
@@ -100,17 +89,6 @@ export default {
   },
   methods: {
     ...mapActions(['fetchBooks']),
-    // async fetchBooks (payload) {
-    //   this.isLoading = true
-    //   this.$store.commit('SET_BOOKS', [])
-    //   try {
-    //     await this.$store.dispatch('fetchBooks', payload)
-    //   } catch (error) {
-    //     console.error('Error fetching books:', error)
-    //   } finally {
-    //     this.isLoading = false
-    //   }
-    // },
     changePage (page) {
       this.$router.push({ query: { page } })
     }

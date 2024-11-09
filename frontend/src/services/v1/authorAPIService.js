@@ -21,9 +21,12 @@ export const fetchV1Authors = async (
   page = 1,
   pageSize = 10
 ) => {
+  console.log('Service - Page Size:', pageSize)
   page = page ?? 1
   pageSize = pageSize ?? 10
+  console.log('Service - Page Size:', pageSize)
   const URL = `${API_BASE_URL}/${content}/${version}/?page_size=${pageSize}&page=${page}`
+  console.log('Service - Page Size:', pageSize)
   try {
     const response = await api.get(URL, { requireAuth: true })
     return response.data

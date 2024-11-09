@@ -7,7 +7,7 @@ export default {
     authors: [],
     nextPageUrl: null,
     previousPageUrl: null,
-    pageSize: 8,
+    pageSize: 10,
     totalCount: 0,
     loading: false
   },
@@ -15,7 +15,7 @@ export default {
     authors: (state) => state.authors,
     nextPageUrl: (state) => state.nextPageUrl,
     previousPageUrl: (state) => state.previousPageUrl,
-    currentPageSize: (state) => state.pageSize,
+    currentAuthorPageSize: (state) => state.pageSize,
     totalAuthorCount: (state) => state.totalCount,
     isAuthorLoading: (state) => state.loading
   },
@@ -30,7 +30,9 @@ export default {
       state.previousPageUrl = url
     },
     SET_PAGE_SIZE (state, pageSize) {
-      state.currentPageSize = pageSize
+      console.log('Before Store Set - Page Size:', pageSize)
+      state.currentAuthorPageSize = pageSize
+      console.log('After Store Set - Page Size:', pageSize)
     },
     SET_TOTAL_COUNT (state, totalCount) {
       state.totalCount = totalCount
@@ -44,6 +46,7 @@ export default {
       commit('SET_LOADING', true)
       try {
         const response = await fetchV1Authors(page, pageSize)
+        console.log('Store - Page Size:', pageSize)
         commit('SET_AUTHORS', response.results)
         commit('SET_NEXT_PAGE', response.next)
         commit('SET_PREVIOUS_PAGE', response.previous)

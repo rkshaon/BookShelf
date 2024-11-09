@@ -14,7 +14,7 @@ export default {
     allBooks: (state) => state.books,
     nextPageUrl: (state) => state.nextPageUrl,
     previousPageUrl: (state) => state.previousPageUrl,
-    currentPageSize: (state) => state.pageSize,
+    currentBookPageSize: (state) => state.pageSize,
     isBookloading: (state) => state.loading
   },
   mutations: {
@@ -27,8 +27,8 @@ export default {
     SET_PREVIOUS_PAGE (state, url) {
       state.previousPageUrl = url
     },
-    SET_PAGE_SIZE (state, pageSize) {
-      state.currentPageSize = pageSize
+    SET_BOOK_PAGE_SIZE (state, pageSize) {
+      state.currentBookPageSize = pageSize
     },
     SET_LOADING (state, loading) {
       state.loading = loading
@@ -50,7 +50,7 @@ export default {
         commit('SET_BOOKS', response.results)
         commit('SET_NEXT_PAGE', response.next)
         commit('SET_PREVIOUS_PAGE', response.previous)
-        commit('SET_PAGE_SIZE', pageSize)
+        commit('SET_BOOK_PAGE_SIZE', pageSize)
       } catch (error) {
         console.error('Error fetching books:', error)
       } finally {
