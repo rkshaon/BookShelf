@@ -40,6 +40,11 @@ export const createV1Author = async (data) => {
     return response.data
   } catch (error) {
     console.error('Error creating author:', error)
+
+    if (error.response && error.response.status === 403) {
+      return { error: true, message: 'Permission denied to create an author' }
+    }
+
     throw error
   }
 }

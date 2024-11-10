@@ -12,7 +12,8 @@ export default {
     previousPageUrl: null,
     pageSize: 10,
     totalCount: 0,
-    loading: false
+    loading: false,
+    error: null
   },
   getters: {
     authors: (state) => state.authors,
@@ -20,7 +21,8 @@ export default {
     previousPageUrl: (state) => state.previousPageUrl,
     currentAuthorPageSize: (state) => state.pageSize,
     totalAuthorCount: (state) => state.totalCount,
-    isAuthorLoading: (state) => state.loading
+    isAuthorLoading: (state) => state.loading,
+    authorErrors: (state) => state.error
   },
   mutations: {
     SET_AUTHORS (state, authors) {
@@ -40,6 +42,9 @@ export default {
     },
     SET_LOADING (state, loading) {
       state.loading = loading
+    },
+    SET_ERROR (state, error) {
+      state.error = error
     }
   },
   actions: {
@@ -58,9 +63,10 @@ export default {
         commit('SET_LOADING', false)
       }
     },
-    async createAuthor ({ commit }, author) {
+    async addAuthor ({ commit }, author) {
       try {
         const response = await createV1Author(author)
+        console.log('Created author:', response)
         return response
       } catch (error) {
         console.error('Error creating author:', error)
