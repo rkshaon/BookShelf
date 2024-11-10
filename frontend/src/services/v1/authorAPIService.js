@@ -21,17 +21,25 @@ export const fetchV1Authors = async (
   page = 1,
   pageSize = 10
 ) => {
-  console.log('Service - Page Size:', pageSize)
   page = page ?? 1
   pageSize = pageSize ?? 10
-  console.log('Service - Page Size:', pageSize)
   const URL = `${API_BASE_URL}/${content}/${version}/?page_size=${pageSize}&page=${page}`
-  console.log('Service - Page Size:', pageSize)
   try {
     const response = await api.get(URL, { requireAuth: true })
     return response.data
   } catch (error) {
     console.error('Error fetching authors:', error)
+    throw error
+  }
+}
+
+export const createV1Author = async (data) => {
+  const URL = `${API_BASE_URL}/${content}/${version}/`
+  try {
+    const response = await api.post(URL, data)
+    return response.data
+  } catch (error) {
+    console.error('Error creating author:', error)
     throw error
   }
 }
