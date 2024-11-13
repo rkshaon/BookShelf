@@ -10,6 +10,7 @@ import uuid
 
 from BookShelf.utilities.storage import ReplaceExistingFileStorage
 from BookShelf.utilities.validator import validate_no_spaces
+from BookShelf.utilities.validator import validate_book_file_type
 
 
 replace_existing_file_storage = ReplaceExistingFileStorage()
@@ -168,7 +169,8 @@ class Book(models.Model):
         max_length=255,
         blank=True,
         null=True,
-        storage=replace_existing_file_storage
+        storage=replace_existing_file_storage,
+        validators=[validate_book_file_type],
     )
     cover_image = models.ImageField(
         upload_to=cover_upload_path,
