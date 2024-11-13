@@ -14,26 +14,23 @@
             <div class="mb-4">
               <label for="name" class="block text-gray-700 text-sm font-bold mb-2">First Name:</label>
               <input type="text" id="name" v-model="localAuthor.first_name"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required>
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="mb-4">
               <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Middle Name:</label>
               <input type="text" id="name" v-model="localAuthor.middle_name"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required>
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="mb-4">
               <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Last Name:</label>
               <input type="text" id="name" v-model="localAuthor.last_name"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required>
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="mb-4">
               <label for="bio" class="block text-gray-700 text-sm font-bold mb-2">Biography:</label>
               <textarea id="bio" v-model="localAuthor.biography"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required></textarea>
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              </textarea>
             </div>
             <div class="mb-4">
               <label for="birthdate" class="block text-gray-700 text-sm font-bold mb-2">Birthdate:</label>

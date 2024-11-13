@@ -10,7 +10,6 @@
       </div>
       <div class="flex space-x-4">
         <div v-if="isAuthenticated" class="flex space-x-4" @click.stop>
-          <!-- <div class="flex space-x-4"> -->
           <button @click="toggleDropdown"
             class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center">
             <img :src="getProfileImage(user.profile_image, API_BASE_URL)" alt="Profile" class="w-6 h-6 rounded-full">
@@ -28,7 +27,6 @@
               Logout
             </button>
           </div>
-          <!-- </div> -->
         </div>
         <div v-else class="flex space-x-4">
           <router-link to="signup" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
@@ -39,6 +37,19 @@
           </router-link>
         </div>
         <button class="px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600">Language</button>
+        <div class="relative">
+          <button @click="toggleThreeDotOptionsDropdown"
+            class="px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600 flex items-center">
+            <span class="text-xl">⋮</span>
+          </button>
+          <div v-if="threeDotOptionsDropdownOpen"
+            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+            <a href="https://github.com/rkshaon/BookShelf/" target="_blank"
+              class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Code</a>
+            <a href="https://rkshaon.info/" target="_blank"
+              class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Developer</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -70,7 +81,10 @@ export default {
           url: 'https://rkshaon.info'
         }
       ],
-      dropdownOpen: false
+      dropdownOpen: false,
+      threeDotDropdownOpen: false,
+      optionsThreeDotDropdownOpen: false,
+      threeDotOptionsDropdownOpen: false
     }
   },
   computed: {
@@ -95,6 +109,16 @@ export default {
       if (!this.$el.contains(event.target)) {
         this.dropdownOpen = false
       }
+    },
+    toggleThreeDotDropdown () {
+      this.threeDotDropdownOpen = !this.threeDotDropdownOpen
+    },
+    toggleThreeDotOptionsDropdown () {
+      this.threeDotOptionsDropdownOpen = !this.threeDotOptionsDropdownOpen
+    },
+    closeThreeDotDropdown () {
+      this.threeDotdropdownOpen = false
+      this.threeDotOptionsDropdownOpen = false
     },
     async logoutUser () {
       console.log('Logout')

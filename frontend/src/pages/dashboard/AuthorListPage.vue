@@ -113,16 +113,22 @@ export default {
     document.title = 'Book Shelf'
   },
   methods: {
-    ...mapActions(['fetchAuthors']),
-    addAuthor () {
-      alert('Add Author Coming Soon...')
-    },
+    ...mapActions([
+      'fetchAuthors', 'addAuthor'
+    ]),
     changePage (page) {
       this.$router.push({ query: { page } })
     },
     handleConfirm (updatedAuthor) {
       console.log('Author:', updatedAuthor)
-      this.showModal = false
+      try {
+        this.addAuthor(updatedAuthor)
+        this.showModal = false
+      } catch (error) {
+        console.error('Error:', error)
+      }
+      // this.addAuthor(updatedAuthor)
+      // this.showModal = false
     }
   }
 }
