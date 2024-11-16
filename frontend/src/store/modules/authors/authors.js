@@ -66,11 +66,17 @@ export default {
     async addAuthor ({ commit }, author) {
       try {
         const response = await createV1Author(author)
-        console.log('Created author:', response)
+        // console.log('Created author:', response)
         return response
       } catch (error) {
-        console.error('Error creating author:', error)
-        throw error
+        const errorMessages = []
+        for (const [key, value] of Object.entries(error.response.data)) {
+          errorMessages.push(value[0])
+          console.log(`Author create... ${key}: ${value}`)
+        }
+        commit('SET_ERROR', errorMessages)
+        // throw error
+        return error
       }
     }
   }

@@ -55,6 +55,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { useToast } from 'vue-toastification'
 import DashboardPaginationComponent from '@/components/dashboard/DashboardPaginationComponent .vue'
 import LoaderComponent from '@/components/general/LoaderComponent.vue'
 import AddAuthor from '@/modals/author/AddAuthorModal.vue'
@@ -82,7 +83,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'authors', 'nextPageUrl', 'previousPageUrl', 'totalAuthorCount', 'currentAuthorPageSize', 'isAuthorLoading'
+      'authors', 'nextPageUrl', 'previousPageUrl', 'totalAuthorCount',
+      'currentAuthorPageSize', 'isAuthorLoading', 'authorErrors'
     ])
   },
   watch: {
@@ -99,6 +101,15 @@ export default {
         }
 
         this.fetchAuthors({ page, pageSize: this.currentAuthorPageSize })
+      }
+    },
+    authorErrors (newErrors) {
+      const toast = useToast()
+      if (newErrors && newErrors.length) {
+        newErrors.forEach(error => {
+          console.log(error)
+          toast.error(error)
+        })
       }
     }
   },
@@ -123,7 +134,20 @@ export default {
       console.log('Author:', updatedAuthor)
       try {
         this.addAuthor(updatedAuthor)
-        this.showModal = false
+        // if (this.authorErrors.length > 0) {
+        //   // const toast = useToast()
+        //   // console.log('Errors:', this.authorErrors)
+        //   // this.authorErrors.forEach(error => {
+        //   //   toast.error(error)
+        //   // })
+        //   return
+        // }
+        // if no error then close the modal
+        if (this.authorErrors.length === 0) {
+          console.log('No errors')
+          this.showModal = false
+        }
+        // this.showModal = false
       } catch (error) {
         console.error('Error:', error)
       }
