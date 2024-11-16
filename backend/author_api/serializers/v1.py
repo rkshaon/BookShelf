@@ -15,6 +15,13 @@ class AuthorSerializer(serializers.ModelSerializer):
             'died_date', 'is_alive', 'books', 'added_by',
         ]
 
+    def to_internal_value(self, data):
+        if data.get('birth_date') == "":
+            data['birth_date'] = None
+        if data.get('died_date') == "":
+            data['died_date'] = None
+        return super().to_internal_value(data)
+
     def validate(self, data):
         if (
             not data.get('first_name')
