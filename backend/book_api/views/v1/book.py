@@ -13,7 +13,7 @@ from book_api.models import Book
 from book_api.serializers.v1 import BookSerializer
 
 
-@method_decorator(cache_page(60*15), name='get')
+@method_decorator(cache_page(60*1), name='get')
 class BookView(APIView):
     permission_classes = [AllowAny]
 

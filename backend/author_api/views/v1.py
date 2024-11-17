@@ -15,7 +15,7 @@ from author_api.models import Author
 from author_api.serializers.v1 import AuthorSerializer
 
 
-@method_decorator(cache_page(60*15), name='get')
+@method_decorator(cache_page(60*1), name='get')
 class AuthorView(APIView):
     permission_classes = [AllowAny]
 
