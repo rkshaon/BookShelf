@@ -67,7 +67,8 @@ export default {
       try {
         const response = await createV1Author(author)
         // console.log('Created author:', response)
-        return response
+        // return response
+        return { success: true, data: response }
       } catch (error) {
         const errorMessages = []
         for (const [key, value] of Object.entries(error.response.data)) {
@@ -76,7 +77,10 @@ export default {
         }
         commit('SET_ERROR', errorMessages)
         // throw error
-        return error
+        const message =
+          error.response?.data?.message || 'Failed to add author.'
+        return { success: false, message }
+        // return error
       }
     }
   }
