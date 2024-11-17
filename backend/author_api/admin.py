@@ -2,6 +2,19 @@ from django.contrib import admin
 from django.contrib import messages
 
 from author_api.models import Author
+from book_api.models import Book
+
+
+class BookInline(admin.TabularInline):
+    model = Book.authors.through
+    extra = 0
+    verbose_name = "Book"
+    verbose_name_plural = "Books"
+    fields = ('book',)
+
+    def book(self, obj):
+        return obj.book.title
+    book.short_description = "Book Title"
 
 
 @admin.action(description='Mark as delete')
@@ -37,3 +50,12 @@ class AuthorAdmin(admin.ModelAdmin):
         # delete_all_is_deleted_authors,
         delete_selected_authors,
     ]
+    inlines = [
+        BookInline,
+    ]
+
+    def get_books(self, obj):
+        return ", ".join([book.title for book in obj.books.all()])
+    get_books.short_description = "Books"
+
+    list_display += ('get_books',)
