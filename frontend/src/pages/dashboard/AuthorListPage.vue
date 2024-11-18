@@ -69,6 +69,7 @@ export default {
   },
   data () {
     return {
+      isSaving: false,
       currentPage: 0,
       showModal: false,
       author: {
@@ -130,29 +131,25 @@ export default {
     changePage (page) {
       this.$router.push({ query: { page } })
     },
-    handleConfirm (updatedAuthor) {
-      console.log('Author:', updatedAuthor)
+    async handleConfirm (updatedAuthor) {
+      const toast = useToast()
+
       try {
-        this.addAuthor(updatedAuthor)
-        // if (this.authorErrors.length > 0) {
-        //   // const toast = useToast()
-        //   // console.log('Errors:', this.authorErrors)
-        //   // this.authorErrors.forEach(error => {
-        //   //   toast.error(error)
-        //   // })
-        //   return
-        // }
-        // if no error then close the modal
-        if (this.authorErrors.length === 0) {
-          console.log('No errors')
+        this.isSaving = true
+        const result = await this.addAuthor(updatedAuthor)
+        if (result.success) {
           this.showModal = false
+          toast.success('Author created successfully!')
+        } else {
+          console.log('Error:', result.message)
+          toast.error(result.message || 'An error occurred.')
         }
-        // this.showModal = false
       } catch (error) {
         console.error('Error:', error)
+        toast.error('Unexpected error occurred.')
+      } finally {
+        this.isSaving = false
       }
-      // this.addAuthor(updatedAuthor)
-      // this.showModal = false
     }
   }
 }
