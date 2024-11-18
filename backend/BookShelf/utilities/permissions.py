@@ -2,7 +2,7 @@ from rest_framework.permissions import BasePermission
 from rest_framework.permissions import SAFE_METHODS
 
 
-class IsAdminUser(BasePermission):
+class IsAdminOrModerator(BasePermission):
     """
     Is Admin User permission to only allow admin users to write.
     """
