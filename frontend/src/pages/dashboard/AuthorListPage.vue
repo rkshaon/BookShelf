@@ -132,14 +132,12 @@ export default {
       this.$router.push({ query: { page } })
     },
     async handleConfirm (updatedAuthor) {
+      const toast = useToast()
+
       try {
-        const toast = useToast()
         this.isSaving = true
         const result = await this.addAuthor(updatedAuthor)
-        console.log('Result:', result)
-        console.log('Success:', result.success)
         if (result.success) {
-          console.log('Author created successfully!')
           this.showModal = false
           toast.success('Author created successfully!')
         } else {
@@ -148,35 +146,11 @@ export default {
         }
       } catch (error) {
         console.error('Error:', error)
-        this.$toast.error('Unexpected error occurred.')
+        toast.error('Unexpected error occurred.')
       } finally {
         this.isSaving = false
       }
     }
-    // handleConfirm (updatedAuthor) {
-    //   console.log('Author:', updatedAuthor)
-    //   try {
-    //     this.addAuthor(updatedAuthor)
-    //     // if (this.authorErrors.length > 0) {
-    //     //   // const toast = useToast()
-    //     //   // console.log('Errors:', this.authorErrors)
-    //     //   // this.authorErrors.forEach(error => {
-    //     //   //   toast.error(error)
-    //     //   // })
-    //     //   return
-    //     // }
-    //     // if no error then close the modal
-    //     if (this.authorErrors.length === 0) {
-    //       console.log('No errors')
-    //       this.showModal = false
-    //     }
-    //     // this.showModal = false
-    //   } catch (error) {
-    //     console.error('Error:', error)
-    //   }
-    //   // this.addAuthor(updatedAuthor)
-    //   // this.showModal = false
-    // }
   }
 }
 </script>
