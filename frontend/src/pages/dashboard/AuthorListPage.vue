@@ -133,13 +133,18 @@ export default {
     },
     async handleConfirm (updatedAuthor) {
       try {
+        const toast = useToast()
         this.isSaving = true
         const result = await this.addAuthor(updatedAuthor)
+        console.log('Result:', result)
+        console.log('Success:', result.success)
         if (result.success) {
+          console.log('Author created successfully!')
           this.showModal = false
-          this.$toast.success('Author created successfully!')
+          toast.success('Author created successfully!')
         } else {
-          this.$toast.error(result.message || 'An error occurred.')
+          console.log('Error:', result.message)
+          toast.error(result.message || 'An error occurred.')
         }
       } catch (error) {
         console.error('Error:', error)
