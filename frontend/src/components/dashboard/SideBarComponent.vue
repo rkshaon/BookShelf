@@ -16,7 +16,7 @@
                     </router-link>
                 </li>
                 <li class="p-4 hover:bg-gray-700 cursor-pointer">
-                    <router-link to="/dashboard/books" class="flex items-center">
+                    <router-link to="/dashboard/books?page=1" class="flex items-center">
                         <span class="ml-2">Books</span>
                     </router-link>
                 </li>
