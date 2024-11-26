@@ -9,6 +9,7 @@ from BookShelf.env import SECRET_KEY_SETTINGS
 from BookShelf.env import CORS_ALLOWED_ORIGINS_SETTINGS
 from BookShelf.env import X_FRAME_OPTIONS_SETTINGS
 from BookShelf.env import ELASTICSEARCH_DSL_SETTINGS
+from BookShelf.env import FRONTEND_BASE_URL_SETTINGS
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -142,3 +143,5 @@ X_FRAME_OPTIONS = X_FRAME_OPTIONS_SETTINGS
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user_api.User'
 APPEND_SLASH = True
+
+FRONTEND_BASE_URL = FRONTEND_BASE_URL_SETTINGS
