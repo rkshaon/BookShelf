@@ -27,3 +27,5 @@ ELASTICSEARCH_DSL_SETTINGS = {
         'verify_certs': False
     },
 }
+
+FRONTEND_BASE_URL_SETTINGS = ''
