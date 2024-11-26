@@ -33,6 +33,12 @@ api.interceptors.response.use(
   async (error) => {
     console.log('At Interceptor Error Response:', error.response)
     const originalRequest = error.config
+    const toast = useToast()
+
+    if (error.response.status >= 500 && error.response.status < 600) {
+      toast.error('A server error occurred. Please try again later.')
+      return
+    }
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true // Prevent multiple retries
@@ -56,7 +62,7 @@ api.interceptors.response.use(
           throw new Error('No refresh token available')
         }
       } catch (refreshError) {
-        const toast = useToast()
+        // const toast = useToast()
         toast.error('Session expired, login again!')
         console.log('Invalid Refresh Token')
         store.dispatch('logout') // Optional: dispatch logout if refresh fails
