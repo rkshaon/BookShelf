@@ -50,25 +50,25 @@ export default {
     }
   },
   actions: {
-    async fetchBooks (
-      { commit },
-      { page = 1, pageSize = 8, genre = null, topic = null } = {}
-    ) {
-      try {
-        const response = await searchV1Books(
-          page,
-          pageSize,
-          genre,
-          topic
-        )
-        commit('SET_BOOKS', response.results)
-        commit('SET_NEXT_PAGE', response.next)
-        commit('SET_PREVIOUS_PAGE', response.previous)
-        commit('SET_PAGE_SIZE', pageSize)
-      } catch (error) {
-        console.error('Error fetching books:', error)
-      }
-    },
+    // async fetchBooks (
+    //   { commit },
+    //   { page = 1, pageSize = 8, genre = null, topic = null } = {}
+    // ) {
+    //   try {
+    //     const response = await searchV1Books(
+    //       page,
+    //       pageSize,
+    //       genre,
+    //       topic
+    //     )
+    //     commit('SET_BOOKS', response.results)
+    //     commit('SET_NEXT_PAGE', response.next)
+    //     commit('SET_PREVIOUS_PAGE', response.previous)
+    //     commit('SET_PAGE_SIZE', pageSize)
+    //   } catch (error) {
+    //     console.error('Error fetching books:', error)
+    //   }
+    // },
     async searchBooks (
       { commit, state },
       { query, page = 1, pageSize = 8 } = {}
