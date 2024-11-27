@@ -107,7 +107,14 @@ export default {
 
 <style scoped>
 canvas {
-  width: 100%;
   max-width: 100%;
+  /* Ensure canvas doesn't overflow horizontally */
+  max-height: calc(100vh - 200px);
+  /* Subtract header or other content height */
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 auto;
+  /* Center the canvas horizontally */
 }
 </style>
