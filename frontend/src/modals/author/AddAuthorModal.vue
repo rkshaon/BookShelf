@@ -44,9 +44,9 @@
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 >
             </div>
-            <div class="flex justify-end">
+            <!-- <div class="flex justify-end">
               <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">{{ title }}</button>
-            </div>
+            </div> -->
           </form>
         </slot>
       </div>
@@ -56,7 +56,7 @@
             Cancel
           </button>
           <button @click="onConfirm" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
-            Confirm
+            {{ title }}
           </button>
         </slot>
       </div>

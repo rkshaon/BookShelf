@@ -148,7 +148,9 @@ export default {
 
       try {
         this.isSaving = true
+        console.log('updatedBook:', updatedBook)
         const result = await this.addAuthor(updatedBook)
+
         if (result.success) {
           this.showModal = false
           toast.success('Book created successfully!')
