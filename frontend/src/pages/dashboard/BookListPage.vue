@@ -1,16 +1,15 @@
 <template>
   <div class="book-list-page p-6 bg-gray-50 min-h-screen">
-    <!-- <AddAuthor :visible="showModal" :author="author" title="Add Author" @close="showModal = false"
-      @confirm="handleConfirm" /> -->
-    <!-- <div class="flex justify-end mb-4">
+    <AddBookModal :visible="showModal" :book="book" title="Add Book" @close="showModal = false"
+      @confirm="handleConfirm" />
+    <div class="flex justify-end mb-4">
       <button @click="showModal = true" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
-        Add Author
+        Add Book
       </button>
-    </div> -->
+    </div>
     <div class="mt-6">
-      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl"
-        :pageSize="10" :currentPage="parseInt(currentPage, 10)" :totalCount="totalBookCount"
-        @fetch-page="changePage" />
+      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="10"
+        :currentPage="parseInt(currentPage, 10)" :totalCount="totalBookCount" @fetch-page="changePage" />
     </div>
     <div class="overflow-x-auto bg-white shadow-md rounded-lg">
       <div v-if="isBookloading" class="p-4">
@@ -49,9 +48,8 @@
       </table>
     </div>
     <div class="mt-6">
-      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl"
-        :pageSize="10" :currentPage="parseInt(currentPage, 10)" :totalCount="totalBookCount"
-        @fetch-page="changePage" />
+      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="10"
+        :currentPage="parseInt(currentPage, 10)" :totalCount="totalBookCount" @fetch-page="changePage" />
     </div>
   </div>
 </template>
@@ -62,27 +60,33 @@ import { useToast } from 'vue-toastification'
 import { getCoverImage } from '@/helpers/getCoverImage'
 import DashboardPaginationComponent from '@/components/dashboard/DashboardPaginationComponent .vue'
 import LoaderComponent from '@/components/general/LoaderComponent.vue'
-// import AddAuthor from '@/modals/author/AddAuthorModal.vue'
+import AddBookModal from '@/modals/book/AddBookModal.vue'
 
 export default {
   name: 'BookListPage',
   components: {
     DashboardPaginationComponent,
-    LoaderComponent
-    // AddAuthor
+    LoaderComponent,
+    AddBookModal
   },
   data () {
     return {
       isSaving: false,
       currentPage: 0,
       showModal: false,
-      author: {
-        first_name: '',
-        middle_name: '',
-        last_name: '',
-        biography: '',
-        birth_date: '',
-        died_date: ''
+      book: {
+        title: '',
+        genres: [],
+        topics: [],
+        authors: [],
+        publisher: '',
+        description: '',
+        edition: '',
+        isbn: '',
+        published_year: '',
+        languages: '',
+        book: '',
+        cover_image: ''
       }
     }
   },
@@ -139,15 +143,15 @@ export default {
     changePage (page) {
       this.$router.push({ query: { page } })
     },
-    async handleConfirm (updatedAuthor) {
+    async handleConfirm (updatedBook) {
       const toast = useToast()
 
       try {
         this.isSaving = true
-        const result = await this.addAuthor(updatedAuthor)
+        const result = await this.addAuthor(updatedBook)
         if (result.success) {
           this.showModal = false
-          toast.success('Author created successfully!')
+          toast.success('Book created successfully!')
         } else {
           console.log('Error:', result.message)
           toast.error(result.message || 'An error occurred.')
