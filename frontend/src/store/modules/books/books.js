@@ -8,14 +8,18 @@ export default {
     nextPageUrl: null,
     previousPageUrl: null,
     pageSize: 8,
-    loading: false
+    loading: false,
+    totalCount: 0,
+    error: null
   },
   getters: {
     allBooks: (state) => state.books,
     nextPageUrl: (state) => state.nextPageUrl,
     previousPageUrl: (state) => state.previousPageUrl,
     currentBookPageSize: (state) => state.pageSize,
-    isBookloading: (state) => state.loading
+    isBookloading: (state) => state.loading,
+    totalBookCount: (state) => state.totalCount,
+    bookErrors: (state) => state.error
   },
   mutations: {
     SET_BOOKS (state, books) {
@@ -32,6 +36,12 @@ export default {
     },
     SET_LOADING (state, loading) {
       state.loading = loading
+    },
+    SET_TOTAL_COUNT (state, totalCount) {
+      state.totalCount = totalCount
+    },
+    SET_ERROR (state, error) {
+      state.error = error
     }
   },
   actions: {
@@ -51,6 +61,7 @@ export default {
         commit('SET_NEXT_PAGE', response.next)
         commit('SET_PREVIOUS_PAGE', response.previous)
         commit('SET_BOOK_PAGE_SIZE', pageSize)
+        commit('SET_TOTAL_COUNT', response.count)
       } catch (error) {
         console.error('Error fetching books:', error)
       } finally {

@@ -8,7 +8,7 @@ from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 
 from BookShelf.utilities.pagination import Pagination
-from BookShelf.utilities.permissions import IsAdminUser
+from BookShelf.utilities.permissions import IsAdminOrModerator
 
 from author_api.models import Author
 
@@ -43,7 +43,7 @@ class AuthorView(APIView):
         return paginator.get_paginated_response(serializer.data)
 
     def post(self, request, *args, **kwargs):
-        self.permission_classes = [IsAuthenticated, IsAdminUser]
+        self.permission_classes = [IsAuthenticated, IsAdminOrModerator]
         self.check_permissions(request)
         request.data['added_by'] = request.user.id
         serializer = AuthorSerializer(data=request.data)

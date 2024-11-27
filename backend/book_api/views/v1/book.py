@@ -7,6 +7,7 @@ from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 
 from BookShelf.utilities.pagination import Pagination
+from BookShelf.utilities.permissions import IsAdminOrModerator
 
 from book_api.models import Book
 
@@ -46,3 +47,16 @@ class BookView(APIView):
         return paginator.get_paginated_response(
             BookSerializer(page, many=True).data
         )
+
+    def post(self, request, *args, **kwargs):
+        self.permission_classes = [IsAdminOrModerator]
+        self.check_permissions(request)
+        requested_data = request.data.copy()
+        requested_data['added_by'] = request.user.id
+        serializer = BookSerializer(
+            data=requested_data,
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=201)

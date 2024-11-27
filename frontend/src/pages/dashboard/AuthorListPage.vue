@@ -1,16 +1,16 @@
 <template>
   <div class="book-list-page p-6 bg-gray-50 min-h-screen">
-    <AddAuthor
-      :visible="showModal"
-      :author="author"
-      title="Add Author"
-      @close="showModal = false"
-      @confirm="handleConfirm"
-    />
+    <AddAuthor :visible="showModal" :author="author" title="Add Author" @close="showModal = false"
+      @confirm="handleConfirm" />
     <div class="flex justify-end mb-4">
       <button @click="showModal = true" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
         Add Author
       </button>
+    </div>
+    <div class="mt-6">
+      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl"
+        :pageSize="currentAuthorPageSize" :currentPage="parseInt(currentPage, 10)" :totalCount="totalAuthorCount"
+        @fetch-page="changePage" />
     </div>
     <div class="overflow-x-auto bg-white shadow-md rounded-lg">
       <div v-if="isAuthorLoading" class="p-4">

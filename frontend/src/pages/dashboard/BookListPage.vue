@@ -1,100 +1,166 @@
 <template>
-    <div class="book-list-page">
-        <button @click="uploadBook">Upload Book</button>
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Genre</th>
-                    <th>Published Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="book in paginatedBooks" :key="book.id">
-                    <td>{{ book.title }}</td>
-                    <td>{{ book.author }}</td>
-                    <td>{{ book.genre }}</td>
-                    <td>{{ book.publishedDate }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="pagination">
-            <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
-            <span>Page {{ currentPage }} of {{ totalPages }}</span>
-            <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
-        </div>
+  <div class="book-list-page p-6 bg-gray-50 min-h-screen">
+    <!-- <AddAuthor :visible="showModal" :author="author" title="Add Author" @close="showModal = false"
+      @confirm="handleConfirm" /> -->
+    <!-- <div class="flex justify-end mb-4">
+      <button @click="showModal = true" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
+        Add Author
+      </button>
+    </div> -->
+    <div class="mt-6">
+      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl"
+        :pageSize="10" :currentPage="parseInt(currentPage, 10)" :totalCount="totalBookCount"
+        @fetch-page="changePage" />
     </div>
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+      <div v-if="isBookloading" class="p-4">
+        <LoaderComponent />
+      </div>
+      <table v-else class="table-auto w-full border-collapse">
+        <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+          <tr>
+            <th class="py-3 px-6 text-left">Title</th>
+            <th class="py-3 px-6 text-left">Cover</th>
+            <th class="py-3 px-6 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-700 text-sm">
+          <tr v-for="book in allBooks" :key="book.id" class="border-b hover:bg-gray-100">
+            <td class="py-3 px-6">
+              <router-link :to="{ name: 'BookDetails', params: { book_code: book.book_code } }"
+                class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition">
+                {{ book.title }}
+              </router-link>
+            </td>
+            <td class="py-3 px-6">
+              <img :src="getCoverImage(book.cover_image, API_BASE_URL)" alt="Book Cover"
+                class="w-24 h-24 shadow-lg rounded-lg" />
+            </td>
+            <td class="py-3 px-6 text-center space-x-2">
+              <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
+                Edit
+              </button>
+              <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-6">
+      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl"
+        :pageSize="10" :currentPage="parseInt(currentPage, 10)" :totalCount="totalBookCount"
+        @fetch-page="changePage" />
+    </div>
+  </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+import { useToast } from 'vue-toastification'
+import { getCoverImage } from '@/helpers/getCoverImage'
+import DashboardPaginationComponent from '@/components/dashboard/DashboardPaginationComponent .vue'
+import LoaderComponent from '@/components/general/LoaderComponent.vue'
+// import AddAuthor from '@/modals/author/AddAuthorModal.vue'
+
 export default {
+  name: 'BookListPage',
+  components: {
+    DashboardPaginationComponent,
+    LoaderComponent
+    // AddAuthor
+  },
   data () {
     return {
-      books: [], // This should be populated with the list of books
-      currentPage: 1,
-      pageSize: 10
+      isSaving: false,
+      currentPage: 0,
+      showModal: false,
+      author: {
+        first_name: '',
+        middle_name: '',
+        last_name: '',
+        biography: '',
+        birth_date: '',
+        died_date: ''
+      }
     }
   },
   computed: {
-    totalPages () {
-      return Math.ceil(this.books.length / this.pageSize)
-    },
-    paginatedBooks () {
-      const start = (this.currentPage - 1) * this.pageSize
-      const end = start + this.pageSize
-      return this.books.slice(start, end)
+    ...mapGetters([
+      'allBooks', 'nextPageUrl', 'previousPageUrl', 'totalBookCount',
+      'currentBookPageSize', 'isBookloading', 'bookErrors'
+    ]),
+    API_BASE_URL () {
+      return process.env.VUE_APP_BACKEND_URL
     }
   },
-  methods: {
-    uploadBook () {
-      // Logic to upload a book
-    },
-    prevPage () {
-      if (this.currentPage > 1) {
-        this.currentPage--
+  watch: {
+    '$route.query.page': {
+      immediate: true,
+      handler (newPage) {
+        let page = parseInt(newPage, 10)
+        this.currentPage = Number(page)
+
+        if (!page || isNaN(page)) {
+          this.$router.replace({ query: { page: 1 } })
+          page = 1
+          return
+        }
+
+        this.fetchBooks({ page, pageSize: 10 })
       }
     },
-    nextPage () {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++
+    bookErrors (newErrors) {
+      const toast = useToast()
+      if (newErrors && newErrors.length) {
+        newErrors.forEach(error => {
+          console.log(error)
+          toast.error(error)
+        })
+      }
+    }
+  },
+  mounted () {
+    const currentPage = this.$route.query.page
+    this.currentPage = currentPage
+
+    if (!currentPage || isNaN(currentPage)) {
+      this.$router.replace({ query: { page: 1 } })
+    }
+
+    document.title = 'Book Shelf'
+  },
+  methods: {
+    ...mapActions([
+      'fetchBooks', 'addAuthor'
+    ]),
+    getCoverImage,
+    changePage (page) {
+      this.$router.push({ query: { page } })
+    },
+    async handleConfirm (updatedAuthor) {
+      const toast = useToast()
+
+      try {
+        this.isSaving = true
+        const result = await this.addAuthor(updatedAuthor)
+        if (result.success) {
+          this.showModal = false
+          toast.success('Author created successfully!')
+        } else {
+          console.log('Error:', result.message)
+          toast.error(result.message || 'An error occurred.')
+        }
+      } catch (error) {
+        console.error('Error:', error)
+        toast.error('Unexpected error occurred.')
+      } finally {
+        this.isSaving = false
       }
     }
   }
 }
 </script>
 
-<style scoped>
-.book-list-page {
-    padding: 20px;
-}
-
-button {
-    margin-bottom: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-.pagination {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.pagination button {
-    margin: 0 10px;
-}
-</style>
+<style scoped></style>
