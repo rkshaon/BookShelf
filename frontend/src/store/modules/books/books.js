@@ -1,6 +1,6 @@
 // src/store/modules/books/books.js
 
-import bookAPIService from '@/services/v1/bookAPIService'
+import { fetchV1Books } from '@/services/v1/bookAPIService'
 
 export default {
   state: {
@@ -51,7 +51,7 @@ export default {
     ) {
       commit('SET_LOADING', true)
       try {
-        const response = await bookAPIService.fetchV1Books(
+        const response = await fetchV1Books(
           page,
           pageSize,
           genre,

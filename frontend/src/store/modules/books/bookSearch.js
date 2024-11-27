@@ -1,6 +1,6 @@
 // src/store/modules/books/bookSearch.js
 
-import bookAPIService from '@/services/v1/bookAPIService'
+import { searchV1Books } from '@/services/v1/bookAPIService'
 
 export default {
   state: {
@@ -55,7 +55,7 @@ export default {
       { page = 1, pageSize = 8, genre = null, topic = null } = {}
     ) {
       try {
-        const response = await bookAPIService.fetchV1Books(
+        const response = await searchV1Books(
           page,
           pageSize,
           genre,
@@ -75,7 +75,7 @@ export default {
     ) {
       commit('SET_SEARCH_QUERY', query)
       try {
-        const response = await bookAPIService.searchV1Books(
+        const response = await searchV1Books(
           query,
           page,
           pageSize
