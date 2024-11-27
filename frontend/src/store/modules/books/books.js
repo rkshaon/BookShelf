@@ -86,7 +86,7 @@ export default {
         commit('SET_ERROR', errorMessages)
         // throw error
         const message =
-          error.response?.data?.message || 'Failed to add author.'
+          error.response?.data?.message || 'Failed to add book.'
         return { success: false, message }
         // return error
       }

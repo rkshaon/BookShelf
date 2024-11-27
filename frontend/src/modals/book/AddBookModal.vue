@@ -151,7 +151,7 @@ export default {
         description: '',
         edition: '',
         isbn: '',
-        published_year: '',
+        published_year: null,
         languages: '',
         book: '',
         cover_image: ''

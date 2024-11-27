@@ -137,7 +137,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'fetchBooks', 'addAuthor'
+      'fetchBooks', 'addBook'
     ]),
     getCoverImage,
     changePage (page) {
@@ -149,17 +149,17 @@ export default {
       try {
         this.isSaving = true
         console.log('updatedBook:', updatedBook)
-        const result = await this.addAuthor(updatedBook)
+        const result = await this.addBook(updatedBook)
 
         if (result.success) {
           this.showModal = false
           toast.success('Book created successfully!')
         } else {
-          console.log('Error:', result.message)
+          console.log('Else Error:', result.message)
           toast.error(result.message || 'An error occurred.')
         }
       } catch (error) {
-        console.error('Error:', error)
+        console.error('Catch Error:', error)
         toast.error('Unexpected error occurred.')
       } finally {
         this.isSaving = false
