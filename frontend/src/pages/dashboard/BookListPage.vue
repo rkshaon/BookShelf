@@ -145,11 +145,19 @@ export default {
     },
     async handleConfirm (updatedBook) {
       const toast = useToast()
+      const formData = new FormData()
+
+      Object.keys(updatedBook).forEach((key) => {
+        const value = updatedBook[key]
+        if (value !== undefined && value !== null) {
+          formData.append(key, value)
+        }
+      })
 
       try {
         this.isSaving = true
-        console.log('updatedBook:', updatedBook)
-        const result = await this.addBook(updatedBook)
+        console.log('updatedBook:', formData)
+        const result = await this.addBook(formData)
 
         if (result.success) {
           this.showModal = false
