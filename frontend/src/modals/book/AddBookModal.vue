@@ -7,60 +7,6 @@
           &times;
         </button>
       </div>
-      <!-- <div class="p-6">
-        <slot name="body">
-          <form @submit.prevent="onConfirm">
-            <div class="mb-4">
-              <label for="name" class="block text-gray-700 text-sm font-bold mb-2">First Name:</label>
-              <input type="text" id="name" v-model="localAuthor.first_name"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
-            <div class="mb-4">
-              <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Middle Name:</label>
-              <input type="text" id="name" v-model="localAuthor.middle_name"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
-            <div class="mb-4">
-              <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Last Name:</label>
-              <input type="text" id="name" v-model="localAuthor.last_name"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
-            <div class="mb-4">
-              <label for="bio" class="block text-gray-700 text-sm font-bold mb-2">Biography:</label>
-              <textarea id="bio" v-model="localAuthor.biography"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-              </textarea>
-            </div>
-            <div class="mb-4">
-              <label for="birthdate" class="block text-gray-700 text-sm font-bold mb-2">Birthdate:</label>
-              <input type="date" id="birthdate" v-model="localAuthor.birthdate"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                >
-            </div>
-            <div class="mb-4">
-              <label for="dieddate" class="block text-gray-700 text-sm font-bold mb-2">Died Date:</label>
-              <input type="date" id="birthdate" v-model="localAuthor.died_date"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                >
-            </div>
-            <div class="flex justify-end">
-              <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">{{ title }}</button>
-            </div>
-          </form>
-        </slot>
-      </div> -->
-      <!-- Tab Navigation -->
-      <!-- <div class="flex border-b border-gray-200">
-        <button v-for="(tab, index) in tabs" :key="index" @click="currentTab = tab" :class="[
-          'py-2 px-4 focus:outline-none transition',
-          currentTab === tab
-            ? 'border-b-2 border-blue-500 text-blue-500'
-            : 'text-gray-500 hover:text-gray-700'
-        ]">
-          {{ tab }}
-        </button>
-      </div> -->
-      <!-- Tab Navigation -->
       <div class="flex border-b border-gray-200">
         <button @click="currentTab = 'Book'" :class="[
           'py-2 px-4 focus:outline-none transition',
@@ -95,8 +41,6 @@
           Others
         </button>
       </div>
-
-      <!-- Tab Content -->
       <div class="p-6">
         <form @submit.prevent="onConfirm">
           <div v-if="currentTab === 'Book'">
@@ -168,11 +112,6 @@
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
             </div>
           </div>
-          <!-- <div class="flex justify-end">
-            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
-              Save Book
-            </button>
-          </div> -->
         </form>
       </div>
       <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
