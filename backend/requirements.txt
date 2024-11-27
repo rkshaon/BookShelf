@@ -9,3 +9,4 @@ django-cors-headers
 elasticsearch-dsl
 django-elasticsearch-dsl
 django-redis
+PyPDF2
