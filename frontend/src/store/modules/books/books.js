@@ -1,6 +1,9 @@
 // src/store/modules/books/books.js
 
-import { fetchV1Books } from '@/services/v1/bookAPIService'
+import {
+  fetchV1Books,
+  createV1Book
+} from '@/services/v1/bookAPIService'
 
 export default {
   state: {
@@ -51,12 +54,7 @@ export default {
     ) {
       commit('SET_LOADING', true)
       try {
-        const response = await fetchV1Books(
-          page,
-          pageSize,
-          genre,
-          topic
-        )
+        const response = await fetchV1Books(page, pageSize, genre, topic)
         commit('SET_BOOKS', response.results)
         commit('SET_NEXT_PAGE', response.next)
         commit('SET_PREVIOUS_PAGE', response.previous)
@@ -66,6 +64,31 @@ export default {
         console.error('Error fetching books:', error)
       } finally {
         commit('SET_LOADING', false)
+      }
+    },
+    async addBook ({ commit }, book) {
+      try {
+        const response = await createV1Book(book)
+        console.log('Created book:', response)
+        if (response.error) {
+          const errorMessages = []
+          errorMessages.push(response.message)
+          commit('SET_ERROR', errorMessages)
+          return { success: false, message: response.message }
+        }
+        return { success: true, data: response }
+      } catch (error) {
+        const errorMessages = []
+        for (const [key, value] of Object.entries(error.response.data)) {
+          errorMessages.push(value[0])
+          console.log(`Book create... ${key}: ${value}`)
+        }
+        commit('SET_ERROR', errorMessages)
+        // throw error
+        const message =
+          error.response?.data?.message || 'Failed to add author.'
+        return { success: false, message }
+        // return error
       }
     }
   }
