@@ -38,6 +38,7 @@ class AuthorAdmin(admin.ModelAdmin):
         'id', 'full_name', 'birth_date',
         'died_date', 'is_alive', 'is_deleted',
     ]
+    list_per_page = 10
     list_display_links = ('id', 'full_name',)
     list_filter = [
         'is_deleted',
