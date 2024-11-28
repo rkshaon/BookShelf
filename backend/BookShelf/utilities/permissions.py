@@ -8,7 +8,6 @@ class IsAdminOrModerator(BasePermission):
     """
 
     def has_permission(self, request, view):
-        print(SAFE_METHODS)
         if request.method in SAFE_METHODS:
             return True
 
