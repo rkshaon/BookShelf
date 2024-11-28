@@ -83,6 +83,10 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'BookShelf.utilities.pagination.Pagination',
     'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': 'BookShelf.utilities.filters.SearchFilter',
+    # 'DEFAULT_FILTER_BACKENDS': [
+    #     'rest_framework.filters.SearchFilter',
+    # ],
 }
 
 SIMPLE_JWT = {
