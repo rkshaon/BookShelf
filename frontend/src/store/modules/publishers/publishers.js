@@ -4,7 +4,7 @@ import { searchV1Publisher } from '@/services/v1/publisherAPIService'
 
 export default {
   state: {
-    publishers: []
+    publishers: [],
     // searchResults: [],
     // nextPageUrl: null,
     // previousPageUrl: null,
@@ -19,13 +19,13 @@ export default {
     // nextPageUrl: (state) => state.nextPageUrl,
     // previousPageUrl: (state) => state.previousPageUrl,
     // currentPageSize: (state) => state.pageSize,
-    searchQuery: (state) => state.searchQuery
+    searchQuery: (state) => state.searchQuery,
     // searchNextPageUrl: (state) => state.searchNextPageUrl,
     // searchPreviousPageUrl: (state) => state.searchPreviousPageUrl,
   },
   mutations: {
-    SET_PUBLISHERS (state, publishers) {
-      state.publishers = publishers
+    SET_PUBLISHERS(state, publishers) {
+      state.publishers = publishers;
     },
     // SET_NEXT_PAGE(state, url) {
     //   state.nextPageUrl = url;
@@ -39,9 +39,9 @@ export default {
     // SET_SEARCH_RESULTS(state, results) {
     //   state.searchResults = results;
     // },
-    SET_SEARCH_QUERY (state, query) {
-      state.searchQuery = query
-    }
+    SET_SEARCH_QUERY(state, query) {
+      state.searchQuery = query;
+    },
     // SET_SEARCH_NEXT_PAGE(state, url) {
     //   state.searchNextPageUrl = url;
     // },
@@ -50,21 +50,21 @@ export default {
     // },
   },
   actions: {
-    async searchBooks (
+    async searchPublisher(
       { commit, state },
       { query, page = 1, pageSize = 8 } = {}
     ) {
-      commit('SET_SEARCH_QUERY', query)
+      commit("SET_SEARCH_QUERY", query);
       try {
-        const response = await searchV1Publisher(query, page, pageSize)
+        const response = await searchV1Publisher(query, page, pageSize);
         // commit("SET_SEARCH_RESULTS", response.results);
         // commit("SET_SEARCH_NEXT_PAGE", response.next);
         // commit("SET_SEARCH_PREVIOUS_PAGE", response.previous);
-        console.log('Search Books:', response)
+        console.log("Search Books:", response);
       } catch (error) {
-        console.error('Error searching books:', error)
+        console.error("Error searching books:", error);
       }
-    }
+    },
     // async searchNextPage({ dispatch, state }) {
     //   if (state.searchNextPageUrl) {
     //     const nextPageNumber = new URL(
@@ -89,5 +89,5 @@ export default {
     //     });
     //   }
     // },
-  }
-}
+  },
+};

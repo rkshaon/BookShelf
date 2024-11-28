@@ -25,6 +25,9 @@ export const searchV1Publishers = async (
     return response.data
   } catch (error) {
     console.error('Error searching publishers:', error)
+    if (error.response && error.response.status === 403) {
+      return { error: true, message: 'Permission denied to create an author' }
+    }
     throw error
   }
 }
