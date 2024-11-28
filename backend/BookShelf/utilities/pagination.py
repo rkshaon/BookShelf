@@ -18,3 +18,14 @@ class Pagination(PageNumberPagination):
                 self.max_page_size
             )
         return self.page_size
+
+    # For customizing the paginated response
+    # def get_paginated_response(self, data):
+    #     return Response({
+    #         'total_count': self.page.paginator.count,
+    #         'total_pages': self.page.paginator.num_pages,
+    #         'current_page': self.page.number,
+    #         'next': self.get_next_link(),
+    #         'previous': self.get_previous_link(),
+    #         'results': data,
+    #     })

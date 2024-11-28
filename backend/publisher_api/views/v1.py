@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
+from rest_framework.filters import SearchFilter
 
 from BookShelf.utilities.permissions import IsAdminOrModerator
 
@@ -15,6 +16,9 @@ class PublisherViewSet(ModelViewSet):
     permission_classes = [
         IsAdminOrModerator,
     ]
+    filter_backends = [SearchFilter]
+    search_fields = ['name']
+    # search_param = 'q'    # Default search query parameter is `search`
     # authentication_classes = [TokenAuthentication]
 
     def perform_create(self, serializer):
