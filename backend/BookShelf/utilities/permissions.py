@@ -8,18 +8,14 @@ class IsAdminOrModerator(BasePermission):
     """
 
     def has_permission(self, request, view):
+        print(SAFE_METHODS)
         if request.method in SAFE_METHODS:
             return True
 
         return (
             request.user
             and request.user.is_authenticated
-            and request.user.role == 1
+            and (
+                request.user.role == 1 or request.user.role == 2
+            )
         )
-
-
-class IsAdminOrReadOnly(BasePermission):
-    def has_permission(self, request, view):
-        if request.method in ['GET', 'HEAD', 'OPTIONS']:
-            return True
-        return request.user and request.user.is_staff

@@ -1,7 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
-# from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from BookShelf.utilities.permissions import IsAdminOrReadOnly
+from BookShelf.utilities.permissions import IsAdminOrModerator
 
 from publisher_api.models import Publisher
 
@@ -11,7 +10,9 @@ from publisher_api.serializers import PublisherSerializer
 class PublisherViewSet(ModelViewSet):
     queryset = Publisher.objects.all()
     serializer_class = PublisherSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [
+        IsAdminOrModerator,
+    ]
     # authentication_classes = [TokenAuthentication]
 
     def perform_create(self, serializer):
