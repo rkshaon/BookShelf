@@ -1,9 +1,9 @@
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
-from rest_framework.filters import SearchFilter
 
 from BookShelf.utilities.permissions import IsAdminOrModerator
+from BookShelf.utilities.filters import SearchFilter
 
 from publisher_api.models import Publisher
 
