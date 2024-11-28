@@ -8,7 +8,7 @@ class PublisherAdmin(admin.ModelAdmin):
     list_display = [
         'id', 'name', 'address', 'website',
         'email', 'phone_number',
-        'established_year',
+        'established_year', 'is_deleted',
     ]
     list_display_links = [
         'name',
