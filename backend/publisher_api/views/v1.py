@@ -46,6 +46,7 @@ class PublisherViewSet(ModelViewSet):
             {"message": f"Publication '{instance.name}' has been successfully deleted."},   # noqa
             status=status.HTTP_200_OK,
         )
+
     # def get_queryset(self):
     #     return Publisher.objects.all().order_by('name')
 

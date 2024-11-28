@@ -81,6 +81,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'BookShelf.utilities.pagination.Pagination',
+    'PAGE_SIZE': 10,
 }
 
 SIMPLE_JWT = {
