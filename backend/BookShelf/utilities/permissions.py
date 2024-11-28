@@ -14,5 +14,7 @@ class IsAdminOrModerator(BasePermission):
         return (
             request.user
             and request.user.is_authenticated
-            and request.user.role == 1
+            and (
+                request.user.role == 1 or request.user.role == 2
+            )
         )
