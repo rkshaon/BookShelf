@@ -84,7 +84,7 @@ export default {
         edition: '',
         isbn: '',
         published_year: '',
-        languages: '',
+        language: '',
         book: '',
         cover_image: ''
       }
@@ -147,14 +147,33 @@ export default {
       const toast = useToast()
       const formData = new FormData()
 
-      Object.keys(updatedBook).forEach((key) => {
-        const value = updatedBook[key]
-        console.log('Key:', key, 'Value:', value)
-        if (value !== undefined && value !== null) {
-          formData.append(key, value)
-          console.log('inserted...', key, value)
-        }
+      formData.append('title', updatedBook.title || '')
+      formData.append('description', updatedBook.description || '')
+      formData.append('published_year', updatedBook.published_year || '')
+      formData.append('publisher', updatedBook.publisher || null)
+      formData.append('edition', updatedBook.edition || '')
+      formData.append('isbn', updatedBook.isbn || '')
+      formData.append('language', updatedBook.language || '')
+
+      updatedBook.authors.forEach((authorId) => {
+        formData.append('authors', authorId)
       })
+
+      updatedBook.genres.forEach((genreId) => {
+        formData.append('genres', genreId)
+      })
+
+      updatedBook.topics.forEach((topicId) => {
+        formData.append('topics', topicId)
+      })
+
+      if (updatedBook.book) {
+        formData.append('book', updatedBook.book)
+      }
+
+      if (updatedBook.cover_image) {
+        formData.append('cover_image', updatedBook.cover_image)
+      }
 
       try {
         this.isSaving = true

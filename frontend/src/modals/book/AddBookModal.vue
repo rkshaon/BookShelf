@@ -80,8 +80,8 @@
             </div> -->
             <div class="mb-4 relative">
               <label for="publisher" class="block text-gray-700 text-sm font-bold mb-2">Publisher</label>
-              <input type="text" id="publisher" v-model="localPublisher" @input="performSearch"
-                @blur="closeDropdown" @focus="performSearch"
+              <input type="text" id="publisher" v-model="localPublisher" @input="performPublisherSearch"
+                @blur="closeDropdown" @focus="performPublisherSearch"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
               <ul v-if="showDropdown && publishers.length"
                 class="absolute z-10 bg-white border border-gray-300 rounded shadow-lg mt-1 w-full max-h-40 overflow-y-auto">
@@ -110,8 +110,26 @@
           <div v-else-if="currentTab === 'Authors'">
             <div class="mb-4">
               <label for="authors" class="block text-gray-700 text-sm font-bold mb-2">Authors</label>
-              <input type="text" id="authors" v-model="localBook.authors"
+              <input type="text" id="authors" v-model="localAuthor" @input="performAuthorSearch" @blur="closeDropdown"
+                @focus="performAuthorSearch"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            </div>
+            <!-- Dropdown for search results -->
+            <ul v-if="showDropdown && authors.length"
+              class="absolute z-10 bg-white border border-gray-300 rounded shadow-lg mt-1 w-full max-h-40 overflow-y-auto">
+              <li v-for="author in authors" :key="author.id" @click="selectAuthor(author)"
+                class="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                {{ author.full_name }}
+              </li>
+            </ul>
+            <div class="flex flex-wrap mt-2">
+              <span v-for="(author, index) in selectedAuthors" :key="author.id"
+                class="flex items-center bg-gray-200 text-gray-700 px-2 py-1 mr-2 mb-2 rounded-full shadow">
+                {{ author.full_name }}
+                <button @click="removeAuthor(index)" class="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                  &times;
+                </button>
+              </span>
             </div>
           </div>
           <div v-else-if="currentTab === 'Others'">
@@ -168,7 +186,7 @@ export default {
         edition: '',
         isbn: '',
         published_year: null,
-        languages: '',
+        language: '',
         book: '',
         cover_image: ''
       })
@@ -178,20 +196,23 @@ export default {
     return {
       currentTab: 'Book',
       localBook: { ...this.book },
+      selectedAuthors: [],
       showDropdown: false,
       searchTimeout: null,
-      localPublisher: ''
+      localPublisher: '',
+      localAuthor: ''
     }
   },
   computed: {
     ...mapGetters([
-      'publishers'
+      'publishers', 'authors'
     ])
   },
   emits: ['close', 'confirm'],
   methods: {
     ...mapActions([
-      'searchPublisher'
+      'searchPublisher',
+      'searchAuthor'
     ]),
     handleBookFile (event) {
       const file = event.target.files[0]
@@ -209,7 +230,7 @@ export default {
         alert('Please select a valid image file.')
       }
     },
-    async performSearch () {
+    async performPublisherSearch () {
       if (this.localPublisher.length < 2) {
         this.showDropdown = false
         return
@@ -231,6 +252,37 @@ export default {
       this.localBook.publisher = publisher.id
       this.localPublisher = publisher.name
       this.showDropdown = false
+    },
+    async performAuthorSearch () {
+      if (this.localAuthor.length < 2) {
+        this.showDropdown = false
+        return
+      }
+      if (this.searchTimeout) {
+        clearTimeout(this.searchTimeout)
+      }
+
+      this.searchTimeout = setTimeout(() => {
+        if (this.localAuthor.trim()) {
+          this.showDropdown = true
+          this.searchAuthor({ query: this.localAuthor.trim() })
+        } else {
+          this.showDropdown = false
+        }
+      }, 500)
+    },
+    selectAuthor (author) {
+      if (!this.selectedAuthors.some((a) => a.id === author.id)) {
+        this.localBook.authors.push(author.id)
+        this.selectedAuthors.push(author)
+      }
+
+      this.searchQuery = ''
+      this.showDropdown = false
+    },
+    removeAuthor (index) {
+      this.localBook.authors.splice(index, 1)
+      this.selectedAuthors.splice(index, 1)
     },
     closeDropdown () {
       setTimeout(() => {
