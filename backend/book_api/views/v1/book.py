@@ -53,6 +53,7 @@ class BookView(APIView):
         self.check_permissions(request)
         requested_data = request.data.copy()
         requested_data['added_by'] = request.user.id
+        print(f"\nrequested_data: {requested_data}\n")
         serializer = BookSerializer(
             data=requested_data,
         )
