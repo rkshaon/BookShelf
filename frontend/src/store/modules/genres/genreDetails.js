@@ -1,6 +1,6 @@
 // src/store/modules/genreDetails.js
 
-import genreAPIService from '@/services/v1/genreAPIService'
+import { fetchV1GenreDetails } from '@/services/v1/genreAPIService'
 
 export default {
   state: {
@@ -29,7 +29,7 @@ export default {
       commit('SET_LOADING', true)
       commit('SET_ERROR', null)
       try {
-        const response = await genreAPIService.fetchV1GenreDetails(genreId)
+        const response = await fetchV1GenreDetails(genreId)
         commit('SET_GENRE_DETAILS', response)
       } catch (error) {
         const errorMessages = []

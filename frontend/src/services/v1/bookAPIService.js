@@ -1,6 +1,6 @@
 // src/services/v1/bookAPIService.js
 
-import axios from 'axios'
+import api from '@/services/axiosInstance'
 
 const API_BASE_URL = process.env.VUE_APP_BACKEND_URL
 const content = 'book'
@@ -22,7 +22,7 @@ export default {
     console.log('Books API:', URL, page, pageSize)
 
     try {
-      const response = await axios.get(URL)
+      const response = await api.get(URL)
       return response.data
     } catch (error) {
       console.error('Error fetching books:', error)
@@ -34,7 +34,7 @@ export default {
     console.log('Book Details API:', URL)
 
     try {
-      const response = await axios.get(URL)
+      const response = await api.get(URL)
       return response.data
     } catch (error) {
       console.error('Error fetching book:', error)
@@ -53,7 +53,7 @@ export default {
     console.log('Search Books API:', URL)
 
     try {
-      const response = await axios.get(URL)
+      const response = await api.get(URL)
       console.log(response.data)
       return response.data
     } catch (error) {
