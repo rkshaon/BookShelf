@@ -1,6 +1,6 @@
 // src/services/v1/topicAPIService.js
 
-import axios from 'axios'
+import api from '@/services/axiosInstance'
 
 const API_BASE_URL = process.env.VUE_APP_BACKEND_URL
 const content = 'topic'
@@ -11,7 +11,7 @@ export const fetchV1TopicDetails = async (id = null) => {
   console.log('topic Details API:', URL)
 
   try {
-    const response = await axios.get(URL)
+    const response = await api.get(URL)
     return response.data
   } catch (error) {
     console.error('Error fetching topic:', error)
