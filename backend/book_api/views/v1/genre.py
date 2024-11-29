@@ -1,14 +1,7 @@
-# from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
-# from rest_framework.permissions import AllowAny
-# from rest_framework.exceptions import NotFound
 
-# from django.views.decorators.cache import cache_page
-# from django.utils.decorators import method_decorator
-
-# from BookShelf.utilities.pagination import Pagination
 from BookShelf.utilities.permissions import IsAdminOrModerator
 from BookShelf.utilities.filters import SearchFilter
 
