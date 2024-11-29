@@ -1,6 +1,6 @@
 // src/store/modules/topicDetails.js
 
-import topicAPIService from '@/services/v1/topicAPIService'
+import { fetchV1TopicDetails } from '@/services/v1/topicAPIService'
 
 export default {
   state: {
@@ -29,7 +29,7 @@ export default {
       commit('SET_LOADING', true)
       commit('SET_ERROR', null)
       try {
-        const response = await topicAPIService.fetchV1TopicDetails(topicId)
+        const response = await fetchV1TopicDetails(topicId)
         commit('SET_TOPIC_DETAILS', response)
       } catch (error) {
         const errorMessages = []

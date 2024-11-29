@@ -18,17 +18,3 @@ export const fetchV1GenreDetails = async (id = null) => {
     throw error
   }
 }
-// export default {
-//   async fetchV1GenreDetails (id = null) {
-//     const URL = `${API_BASE_URL}/book/${version}/${content}/${id}/`
-//     console.log('Genre Details API:', URL)
-
-//     try {
-//       const response = await axios.get(URL)
-//       return response.data
-//     } catch (error) {
-//       console.error('Error fetching genre:', error)
-//       throw error
-//     }
-//   }
-// }
