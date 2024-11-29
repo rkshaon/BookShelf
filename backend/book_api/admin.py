@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-# import frontend base url from settings
 from BookShelf.settings import FRONTEND_BASE_URL
 
 from book_api.models import Genre
@@ -12,7 +11,7 @@ from book_api.models import Book
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'name', 'slug',
+        'id', 'name', 'slug', 'is_deleted',
     ]
     list_display_links = ['name']
     search_fields = ['name']
@@ -24,7 +23,7 @@ class GenreAdmin(admin.ModelAdmin):
 @admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'name', 'slug',
+        'id', 'name', 'slug', 'is_deleted',
     ]
     list_display_links = ['name']
     search_fields = ['name']
