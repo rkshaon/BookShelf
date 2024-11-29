@@ -27,6 +27,7 @@ class BookSerializer(serializers.ModelSerializer):
             'id', 'book_code', 'title', 'description', 'edition',
             'isbn', 'pages', 'published_year', 'language', 'book',
             'cover_image', 'publisher', 'genres', 'topics', 'authors',
+            'added_by',
         ]
 
     # def validate_published_year(self, value):
