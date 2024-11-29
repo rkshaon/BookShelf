@@ -135,8 +135,26 @@
           <div v-else-if="currentTab === 'Others'">
             <div class="mb-4">
               <label for="genres" class="block text-gray-700 text-sm font-bold mb-2">Genres</label>
-              <input type="text" id="genres" v-model="localBook.genres"
+              <input type="text" id="genres" v-model="localGenre" @input="performGenreSearch" @blur="closeDropdown"
+                @focus="performGenreSearch"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            </div>
+            <!-- Dropdown for search results -->
+            <ul v-if="showDropdown && genres.length"
+              class="absolute z-10 bg-white border border-gray-300 rounded shadow-lg mt-1 w-full max-h-40 overflow-y-auto">
+              <li v-for="genre in genres" :key="genre.id" @click="selectGenre(genre)"
+                class="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                {{ genre.name }}
+              </li>
+            </ul>
+            <div class="flex flex-wrap mt-2">
+              <span v-for="(genre, index) in selectedGenres" :key="genre.id"
+                class="flex items-center bg-gray-200 text-gray-700 px-2 py-1 mr-2 mb-2 rounded-full shadow">
+                {{ genre.name }}
+                <button @click="removeGenre(index)" class="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                  &times;
+                </button>
+              </span>
             </div>
             <div class="mb-4">
               <label for="topics" class="block text-gray-700 text-sm font-bold mb-2">Topics</label>
@@ -197,22 +215,25 @@ export default {
       currentTab: 'Book',
       localBook: { ...this.book },
       selectedAuthors: [],
+      selectedGenres: [],
       showDropdown: false,
       searchTimeout: null,
       localPublisher: '',
-      localAuthor: ''
+      localAuthor: '',
+      localGenre: ''
     }
   },
   computed: {
     ...mapGetters([
-      'publishers', 'authors'
+      'publishers', 'authors', 'genres'
     ])
   },
   emits: ['close', 'confirm'],
   methods: {
     ...mapActions([
       'searchPublisher',
-      'searchAuthor'
+      'searchAuthor',
+      'searchGenre'
     ]),
     handleBookFile (event) {
       const file = event.target.files[0]
@@ -230,6 +251,7 @@ export default {
         alert('Please select a valid image file.')
       }
     },
+    // publisher
     async performPublisherSearch () {
       if (this.localPublisher.length < 2) {
         this.showDropdown = false
@@ -253,6 +275,7 @@ export default {
       this.localPublisher = publisher.name
       this.showDropdown = false
     },
+    // author
     async performAuthorSearch () {
       if (this.localAuthor.length < 2) {
         this.showDropdown = false
@@ -283,6 +306,41 @@ export default {
     removeAuthor (index) {
       this.localBook.authors.splice(index, 1)
       this.selectedAuthors.splice(index, 1)
+    },
+    // genre
+    async performGenreSearch () {
+      if (this.localGenre.length < 2) {
+        this.showDropdown = false
+        return
+      }
+      if (this.searchTimeout) {
+        clearTimeout(this.searchTimeout)
+      }
+
+      this.searchTimeout = setTimeout(() => {
+        if (this.localGenre.trim()) {
+          this.showDropdown = true
+          this.searchGenre({ query: this.localGenre.trim() })
+        } else {
+          this.showDropdown = false
+        }
+      }, 500)
+    },
+    selectGenre (genre) {
+      // if (!this.localBook.genres.includes(genre)) {
+      //   this.localBook.genres.push(genre)
+      // }
+      if (!this.selectedGenres.some((g) => g.id === genre.id)) {
+        this.localBook.genres.push(genre.id)
+        this.selectedGenres.push(genre)
+      }
+
+      this.localGenres = ''
+      this.showDropdown = false
+    },
+    removeGenre (index) {
+      this.localBook.genres.splice(index, 1)
+      this.selectedGenres.splice(index, 1)
     },
     closeDropdown () {
       setTimeout(() => {

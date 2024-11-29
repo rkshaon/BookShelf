@@ -21,7 +21,7 @@ export default {
     }
   },
   actions: {
-    async searchGenres (
+    async searchGenre (
       { commit, state },
       { query, page = 1, pageSize = 8 } = {}
     ) {

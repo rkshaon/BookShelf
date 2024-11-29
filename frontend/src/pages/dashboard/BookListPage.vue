@@ -144,13 +144,14 @@ export default {
       this.$router.push({ query: { page } })
     },
     async handleConfirm (updatedBook) {
+      console.log('before prepare data to save:', updatedBook)
       const toast = useToast()
       const formData = new FormData()
 
       formData.append('title', updatedBook.title || '')
       formData.append('description', updatedBook.description || '')
       formData.append('published_year', updatedBook.published_year || '')
-      formData.append('publisher', updatedBook.publisher || null)
+      formData.append('publisher', updatedBook.publisher || '')
       formData.append('edition', updatedBook.edition || '')
       formData.append('isbn', updatedBook.isbn || '')
       formData.append('language', updatedBook.language || '')
