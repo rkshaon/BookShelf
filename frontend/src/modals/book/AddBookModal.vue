@@ -74,7 +74,11 @@
           <div v-else-if="currentTab === 'Publish'">
             <div class="mb-4">
               <label for="publisher" class="block text-gray-700 text-sm font-bold mb-2">Publisher</label>
-              <input type="text" id="publisher" v-model="localBook.publisher"
+              <input
+                type="text"
+                id="publisher"
+                v-model="localBook.publisher"
+                @input="performSearch"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
             </div>
             <div class="mb-4">
@@ -129,6 +133,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'AddAuthorModal',
   props: {
@@ -161,11 +167,20 @@ export default {
   data () {
     return {
       currentTab: 'Book',
-      localBook: { ...this.book }
+      localBook: { ...this.book },
+      searchTimeout: null
     }
+  },
+  computed: {
+    ...mapGetters([
+      'publishers'
+    ])
   },
   emits: ['close', 'confirm'],
   methods: {
+    ...mapActions([
+      'searchPublisher'
+    ]),
     handleBookFile (event) {
       const file = event.target.files[0]
       if (file && file.type === 'application/pdf') {
@@ -181,6 +196,24 @@ export default {
       } else {
         alert('Please select a valid image file.')
       }
+    },
+    performSearch () {
+      console.log('Before', this.publishers)
+      if (this.searchTimeout) {
+        clearTimeout(this.searchTimeout)
+      }
+
+      this.searchTimeout = setTimeout(() => {
+        if (this.localBook.publisher.trim()) {
+          this.searchPublisher({ query: this.localBook.publisher.trim() })
+        }
+        console.log('After', this.publishers)
+      }, 500)
+      console.log('After', this.publishers)
+    },
+    selectPublisher (publisher) {
+      this.localBook.publisher = publisher.name
+      this.showDropdown = false
     },
     closeModal () {
       this.$emit('close')
