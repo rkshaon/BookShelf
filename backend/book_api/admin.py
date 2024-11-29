@@ -12,7 +12,7 @@ from book_api.models import Book
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'name', 'slug',
+        'id', 'name', 'slug', 'is_deleted',
     ]
     list_display_links = ['name']
     search_fields = ['name']
