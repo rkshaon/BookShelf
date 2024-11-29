@@ -13,8 +13,6 @@ export default {
   },
   mutations: {
     SET_PUBLISHERS (state, publishers) {
-      console.log('in set function...', publishers)
-
       state.publishers = publishers
     },
     SET_SEARCH_QUERY (state, query) {
@@ -30,8 +28,6 @@ export default {
       try {
         const response = await searchV1Publishers(query, page, pageSize)
         commit('SET_PUBLISHERS', response.results)
-        console.log('Store function Search Books:', response.results)
-        // console.log(state.publishers)
       } catch (error) {
         console.error('Error searching books:', error)
       }

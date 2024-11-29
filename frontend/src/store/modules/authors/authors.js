@@ -2,7 +2,8 @@
 
 import {
   fetchV1Authors,
-  createV1Author
+  createV1Author,
+  searchV1Authors
 } from '@/services/v1/authorAPIService'
 
 export default {
@@ -13,7 +14,8 @@ export default {
     pageSize: 10,
     totalCount: 0,
     loading: false,
-    error: null
+    error: null,
+    searchQuery: ''
   },
   getters: {
     authors: (state) => state.authors,
@@ -45,6 +47,9 @@ export default {
     },
     SET_ERROR (state, error) {
       state.error = error
+    },
+    SET_SEARCH_QUERY (state, query) {
+      state.searchQuery = query
     }
   },
   actions: {
@@ -66,7 +71,6 @@ export default {
     async addAuthor ({ commit }, author) {
       try {
         const response = await createV1Author(author)
-        console.log('Created author:', response)
         if (response.error) {
           const errorMessages = []
           errorMessages.push(response.message)
@@ -86,6 +90,18 @@ export default {
           error.response?.data?.message || 'Failed to add author.'
         return { success: false, message }
         // return error
+      }
+    },
+    async searchAuthor (
+      { commit, state },
+      { query, page = 1, pageSize = 8 } = {}
+    ) {
+      commit('SET_SEARCH_QUERY', query)
+      try {
+        const response = await searchV1Authors(query, page, pageSize)
+        commit('SET_AUTHORS', response.results)
+      } catch (error) {
+        console.error('Error searching books:', error)
       }
     }
   }
