@@ -18,3 +18,23 @@ export const fetchV1GenreDetails = async (id = null) => {
     throw error
   }
 }
+
+export const searchV1Genres = async (query = '', page = 1, pageSize = 8) => {
+  page = page ?? 1
+  pageSize = pageSize ?? 10
+
+  const URL = `${API_BASE_URL}/${content}/${version}/?search=${encodeURIComponent(
+    query
+  )}`
+
+  try {
+    const response = await api.get(URL)
+    return response.data
+  } catch (error) {
+    console.error('Error searching Genres:', error)
+    if (error.response && error.response.status === 403) {
+      return { error: true, message: 'Permission denied to create an author' }
+    }
+    throw error
+  }
+}
