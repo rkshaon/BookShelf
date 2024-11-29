@@ -10,6 +10,7 @@ import publishers from '@/store/modules/publishers/publishers'
 import authorDetails from '@/store/modules/authors/authorDetails'
 import authors from '@/store/modules/authors/authors'
 // genre modules
+import genres from '@/store/modules/genres/genres'
 import genreDetails from '@/store/modules/genres/genreDetails'
 // topic modules
 import topicDetails from '@/store/modules/topics/topicDetails'
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     publishers,
     authorDetails,
     authors,
+    genres,
     genreDetails,
     topicDetails,
     register,
