@@ -72,14 +72,24 @@
             </div>
           </div>
           <div v-else-if="currentTab === 'Publish'">
-            <div class="mb-4">
+            <!-- <div class="mb-4">
               <label for="publisher" class="block text-gray-700 text-sm font-bold mb-2">Publisher</label>
-              <input
-                type="text"
-                id="publisher"
-                v-model="localBook.publisher"
-                @input="performSearch"
+              <input type="text" id="publisher" v-model="localBook.publisher" @input="performSearch"
+                @blur="closeDropdown" @focus="performSearch"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            </div> -->
+            <div class="mb-4 relative">
+              <label for="publisher" class="block text-gray-700 text-sm font-bold mb-2">Publisher</label>
+              <input type="text" id="publisher" v-model="localPublisher" @input="performSearch"
+                @blur="closeDropdown" @focus="performSearch"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+              <ul v-if="showDropdown && publishers.length"
+                class="absolute z-10 bg-white border border-gray-300 rounded shadow-lg mt-1 w-full max-h-40 overflow-y-auto">
+                <li v-for="publisher in publishers" :key="publisher.id" @click="selectPublisher(publisher)"
+                  class="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                  {{ publisher.name }}
+                </li>
+              </ul>
             </div>
             <div class="mb-4">
               <label for="published_year" class="block text-gray-700 text-sm font-bold mb-2">Published Year</label>
@@ -153,7 +163,7 @@ export default {
         genres: [],
         topics: [],
         authors: [],
-        publisher: '',
+        publisher: null,
         description: '',
         edition: '',
         isbn: '',
@@ -168,7 +178,9 @@ export default {
     return {
       currentTab: 'Book',
       localBook: { ...this.book },
-      searchTimeout: null
+      showDropdown: false,
+      searchTimeout: null,
+      localPublisher: ''
     }
   },
   computed: {
@@ -197,23 +209,33 @@ export default {
         alert('Please select a valid image file.')
       }
     },
-    performSearch () {
-      console.log('Before', this.publishers)
+    async performSearch () {
+      if (this.localPublisher.length < 2) {
+        this.showDropdown = false
+        return
+      }
       if (this.searchTimeout) {
         clearTimeout(this.searchTimeout)
       }
 
       this.searchTimeout = setTimeout(() => {
-        if (this.localBook.publisher.trim()) {
-          this.searchPublisher({ query: this.localBook.publisher.trim() })
+        if (this.localPublisher.trim()) {
+          this.showDropdown = true
+          this.searchPublisher({ query: this.localPublisher.trim() })
+        } else {
+          this.showDropdown = false
         }
-        console.log('After', this.publishers)
       }, 500)
-      console.log('After', this.publishers)
     },
     selectPublisher (publisher) {
-      this.localBook.publisher = publisher.name
+      this.localBook.publisher = publisher.id
+      this.localPublisher = publisher.name
       this.showDropdown = false
+    },
+    closeDropdown () {
+      setTimeout(() => {
+        this.showDropdown = false
+      }, 200)
     },
     closeModal () {
       this.$emit('close')

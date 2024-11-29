@@ -79,7 +79,7 @@ export default {
         genres: [],
         topics: [],
         authors: [],
-        publisher: '',
+        publisher: null,
         description: '',
         edition: '',
         isbn: '',
@@ -149,8 +149,10 @@ export default {
 
       Object.keys(updatedBook).forEach((key) => {
         const value = updatedBook[key]
+        console.log('Key:', key, 'Value:', value)
         if (value !== undefined && value !== null) {
           formData.append(key, value)
+          console.log('inserted...', key, value)
         }
       })
 

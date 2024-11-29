@@ -49,7 +49,6 @@ export default {
   },
   methods: {
     ...mapActions(['searchBooks']),
-
     performSearch () {
       if (this.searchTimeout) {
         clearTimeout(this.searchTimeout)
@@ -61,12 +60,10 @@ export default {
         }
       }, 500)
     },
-
     navigateToResult (result) {
       this.isDropdownVisible = false
       this.$router.push(`/book/${result.book_code}`)
     },
-
     handleClickOutside (event) {
       if (!this.$el.contains(event.target)) {
         this.isDropdownVisible = false
