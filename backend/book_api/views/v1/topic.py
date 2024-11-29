@@ -1,40 +1,38 @@
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from rest_framework.exceptions import NotFound
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from rest_framework import status
 
-from django.views.decorators.cache import cache_page
-from django.utils.decorators import method_decorator
+from BookShelf.utilities.permissions import IsAdminOrModerator
+from BookShelf.utilities.filters import SearchFilter
 
 from book_api.models import Topic
 
 from book_api.serializers.v1 import TopicSerializer
 
-from BookShelf.utilities.pagination import Pagination
 
+class TopicViewSet(ModelViewSet):
+    queryset = Topic.objects.filter(is_deleted=False)
+    serializer_class = TopicSerializer
+    permission_classes = [
+        IsAdminOrModerator,
+    ]
+    filter_backends = [SearchFilter]
+    search_fields = ['name']
 
-@method_decorator(cache_page(60*15), name='get')
-class TopicView(APIView):
-    permission_classes = [AllowAny]
+    def perform_create(self, serializer):
+        serializer.save(added_by=self.request.user)
 
-    def get(self, request, *args, **kwargs):
-        pk = kwargs.get('pk', None)
+    def perform_update(self, serializer):
+        serializer.save(updated_by=self.request.user)
 
-        if pk:
-            try:
-                topic = Topic.objects.get(
-                    pk=pk, is_deleted=False
-                )
-            except Topic.DoesNotExist:
-                raise NotFound(detail='Topic not found.')
+    def perform_destroy(self, instance):
+        instance.is_deleted = True
+        instance.save()
 
-            return Response(TopicSerializer(topic).data)
-
-        topics = Topic.objects.filter(
-            is_deleted=False
-        ).order_by('-id')
-        paginator = Pagination()
-        page = paginator.paginate_queryset(topics, request)
-        return paginator.get_paginated_response(
-            TopicSerializer(page, many=True).data
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {"message": f"Topic '{instance.name}' has been successfully deleted."},   # noqa
+            status=status.HTTP_200_OK,
         )
