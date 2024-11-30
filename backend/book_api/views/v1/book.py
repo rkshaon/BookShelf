@@ -51,11 +51,9 @@ class BookView(APIView):
     def post(self, request, *args, **kwargs):
         self.permission_classes = [IsAdminOrModerator]
         self.check_permissions(request)
-        requested_data = request.data.copy()
-        requested_data['added_by'] = request.user.id
-        print(f"\nrequested_data: {requested_data}\n")
+        request.data['added_by'] = request.user.id
         serializer = BookSerializer(
-            data=requested_data,
+            data=request.data,
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
