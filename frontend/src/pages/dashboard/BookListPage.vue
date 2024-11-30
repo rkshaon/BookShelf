@@ -1,16 +1,15 @@
 <template>
   <div class="book-list-page p-6 bg-gray-50 min-h-screen">
-    <!-- <AddAuthor :visible="showModal" :author="author" title="Add Author" @close="showModal = false"
-      @confirm="handleConfirm" /> -->
-    <!-- <div class="flex justify-end mb-4">
+    <AddBookModal :visible="showModal" :book="book" title="Add Book" @close="showModal = false"
+      @confirm="handleConfirm" />
+    <div class="flex justify-end mb-4">
       <button @click="showModal = true" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
-        Add Author
+        Add Book
       </button>
-    </div> -->
+    </div>
     <div class="mt-6">
-      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl"
-        :pageSize="10" :currentPage="parseInt(currentPage, 10)" :totalCount="totalBookCount"
-        @fetch-page="changePage" />
+      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="10"
+        :currentPage="parseInt(currentPage, 10)" :totalCount="totalBookCount" @fetch-page="changePage" />
     </div>
     <div class="overflow-x-auto bg-white shadow-md rounded-lg">
       <div v-if="isBookloading" class="p-4">
@@ -49,9 +48,8 @@
       </table>
     </div>
     <div class="mt-6">
-      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl"
-        :pageSize="10" :currentPage="parseInt(currentPage, 10)" :totalCount="totalBookCount"
-        @fetch-page="changePage" />
+      <DashboardPaginationComponent :previousPage="previousPageUrl" :nextPage="nextPageUrl" :pageSize="10"
+        :currentPage="parseInt(currentPage, 10)" :totalCount="totalBookCount" @fetch-page="changePage" />
     </div>
   </div>
 </template>
@@ -62,27 +60,33 @@ import { useToast } from 'vue-toastification'
 import { getCoverImage } from '@/helpers/getCoverImage'
 import DashboardPaginationComponent from '@/components/dashboard/DashboardPaginationComponent .vue'
 import LoaderComponent from '@/components/general/LoaderComponent.vue'
-// import AddAuthor from '@/modals/author/AddAuthorModal.vue'
+import AddBookModal from '@/modals/book/AddBookModal.vue'
 
 export default {
   name: 'BookListPage',
   components: {
     DashboardPaginationComponent,
-    LoaderComponent
-    // AddAuthor
+    LoaderComponent,
+    AddBookModal
   },
   data () {
     return {
       isSaving: false,
       currentPage: 0,
       showModal: false,
-      author: {
-        first_name: '',
-        middle_name: '',
-        last_name: '',
-        biography: '',
-        birth_date: '',
-        died_date: ''
+      book: {
+        title: '',
+        genres: [],
+        topics: [],
+        authors: [],
+        publisher: null,
+        description: '',
+        edition: '',
+        isbn: '',
+        published_year: '',
+        language: '',
+        book: '',
+        cover_image: ''
       }
     }
   },
@@ -133,27 +137,59 @@ export default {
   },
   methods: {
     ...mapActions([
-      'fetchBooks', 'addAuthor'
+      'fetchBooks', 'addBook'
     ]),
     getCoverImage,
     changePage (page) {
       this.$router.push({ query: { page } })
     },
-    async handleConfirm (updatedAuthor) {
+    async handleConfirm (updatedBook) {
+      console.log('before prepare data to save:', updatedBook)
       const toast = useToast()
+      const formData = new FormData()
+
+      formData.append('title', updatedBook.title || '')
+      formData.append('description', updatedBook.description || '')
+      formData.append('published_year', updatedBook.published_year || '')
+      formData.append('publisher', updatedBook.publisher || '')
+      formData.append('edition', updatedBook.edition || '')
+      formData.append('isbn', updatedBook.isbn || '')
+      formData.append('language', updatedBook.language || '')
+
+      updatedBook.authors.forEach((authorId) => {
+        formData.append('authors', authorId)
+      })
+
+      updatedBook.genres.forEach((genreId) => {
+        formData.append('genres', genreId)
+      })
+
+      updatedBook.topics.forEach((topicId) => {
+        formData.append('topics', topicId)
+      })
+
+      if (updatedBook.book) {
+        formData.append('book', updatedBook.book)
+      }
+
+      if (updatedBook.cover_image) {
+        formData.append('cover_image', updatedBook.cover_image)
+      }
 
       try {
         this.isSaving = true
-        const result = await this.addAuthor(updatedAuthor)
+        console.log('updatedBook:', formData)
+        const result = await this.addBook(formData)
+
         if (result.success) {
           this.showModal = false
-          toast.success('Author created successfully!')
+          toast.success('Book created successfully!')
         } else {
-          console.log('Error:', result.message)
+          console.log('Else Error:', result.message)
           toast.error(result.message || 'An error occurred.')
         }
       } catch (error) {
-        console.error('Error:', error)
+        console.error('Catch Error:', error)
         toast.error('Unexpected error occurred.')
       } finally {
         this.isSaving = false

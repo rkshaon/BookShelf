@@ -48,3 +48,29 @@ export const createV1Author = async (data) => {
     throw error
   }
 }
+
+export const searchV1Authors = async (
+  query = '',
+  page = 1,
+  pageSize = 8
+) => {
+  page = page ?? 1
+  pageSize = pageSize ?? 10
+
+  const URL = `${API_BASE_URL}/${content}/${version}/?search=${encodeURIComponent(
+    query
+  )}`
+
+  console.log('Search Author API:', URL)
+
+  try {
+    const response = await api.get(URL)
+    return response.data
+  } catch (error) {
+    console.error('Error searching Authors:', error)
+    if (error.response && error.response.status === 403) {
+      return { error: true, message: 'Permission denied to create an author' }
+    }
+    throw error
+  }
+}

@@ -1,6 +1,6 @@
 // src/store/modules/bookDetails.js
 
-import bookAPIService from '@/services/v1/bookAPIService'
+import { fetchV1BookDetails } from '@/services/v1/bookAPIService'
 
 export default {
   state: {
@@ -29,7 +29,7 @@ export default {
       commit('SET_BOOK_LOADING', true)
       commit('SET_BOOK_ERROR', null)
       try {
-        const bookDetails = await bookAPIService.fetchV1BookDetails(bookCode)
+        const bookDetails = await fetchV1BookDetails(bookCode)
         commit('SET_BOOK_DETAILS', bookDetails)
       } catch (error) {
         const errorMessages = []

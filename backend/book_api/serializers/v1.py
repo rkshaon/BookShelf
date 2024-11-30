@@ -27,7 +27,21 @@ class BookSerializer(serializers.ModelSerializer):
             'id', 'book_code', 'title', 'description', 'edition',
             'isbn', 'pages', 'published_year', 'language', 'book',
             'cover_image', 'publisher', 'genres', 'topics', 'authors',
+            'added_by',
         ]
+
+    # def validate_published_year(self, value):
+    #     print("\n\nCalling...\n\n")
+    #     if value == "":
+    #         return None
+
+    #     return value
+
+    def to_internal_value(self, data):
+        if data.get('published_year') == "":
+            data['published_year'] = None
+
+        return super().to_internal_value(data)
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

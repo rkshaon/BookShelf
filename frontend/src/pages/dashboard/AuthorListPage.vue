@@ -1,6 +1,6 @@
 <template>
   <div class="book-list-page p-6 bg-gray-50 min-h-screen">
-    <AddAuthor :visible="showModal" :author="author" title="Add Author" @close="showModal = false"
+    <AddAuthorModal :visible="showModal" :author="author" title="Add Author" @close="showModal = false"
       @confirm="handleConfirm" />
     <div class="flex justify-end mb-4">
       <button @click="showModal = true" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
@@ -58,14 +58,14 @@ import { mapActions, mapGetters } from 'vuex'
 import { useToast } from 'vue-toastification'
 import DashboardPaginationComponent from '@/components/dashboard/DashboardPaginationComponent .vue'
 import LoaderComponent from '@/components/general/LoaderComponent.vue'
-import AddAuthor from '@/modals/author/AddAuthorModal.vue'
+import AddAuthorModal from '@/modals/author/AddAuthorModal.vue'
 
 export default {
   name: 'AuthorListPage',
   components: {
     DashboardPaginationComponent,
     LoaderComponent,
-    AddAuthor
+    AddAuthorModal
   },
   data () {
     return {

@@ -11,7 +11,7 @@ from book_api.serializers.v1 import GenreSerializer
 
 
 class GenreViewSet(ModelViewSet):
-    queryset = Genre.objects.filter(is_deleted=False)
+    queryset = Genre.objects.filter(is_deleted=False).order_by('name')
     serializer_class = GenreSerializer
     permission_classes = [
         IsAdminOrModerator,

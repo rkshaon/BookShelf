@@ -4,12 +4,16 @@ import Vuex from 'vuex'
 import books from '@/store/modules/books/books'
 import bookDetails from '@/store/modules/books/bookDetails'
 import bookSearch from '@/store/modules/books/bookSearch'
+// publisher modules
+import publishers from '@/store/modules/publishers/publishers'
 // author modules
 import authorDetails from '@/store/modules/authors/authorDetails'
 import authors from '@/store/modules/authors/authors'
 // genre modules
+import genres from '@/store/modules/genres/genres'
 import genreDetails from '@/store/modules/genres/genreDetails'
 // topic modules
+import topics from '@/store/modules/topics/topics'
 import topicDetails from '@/store/modules/topics/topicDetails'
 // user modules
 import register from '@/store/modules/users/register'
@@ -21,9 +25,12 @@ export default new Vuex.Store({
     books,
     bookDetails,
     bookSearch,
+    publishers,
     authorDetails,
     authors,
+    genres,
     genreDetails,
+    topics,
     topicDetails,
     register,
     authentication,

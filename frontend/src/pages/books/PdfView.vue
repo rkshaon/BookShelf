@@ -24,9 +24,13 @@
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf'
 import { getBookURL } from '@/helpers/getBookURL'
 import { getBookURLUsingBookCode } from '@/helpers/getBookURLUsingBookCode'
+import LoaderComponent from '@/components/general/LoaderComponent.vue'
 
 export default {
   name: 'PdfViewer',
+  components: {
+    LoaderComponent
+  },
   data () {
     return {
       pdf: null,
