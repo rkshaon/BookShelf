@@ -153,7 +153,10 @@ export default {
       formData.append('published_year', updatedBook.published_year || '')
       formData.append('publisher', updatedBook.publisher || '')
       formData.append('edition', updatedBook.edition || '')
-      formData.append('isbn', updatedBook.isbn || '')
+      // formData.append('isbn', updatedBook.isbn || '')
+      if (updatedBook.isbn) {
+        formData.append('isbn', updatedBook.isbn)
+      }
       formData.append('language', updatedBook.language || '')
 
       updatedBook.authors.forEach((authorId) => {
