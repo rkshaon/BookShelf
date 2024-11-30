@@ -19,7 +19,7 @@ export default {
     }
   },
   actions: {
-    async searchTopics (
+    async searchTopic (
       { commit, state },
       { query, page = 1, pageSize = 8 } = {}
     ) {
@@ -28,7 +28,7 @@ export default {
         const response = await searchV1Topics(query, page, pageSize)
         commit('SET_TOPICS', response.results)
       } catch (error) {
-        console.error("Error searching topics:", error);
+        console.error('Error searching topics:', error)
       }
     }
   }

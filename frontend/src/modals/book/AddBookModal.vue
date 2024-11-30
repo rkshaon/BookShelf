@@ -158,8 +158,26 @@
             </div>
             <div class="mb-4">
               <label for="topics" class="block text-gray-700 text-sm font-bold mb-2">Topics</label>
-              <input type="text" id="topics" v-model="localBook.topics"
+              <input type="text" id="topics" v-model="localTopic" @input="performTopicSearch" @blur="closeDropdown"
+                @focus="performTopicSearch"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            </div>
+            <!-- Dropdown for search results -->
+            <ul v-if="showDropdown && topics.length"
+              class="absolute z-10 bg-white border border-gray-300 rounded shadow-lg mt-1 w-full max-h-40 overflow-y-auto">
+              <li v-for="topic in topics" :key="topic.id" @click="selectTopic(topic)"
+                class="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                {{ topic.name }}
+              </li>
+            </ul>
+            <div class="flex flex-wrap mt-2">
+              <span v-for="(topic, index) in selectedTopics" :key="topic.id"
+                class="flex items-center bg-gray-200 text-gray-700 px-2 py-1 mr-2 mb-2 rounded-full shadow">
+                {{ topic.name }}
+                <button @click="removeTopic(index)" class="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                  &times;
+                </button>
+              </span>
             </div>
           </div>
         </form>
@@ -216,16 +234,18 @@ export default {
       localBook: { ...this.book },
       selectedAuthors: [],
       selectedGenres: [],
+      selectedTopics: [],
       showDropdown: false,
       searchTimeout: null,
       localPublisher: '',
       localAuthor: '',
-      localGenre: ''
+      localGenre: '',
+      localTopic: ''
     }
   },
   computed: {
     ...mapGetters([
-      'publishers', 'authors', 'genres'
+      'publishers', 'authors', 'genres', 'topics'
     ])
   },
   emits: ['close', 'confirm'],
@@ -233,7 +253,8 @@ export default {
     ...mapActions([
       'searchPublisher',
       'searchAuthor',
-      'searchGenre'
+      'searchGenre',
+      'searchTopic'
     ]),
     handleBookFile (event) {
       const file = event.target.files[0]
@@ -327,9 +348,6 @@ export default {
       }, 500)
     },
     selectGenre (genre) {
-      // if (!this.localBook.genres.includes(genre)) {
-      //   this.localBook.genres.push(genre)
-      // }
       if (!this.selectedGenres.some((g) => g.id === genre.id)) {
         this.localBook.genres.push(genre.id)
         this.selectedGenres.push(genre)
@@ -341,6 +359,38 @@ export default {
     removeGenre (index) {
       this.localBook.genres.splice(index, 1)
       this.selectedGenres.splice(index, 1)
+    },
+    // topic
+    async performTopicSearch () {
+      if (this.localTopic.length < 2) {
+        this.showDropdown = false
+        return
+      }
+      if (this.searchTimeout) {
+        clearTimeout(this.searchTimeout)
+      }
+
+      this.searchTimeout = setTimeout(() => {
+        if (this.localTopic.trim()) {
+          this.showDropdown = true
+          this.searchTopic({ query: this.localTopic.trim() })
+        } else {
+          this.showDropdown = false
+        }
+      }, 500)
+    },
+    selectTopic (topic) {
+      if (!this.selectedTopics.some((t) => t.id === topic.id)) {
+        this.localBook.topics.push(topic.id)
+        this.selectedTopics.push(topic)
+      }
+
+      this.localTopic = ''
+      this.showDropdown = false
+    },
+    removeTopic (index) {
+      this.localBook.topics.splice(index, 1)
+      this.selectedTopics.splice(index, 1)
     },
     closeDropdown () {
       setTimeout(() => {
