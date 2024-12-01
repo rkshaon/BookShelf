@@ -1,6 +1,6 @@
 // src/store/modules/users/register.js
 
-import { registerUser } from '@/services/v1/userAPIService'
+import { registerV1User } from '@/services/v1/userAPIService'
 
 export default {
   state: {
@@ -28,7 +28,7 @@ export default {
     async register ({ commit }, userData) {
       commit('SET_LOADING', true)
       try {
-        const response = await registerUser(userData)
+        const response = await registerV1User(userData)
         console.log(response)
         console.log(response.data)
         commit('SET_SUCCESS_MESSAGE', response.message)
