@@ -7,7 +7,7 @@ const content = 'user'
 const version = 'v1'
 
 // Register user
-export const registerUser = async (userData) => {
+export const registerV1User = async (userData) => {
   const URL = `${API_BASE_URL}/${content}/${version}/registration`
   try {
     const response = await api.post(URL, userData)
@@ -18,7 +18,7 @@ export const registerUser = async (userData) => {
 }
 
 // Login user
-export const loginUser = async (credentials) => {
+export const loginV1User = async (credentials) => {
   try {
     const URL = `${API_BASE_URL}/${content}/${version}/login`
     const response = await api.post(URL, credentials)
@@ -29,7 +29,7 @@ export const loginUser = async (credentials) => {
 }
 
 // Get user profile
-export const getUserProfile = async () => {
+export const getV1UserProfile = async () => {
   try {
     const URL = `${API_BASE_URL}/${content}/${version}/profile`
     const response = await api.get(URL, { requiresAuth: true })
@@ -40,7 +40,7 @@ export const getUserProfile = async () => {
 }
 
 // Edit user profile
-export const editUserProfile = async (userData) => {
+export const editV1UserProfile = async (userData) => {
   try {
     const URL = `${API_BASE_URL}/${content}/${version}/profile`
     const response = await api.put(URL, userData, { requiresAuth: true })

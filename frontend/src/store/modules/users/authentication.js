@@ -1,6 +1,6 @@
 // src/store/modules/users/authentication.js
 
-import { loginUser } from '@/services/v1/userAPIService'
+import { loginV1User } from '@/services/v1/userAPIService'
 import {
   getAccessToken, getRefreshToken, setAccessToken, setRefreshToken,
   removeAccessToken, removeRefreshToken
@@ -49,7 +49,7 @@ export default {
       console.log(getRefreshToken())
       commit('SET_LOADING', true)
       try {
-        const response = await loginUser(credentials)
+        const response = await loginV1User(credentials)
         commit('SET_TOKEN', response)
         commit('SET_ERROR', null)
       } catch (error) {
