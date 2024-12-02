@@ -38,6 +38,7 @@ PROJECT_APPS = [
     'author_api',
     'publisher_api',
     'book_api',
+    'activity_api',
 ]
 INSTALLED_APPS = DJANGO_APPS + LIBRARY_APPS + PROJECT_APPS
 
@@ -50,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # custom middlewares
+    'BookShelf.middlewares.activity.ActivityLoggerMiddleware',
 ]
 
 ROOT_URLCONF = 'BookShelf.urls'

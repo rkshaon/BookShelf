@@ -10,3 +10,4 @@ elasticsearch-dsl
 django-elasticsearch-dsl
 django-redis
 PyPDF2
+django-user-agents
