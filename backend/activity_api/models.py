@@ -85,6 +85,10 @@ class ActivityLog(models.Model):
         auto_now_add=True
     )
 
+    class Meta:
+        verbose_name = _('Activity Log')
+        verbose_name_plural = _('Activity Logs')
+
     def __str__(self):
         user_info = f"User: {self.user}" if self.user else "Anonymous"
         return f"{user_info} - {self.method} - {self.path} - {self.timestamp}"

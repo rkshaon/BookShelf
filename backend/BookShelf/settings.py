@@ -51,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # custom middlewares
+    'BookShelf.middlewares.activity.ActivityLoggerMiddleware',
 ]
 
 ROOT_URLCONF = 'BookShelf.urls'
