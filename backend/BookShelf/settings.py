@@ -38,6 +38,7 @@ PROJECT_APPS = [
     'author_api',
     'publisher_api',
     'book_api',
+    'activity_api',
 ]
 INSTALLED_APPS = DJANGO_APPS + LIBRARY_APPS + PROJECT_APPS
 
