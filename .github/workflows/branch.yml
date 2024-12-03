@@ -1,0 +1,19 @@
+name: Custom Branch Naming
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        
+      - name: Generate branch name
+        run: |
+          ISSUE_NUMBER=${{ github.event.issue.number }}
+          ISSUE_TITLE=${{ github.event.issue.title }}
+          BRANCH_NAME="feature/${ISSUE_NUMBER}-$(echo ${ISSUE_TITLE} | tr '[:upper:]' '[:lower:]' | tr ' ' '-')"
+          echo "Branch Name: ${BRANCH_NAME}"
