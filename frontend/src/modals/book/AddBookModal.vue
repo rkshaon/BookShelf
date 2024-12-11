@@ -163,7 +163,7 @@
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
             </div>
             <!-- Dropdown for search results -->
-            <ul v-if="showDropdown && topics.length"
+            <ul v-if="showTopicDropdown && topics.length"
               class="absolute z-10 bg-white border border-gray-300 rounded shadow-lg mt-1 w-full max-h-40 overflow-y-auto">
               <li v-for="topic in topics" :key="topic.id" @click="selectTopic(topic)"
                 class="px-4 py-2 hover:bg-gray-200 cursor-pointer">
@@ -236,6 +236,7 @@ export default {
       selectedGenres: [],
       selectedTopics: [],
       showDropdown: false,
+      showTopicDropdown: false,
       searchTimeout: null,
       localPublisher: '',
       localAuthor: '',
@@ -353,7 +354,7 @@ export default {
         this.selectedGenres.push(genre)
       }
 
-      this.localGenres = ''
+      this.localGenre = ''
       this.showDropdown = false
     },
     removeGenre (index) {
@@ -363,7 +364,7 @@ export default {
     // topic
     async performTopicSearch () {
       if (this.localTopic.length < 2) {
-        this.showDropdown = false
+        this.showTopicDropdown = false
         return
       }
       if (this.searchTimeout) {
@@ -372,10 +373,10 @@ export default {
 
       this.searchTimeout = setTimeout(() => {
         if (this.localTopic.trim()) {
-          this.showDropdown = true
+          this.showTopicDropdown = true
           this.searchTopic({ query: this.localTopic.trim() })
         } else {
-          this.showDropdown = false
+          this.showTopicDropdown = false
         }
       }, 500)
     },
@@ -386,7 +387,7 @@ export default {
       }
 
       this.localTopic = ''
-      this.showDropdown = false
+      this.showTopicDropdown = false
     },
     removeTopic (index) {
       this.localBook.topics.splice(index, 1)
