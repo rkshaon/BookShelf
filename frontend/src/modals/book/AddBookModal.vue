@@ -127,13 +127,13 @@
             </div>
           </div>
           <div v-else-if="currentTab === 'Others'">
+            <!-- Genre -->
             <div class="mb-4">
               <label for="genres" class="block text-gray-700 text-sm font-bold mb-2">Genres</label>
               <input type="text" id="genres" v-model="localGenre" @input="performGenreSearch" @blur="closeDropdown"
                 @focus="performGenreSearch"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
             </div>
-            <!-- Dropdown for search results -->
             <ul v-if="showDropdown && genres.length"
               class="absolute z-10 bg-white border border-gray-300 rounded shadow-lg mt-1 w-full max-h-40 overflow-y-auto">
               <li v-for="genre in genres" :key="genre.id" @click="selectGenre(genre)"
@@ -150,13 +150,13 @@
                 </button>
               </span>
             </div>
+            <!-- Topic -->
             <div class="mb-4">
               <label for="topics" class="block text-gray-700 text-sm font-bold mb-2">Topics</label>
               <input type="text" id="topics" v-model="localTopic" @input="performTopicSearch" @blur="closeDropdown"
                 @focus="performTopicSearch"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
             </div>
-            <!-- Dropdown for search results -->
             <ul v-if="showTopicDropdown && topics.length"
               class="absolute z-10 bg-white border border-gray-300 rounded shadow-lg mt-1 w-full max-h-40 overflow-y-auto">
               <li v-for="topic in topics" :key="topic.id" @click="selectTopic(topic)"
@@ -240,6 +240,18 @@ export default {
       localGenre: '',
       localTopic: ''
     }
+  },
+  watch: {
+    visible (value) {
+      if (!value) {
+        this.clearForm()
+      }
+    }
+    // 'localBook.publisher' (value) {
+    //   if (value) {
+    //     this.localPublisher = this.publishers.find((publisher) => publisher.id === value).name
+    //   }
+    // }
   },
   computed: {
     ...mapGetters([
@@ -403,31 +415,33 @@ export default {
     },
     clearForm () {
       this.currentTab = 'Book'
-      this.localBook = {
-        title: '',
-        genres: [],
-        topics: [],
-        authors: [],
-        publisher: null,
-        description: '',
-        edition: '',
-        isbn: '',
-        published_year: '',
-        language: '',
-        book: null,
-        cover_image: ''
-      }
-      this.localPublisher = ''
-      this.localAuthor = ''
-      this.localGenre = ''
-      this.localTopic = ''
-      this.selectedAuthors = []
-      this.selectedGenres = []
-      this.selectedTopics = []
-      this.publishers = []
-      this.authors = []
-      this.genres = []
-      this.topics = []
+      this.localBook = { ...this.book }
+      // this.localBook.book = null
+      // this.localBook = {
+      //   title: '',
+      //   genres: [],
+      //   topics: [],
+      //   authors: [],
+      //   publisher: null,
+      //   description: '',
+      //   edition: '',
+      //   isbn: '',
+      //   published_year: '',
+      //   language: '',
+      //   book: null,
+      //   cover_image: ''
+      // }
+      // this.localPublisher = ''
+      // this.localAuthor = ''
+      // this.localGenre = ''
+      // this.localTopic = ''
+      // this.selectedAuthors = []
+      // this.selectedGenres = []
+      // this.selectedTopics = []
+      // this.publishers = []
+      // this.authors = []
+      // this.genres = []
+      // this.topics = []
     }
   }
 }
