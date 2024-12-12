@@ -34,20 +34,21 @@
             <div class="mb-4">
               <label for="birthdate" class="block text-gray-700 text-sm font-bold mb-2">Birthdate:</label>
               <input type="date" id="birthdate" v-model="localAuthor.birthdate"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                >
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="mb-4">
               <label for="dieddate" class="block text-gray-700 text-sm font-bold mb-2">Died Date:</label>
               <input type="date" id="birthdate" v-model="localAuthor.died_date"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                >
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
           </form>
         </slot>
       </div>
       <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
         <slot name="footer">
+          <button @click="clearForm" class="bg-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-400 transition">
+            Clear
+          </button>
           <button @click="closeModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 transition">
             Cancel
           </button>
@@ -82,11 +83,22 @@ export default {
         birth_date: '',
         died_date: ''
       })
+    },
+    isAPISuccess: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
       localAuthor: { ...this.author }
+    }
+  },
+  watch: {
+    isAPISuccess (value) {
+      if (value) {
+        this.clearForm()
+      }
     }
   },
   emits: ['close', 'confirm'],
@@ -96,6 +108,9 @@ export default {
     },
     onConfirm () {
       this.$emit('confirm', this.localAuthor)
+    },
+    clearForm () {
+      this.localAuthor = { ...this.author }
     }
   }
 }

@@ -72,12 +72,6 @@
             </div>
           </div>
           <div v-else-if="currentTab === 'Publish'">
-            <!-- <div class="mb-4">
-              <label for="publisher" class="block text-gray-700 text-sm font-bold mb-2">Publisher</label>
-              <input type="text" id="publisher" v-model="localBook.publisher" @input="performSearch"
-                @blur="closeDropdown" @focus="performSearch"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-            </div> -->
             <div class="mb-4 relative">
               <label for="publisher" class="block text-gray-700 text-sm font-bold mb-2">Publisher</label>
               <input type="text" id="publisher" v-model="localPublisher" @input="performPublisherSearch"
@@ -184,6 +178,9 @@
       </div>
       <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
         <slot name="footer">
+          <button @click="clearForm" class="bg-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-400 transition">
+            Clear
+          </button>
           <button @click="closeModal" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 transition">
             Cancel
           </button>
@@ -403,6 +400,34 @@ export default {
     },
     onConfirm () {
       this.$emit('confirm', this.localBook)
+    },
+    clearForm () {
+      this.currentTab = 'Book'
+      this.localBook = {
+        title: '',
+        genres: [],
+        topics: [],
+        authors: [],
+        publisher: null,
+        description: '',
+        edition: '',
+        isbn: '',
+        published_year: '',
+        language: '',
+        book: null,
+        cover_image: ''
+      }
+      this.localPublisher = ''
+      this.localAuthor = ''
+      this.localGenre = ''
+      this.localTopic = ''
+      this.selectedAuthors = []
+      this.selectedGenres = []
+      this.selectedTopics = []
+      this.publishers = []
+      this.authors = []
+      this.genres = []
+      this.topics = []
     }
   }
 }
