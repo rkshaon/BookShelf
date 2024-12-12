@@ -1,7 +1,13 @@
 <template>
   <div class="book-list-page p-6 bg-gray-50 min-h-screen">
-    <AddAuthorModal :visible="showModal" :author="author" title="Add Author" @close="showModal = false"
-      @confirm="handleConfirm" />
+    <AddAuthorModal
+      :visible="showModal"
+      :author="author"
+      :isAPISuccess="isAPISuccess"
+      title="Add Author"
+      @close="showModal = false"
+      @confirm="handleConfirm"
+    />
     <div class="flex justify-end mb-4">
       <button @click="showModal = true" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
         Add Author
@@ -79,7 +85,8 @@ export default {
         biography: '',
         birth_date: '',
         died_date: ''
-      }
+      },
+      isAPISuccess: false
     }
   },
   computed: {
@@ -139,6 +146,7 @@ export default {
         const result = await this.addAuthor(updatedAuthor)
         if (result.success) {
           this.showModal = false
+          this.isAPISuccess = true
           toast.success('Author created successfully!')
         } else {
           console.log('Error:', result.message)
