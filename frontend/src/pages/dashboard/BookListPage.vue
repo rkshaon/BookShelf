@@ -1,7 +1,13 @@
 <template>
   <div class="book-list-page p-6 bg-gray-50 min-h-screen">
-    <AddBookModal :visible="showModal" :book="book" title="Add Book" @close="showModal = false"
-      @confirm="handleConfirm" />
+    <AddBookModal
+      :visible="showModal"
+      :book="book"
+      :isAPISuccess="isAPISuccess"
+      title="Add Book"
+      @close="showModal = false"
+      @confirm="handleConfirm"
+    />
     <div class="flex justify-end mb-4">
       <button @click="showModal = true" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
         Add Book
@@ -87,7 +93,8 @@ export default {
         language: '',
         book: '',
         cover_image: ''
-      }
+      },
+      isAPISuccess: false
     }
   },
   computed: {
@@ -186,6 +193,7 @@ export default {
 
         if (result.success) {
           this.showModal = false
+          this.isAPISuccess = true
           toast.success('Book created successfully!')
         } else {
           console.log('Else Error:', result.message)
