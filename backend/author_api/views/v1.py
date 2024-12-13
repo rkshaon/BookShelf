@@ -11,6 +11,7 @@ from django.db.models import Q
 from BookShelf.utilities.pagination import Pagination
 from BookShelf.utilities.permissions import IsAdminOrModerator
 from BookShelf.utilities.filters import SearchFilter
+from activity_api.utilities.event import event_logger
 
 from author_api.models import Author
 
@@ -36,6 +37,18 @@ class AuthorView(APIView):
             except Author.DoesNotExist:
                 raise NotFound(detail='Author not found.')
 
+            event_logger(
+                event='retrieve',
+                object='author',
+                user=request.user,
+                device=request.device,
+                ip_address=request.ip_address,
+                data={
+                    'model': 'Author',
+                    'id': author.id
+                }
+            )
+
             return Response(
                 AuthorSerializer(
                     author, context={'include_books': True}
@@ -54,6 +67,14 @@ class AuthorView(APIView):
         paginator = Pagination()
         page = paginator.paginate_queryset(authors, request)
         serializer = AuthorSerializer(page, many=True)
+
+        event_logger(
+            event='retrieve',
+            object='author',
+            user=request.user,
+            device=request.device,
+            ip_address=request.ip_address,
+        )
 
         return paginator.get_paginated_response(serializer.data)
 

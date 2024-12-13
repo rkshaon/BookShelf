@@ -4,6 +4,7 @@ from rest_framework import status
 
 from BookShelf.utilities.permissions import IsAdminOrModerator
 from BookShelf.utilities.filters import SearchFilter
+from activity_api.utilities.event import event_logger
 
 from book_api.models import Genre
 
@@ -37,28 +38,33 @@ class GenreViewSet(ModelViewSet):
             status=status.HTTP_200_OK,
         )
 
-# @method_decorator(cache_page(60*15), name='get')
-# class GenreView(APIView):
-#     permission_classes = [AllowAny]
+    def retrieve(self, request, *args, **kwargs):
+        """Log the event when retrieving a single item."""
+        response = super().retrieve(request, *args, **kwargs)
+        instance = self.get_object()
+        event_logger(
+            event='retrieve',
+            object='genre',
+            user=request.user,
+            device=request.device,
+            ip_address=request.ip_address,
+            data={
+                'model': 'Genre',
+                'id': instance.id
+            }
+        )
 
-#     def get(self, request, *args, **kwargs):
-#         pk = kwargs.get('pk', None)
+        return response
 
-#         if pk:
-#             try:
-#                 genre = Genre.objects.get(
-#                     pk=pk, is_deleted=False
-#                 )
-#             except Genre.DoesNotExist:
-#                 raise NotFound(detail='Genre not found.')
+    def list(self, request, *args, **kwargs):
+        """Log the event when retrieving a list of items."""
+        response = super().list(request, *args, **kwargs)
+        event_logger(
+            event='retrieve',
+            object='genre',
+            user=request.user,
+            device=request.device,
+            ip_address=request.ip_address,
+        )
 
-#             return Response(GenreSerializer(genre).data)
-
-#         genres = Genre.objects.filter(
-#             is_deleted=False
-#         ).order_by('-id')
-#         paginator = Pagination()
-#         page = paginator.paginate_queryset(genres, request)
-#         return paginator.get_paginated_response(
-#             GenreSerializer(page, many=True).data
-#         )
+        return response

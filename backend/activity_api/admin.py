@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from activity_api.models import Device
 from activity_api.models import ActivityLog
+from activity_api.models import EventLog
 
 
 @admin.register(Device)
@@ -38,3 +39,20 @@ class ActivityLogAdmin(admin.ModelAdmin):
     )
     list_filter = []
     date_hierarchy = 'activity_time'
+
+
+@admin.register(EventLog)
+class EventLogAdmin(admin.ModelAdmin):
+    list_display = [
+        'id', 'event', 'object', 'user', 'device', 'added_date_time',
+    ]
+    list_per_page = 10
+    list_display_links = (
+        'user', 'device',
+    )
+    search_fields = ()
+    readonly_fields = (
+        'id', 'added_date_time',
+    )
+    list_filter = []
+    date_hierarchy = 'added_date_time'
