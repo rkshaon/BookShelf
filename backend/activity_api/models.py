@@ -43,8 +43,9 @@ class Device(models.Model):
     added_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        user_info = f"User: {self.user}" if self.user else "Anonymous"
-        return f"{user_info} - {self.os} - {self.browser} ({self.ip_address})"
+        user_info = f"{self.user}" if self.user else "Anonymous"
+        device_details = f"{self.os} - {self.browser} ({self.ip_address})"
+        return f"{self.pk}: {user_info} - {device_details}"
 
 
 class ActivityLog(models.Model):
