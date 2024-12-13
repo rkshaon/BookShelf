@@ -4,6 +4,7 @@ from rest_framework import status
 
 from BookShelf.utilities.permissions import IsAdminOrModerator
 from BookShelf.utilities.filters import SearchFilter
+from activity_api.utilities.event import event_logger
 
 from publisher_api.models import Publisher
 
@@ -51,6 +52,32 @@ class PublisherViewSet(ModelViewSet):
             status=status.HTTP_200_OK,
         )
 
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+        instance = self.get_object()
+        event_logger(
+            event='retrieve',
+            object='publisher',
+            user=request.user,
+            device=request.device,
+            ip_address=request.ip_address,
+            data={
+                'model': 'Publisher',
+                'id': instance.id
+            }
+        )
+        return response
+
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        event_logger(
+            event='retrieve',
+            object='publisher',
+            user=request.user,
+            device=request.device,
+            ip_address=request.ip_address,
+        )
+        return response
     # def get_queryset(self):
     #     return Publisher.objects.all().order_by('name')
 
