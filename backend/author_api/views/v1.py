@@ -28,7 +28,6 @@ class AuthorView(APIView):
         'biography',
     ]
 
-    # @event_logger(event='retrieve', object='author')
     def get(self, request, *args, **kwargs):
         pk = kwargs.get('pk', None)
         query = request.query_params.get('search', None)
@@ -38,6 +37,19 @@ class AuthorView(APIView):
                 author = Author.objects.get(pk=pk, is_deleted=False)
             except Author.DoesNotExist:
                 raise NotFound(detail='Author not found.')
+
+            # Log write
+            event_logger(
+                event='retrieve',
+                object='author',
+                user=request.user,
+                device=request.device,
+                ip_address=request.ip_address,
+                data={
+                    'model': 'Author',
+                    'id': author.id
+                }
+            )
 
             return Response(
                 AuthorSerializer(
@@ -57,14 +69,6 @@ class AuthorView(APIView):
         paginator = Pagination()
         page = paginator.paginate_queryset(authors, request)
         serializer = AuthorSerializer(page, many=True)
-
-        # Log write
-        event_logger(
-            event='list',
-            object='author',
-            user=request.user,
-            # device=request.device,
-        )
 
         return paginator.get_paginated_response(serializer.data)
 
