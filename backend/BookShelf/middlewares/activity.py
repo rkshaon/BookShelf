@@ -1,14 +1,8 @@
-# from django.utils.timezone import now
 from django.conf import settings
-from django_user_agents.utils import get_user_agent
 
 import json
 import time
 
-from BookShelf.utilities.client import get_client_ip
-from BookShelf.utilities.client import get_device_type
-
-from activity_api.models import Device
 from activity_api.models import ActivityLog
 
 
@@ -24,11 +18,13 @@ class ActivityLoggerMiddleware:
         request.start_time = time.time()
         log_entry = self.log_request_start(request)
         response = self.get_response(request)
-        ip_address = get_client_ip(request)
+        ip_address = request.ip_address
+        device = request.device
         self.log_response_end(
             request,
             log_entry,
-            ip_address
+            ip_address,
+            device,
         )
 
         return response
@@ -58,6 +54,7 @@ class ActivityLoggerMiddleware:
         request,
         log_entry,
         ip_address,
+        device,
     ):
         if not log_entry:
             return
@@ -69,35 +66,6 @@ class ActivityLoggerMiddleware:
             log_entry.user = user
 
         log_entry.ip_address = ip_address
-        log_entry.device = self.get_log_device(
-            request,
-            user,
-            ip_address,
-        )
+        log_entry.device = device
         log_entry.duration = duration
         log_entry.save()
-
-    def get_log_device(
-        self,
-        request,
-        user,
-        ip_address
-    ):
-        user_agent = get_user_agent(request)
-        device, created = Device.objects.get_or_create(
-            user=user,
-            user_agent=user_agent.ua_string,
-            device_type=get_device_type(
-                user_agent.is_mobile,
-                user_agent.is_tablet,
-                user_agent.is_pc
-            ),
-            browser=user_agent.browser.family,
-            browser_version=user_agent.browser.version_string,
-            os=user_agent.os.family,
-            os_version=user_agent.os.version_string,
-            ip_address=ip_address,
-            screen_resolution=None,
-        )
-
-        return device

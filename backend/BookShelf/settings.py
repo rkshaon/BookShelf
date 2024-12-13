@@ -54,7 +54,7 @@ MIDDLEWARE = [
     # custom middlewares
     'BookShelf.middlewares.ip.IPMiddleware',
     'BookShelf.middlewares.device.DeviceMiddleware',
-    # 'BookShelf.middlewares.activity.ActivityLoggerMiddleware',
+    'BookShelf.middlewares.activity.ActivityLoggerMiddleware',
 ]
 
 ROOT_URLCONF = 'BookShelf.urls'
