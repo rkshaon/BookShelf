@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 
 from BookShelf.utilities.pagination import Pagination
 from BookShelf.utilities.permissions import IsAdminOrModerator
+from activity_api.utilities.event import event_logger
 
 from book_api.models import Book
 
@@ -29,6 +30,18 @@ class BookView(APIView):
             except Book.DoesNotExist:
                 raise NotFound(detail="Book not found.")
 
+            event_logger(
+                event='retrieve',
+                object='book',
+                user=request.user,
+                device=request.device,
+                ip_address=request.ip_address,
+                data={
+                    'model': 'Book',
+                    'id': book.id
+                }
+            )
+
             return Response(BookSerializer(book).data)
 
         books = Book.objects.filter(
@@ -44,6 +57,15 @@ class BookView(APIView):
         books = books.order_by('-id')
         paginator = Pagination()
         page = paginator.paginate_queryset(books, request)
+
+        event_logger(
+            event='retrieve',
+            object='book',
+            user=request.user,
+            device=request.device,
+            ip_address=request.ip_address,
+        )
+
         return paginator.get_paginated_response(
             BookSerializer(page, many=True).data
         )

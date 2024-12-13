@@ -44,7 +44,7 @@ class ActivityLogAdmin(admin.ModelAdmin):
 @admin.register(EventLog)
 class EventLogAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'user', 'device', 'added_date_time',
+        'id', 'event', 'object', 'user', 'device', 'added_date_time',
     ]
     list_per_page = 10
     list_display_links = (

@@ -12,7 +12,6 @@ from BookShelf.utilities.pagination import Pagination
 from BookShelf.utilities.permissions import IsAdminOrModerator
 from BookShelf.utilities.filters import SearchFilter
 from activity_api.utilities.event import event_logger
-# from activity_api.decorators import event_logger
 
 from author_api.models import Author
 
