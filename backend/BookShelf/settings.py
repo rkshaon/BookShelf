@@ -52,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # custom middlewares
+    'BookShelf.middlewares.ip.IPMiddleware',
+    'BookShelf.middlewares.device.DeviceMiddleware',
     'BookShelf.middlewares.activity.ActivityLoggerMiddleware',
 ]
 
