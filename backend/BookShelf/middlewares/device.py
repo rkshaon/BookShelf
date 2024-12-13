@@ -1,8 +1,6 @@
 from django.utils.deprecation import MiddlewareMixin
-
 from django_user_agents.utils import get_user_agent
 
-from BookShelf.utilities.client import get_client_ip
 from BookShelf.utilities.client import get_device_type
 
 from activity_api.models import Device
@@ -10,10 +8,12 @@ from activity_api.models import Device
 
 class DeviceMiddleware(MiddlewareMixin):
     def process_request(self, request):
+        user = request.user if request.user.is_authenticated else None
+        ip_address = request.ip_address
         device = self.get_log_device(
             request,
-            request.user,
-            get_client_ip(request)
+            user,
+            ip_address
         )
 
         request.device = device
@@ -40,6 +40,5 @@ class DeviceMiddleware(MiddlewareMixin):
             ip_address=ip_address,
             screen_resolution=None,
         )
-        print(device, created)
 
         return device
