@@ -11,13 +11,15 @@ from django.db.models import Q
 from BookShelf.utilities.pagination import Pagination
 from BookShelf.utilities.permissions import IsAdminOrModerator
 from BookShelf.utilities.filters import SearchFilter
+from activity_api.utilities.event import event_logger
+# from activity_api.decorators import event_logger
 
 from author_api.models import Author
 
 from author_api.serializers.v1 import AuthorSerializer
 
 
-@method_decorator(cache_page(60*1), name='get')
+# @method_decorator(cache_page(60*1), name='get')
 class AuthorView(APIView):
     permission_classes = [AllowAny]
     filter_backends = [SearchFilter]
@@ -26,6 +28,7 @@ class AuthorView(APIView):
         'biography',
     ]
 
+    # @event_logger(event='retrieve', object='author')
     def get(self, request, *args, **kwargs):
         pk = kwargs.get('pk', None)
         query = request.query_params.get('search', None)
@@ -54,6 +57,14 @@ class AuthorView(APIView):
         paginator = Pagination()
         page = paginator.paginate_queryset(authors, request)
         serializer = AuthorSerializer(page, many=True)
+
+        # Log write
+        event_logger(
+            event='list',
+            object='author',
+            user=request.user,
+            # device=request.device,
+        )
 
         return paginator.get_paginated_response(serializer.data)
 
