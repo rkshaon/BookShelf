@@ -7,7 +7,7 @@ def event_logger(
     user,
     device,
     ip_address,
-    data
+    data=None,
 ) -> None:
     if user.is_anonymous:
         user = None

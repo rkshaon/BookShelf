@@ -19,7 +19,7 @@ from author_api.models import Author
 from author_api.serializers.v1 import AuthorSerializer
 
 
-# @method_decorator(cache_page(60*1), name='get')
+@method_decorator(cache_page(60*1), name='get')
 class AuthorView(APIView):
     permission_classes = [AllowAny]
     filter_backends = [SearchFilter]
@@ -38,7 +38,6 @@ class AuthorView(APIView):
             except Author.DoesNotExist:
                 raise NotFound(detail='Author not found.')
 
-            # Log write
             event_logger(
                 event='retrieve',
                 object='author',
@@ -69,6 +68,14 @@ class AuthorView(APIView):
         paginator = Pagination()
         page = paginator.paginate_queryset(authors, request)
         serializer = AuthorSerializer(page, many=True)
+
+        event_logger(
+            event='retrieve',
+            object='author',
+            user=request.user,
+            device=request.device,
+            ip_address=request.ip_address,
+        )
 
         return paginator.get_paginated_response(serializer.data)
 
