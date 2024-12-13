@@ -4,6 +4,8 @@ from django.utils.translation import gettext_lazy as _
 from user_api.models import User
 
 from BookShelf.global_variables import DEVICE_TYPE
+from BookShelf.global_variables import OBJECT_TYPE
+from BookShelf.global_variables import EVENT_TYPE
 
 
 class Device(models.Model):
@@ -92,3 +94,42 @@ class ActivityLog(models.Model):
     def __str__(self):
         user_info = f"User: {self.user}" if self.user else "Anonymous"
         return f"{user_info} - {self.method} - {self.path} - {self.timestamp}"
+
+
+class EventLog(models.Model):
+    user = models.ForeignKey(
+        User,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    device = models.ForeignKey(
+        Device,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    ip_address = models.GenericIPAddressField(
+        _('IP Address'),
+        null=True,
+        blank=True
+    )
+    object = models.CharField(
+        max_length=10,
+        choices=OBJECT_TYPE
+    )
+    event = models.CharField(
+        max_length=10,
+        choices=EVENT_TYPE
+    )
+    data = models.JSONField(null=True, blank=True)
+    added_date_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = _('Event Log')
+        verbose_name_plural = _('Event Logs')
+
+    def __str__(self):
+        user_info = f"User: {self.user}" if self.user else "Anonymous"
+        details = f"{self.object} - {self.event}"
+        return f"{user_info} - {details} - {self.added_date_time}"
