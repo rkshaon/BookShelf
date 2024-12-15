@@ -32,6 +32,7 @@ LIBRARY_APPS = [
     'drf_yasg',
     'corsheaders',
     'django_elasticsearch_dsl',
+    'django_celery_results',
 ]
 PROJECT_APPS = [
     'user_api',
@@ -115,6 +116,12 @@ CACHES = {
         }
     }
 }
+
+# Celery Configuration Options
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 
 
 AUTH_PASSWORD_VALIDATORS = [
