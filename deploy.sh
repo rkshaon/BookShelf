@@ -47,6 +47,7 @@ python manage.py migrate
 echo -e "${BLUE}Restart Backend Gunicorn Service${RESET}"
 echo -e "${YELLOW}=======================================${RESET}"
 systemctl restart gunicorn-bookshelf.service 
-systemctl status gunicorn-bookshelf.service 
+systemctl restart celery_bookshelf.service
+systemctl restart celery_bookshelf_beat.service
 
 echo -e "${RED}Finish${RESET}..."
