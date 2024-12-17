@@ -15,9 +15,12 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     console.log('\nURL', config.url)
+    const token = getAccessToken()
     if (config.requiresAuth) {
-      // Check for custom requiresAuth flag
-      const token = getAccessToken()
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+    } else {
       if (token) {
         config.headers.Authorization = `Bearer ${token}`
       }
