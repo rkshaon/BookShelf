@@ -16,10 +16,12 @@ class Device(models.Model):
         null=True
     )
     user_agent = models.JSONField(
+        _('User Agent'),
         blank=True,
         null=True
     )
     device_type = models.CharField(
+        _('Device Type'),
         max_length=10,
         choices=DEVICE_TYPE,
         blank=True,
@@ -27,22 +29,33 @@ class Device(models.Model):
     )
     browser = models.CharField(max_length=50, blank=True, null=True)
     browser_version = models.CharField(
+        _('Browser Version'),
         max_length=20,
         blank=True,
         null=True
     )
     os = models.CharField(max_length=50, blank=True, null=True)
     os_version = models.CharField(
+        _('OS Version'),
         max_length=20,
         blank=True,
         null=True
     )
     ip_address = models.GenericIPAddressField(
+        _('IP Address'),
         blank=True,
         null=True
     )
-    screen_resolution = models.CharField(max_length=20, blank=True, null=True)
-    added_on = models.DateTimeField(auto_now_add=True)
+    screen_resolution = models.CharField(
+        _('Screen Resolution'),
+        max_length=20,
+        blank=True,
+        null=True
+    )
+    added_on = models.DateTimeField(
+        _('Added On'),
+        auto_now_add=True
+    )
 
     def __str__(self):
         user_info = f"{self.user}" if self.user else "Anonymous"

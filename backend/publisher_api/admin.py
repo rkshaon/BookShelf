@@ -1,10 +1,12 @@
 from django.contrib import admin
 
+from BookShelf.core.admin import BaseModelAdmin
+
 from publisher_api.models import Publisher
 
 
 @admin.register(Publisher)
-class PublisherAdmin(admin.ModelAdmin):
+class PublisherAdmin(BaseModelAdmin):
     list_display = [
         'id', 'name', 'address', 'website',
         'email', 'phone_number', 'established_year',
