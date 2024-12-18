@@ -72,6 +72,14 @@ class User(AbstractUser):
         null=True,
         storage=replace_existing_file_storage
     )
+    timezone = models.ForeignKey(
+        'configure_api.Timezone',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        default=None,
+        help_text="User's preferred timezone"
+    )
     added_date_time = models.DateTimeField(auto_now_add=True)
     updated_date_time = models.DateTimeField(auto_now=True)
 
