@@ -3,11 +3,13 @@ from django.utils.timezone import localtime
 
 import pytz
 
+from BookShelf.core.admin import BaseModelAdmin
+
 from user_api.models import User
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(BaseModelAdmin):
     list_display = (
         'id', 'full_name', 'username', 'email', 'role', 'timezone',
         'is_active', 'is_staff', 'is_superuser', 'date_joined_local',
@@ -21,13 +23,6 @@ class UserAdmin(admin.ModelAdmin):
     readonly_fields = (
         'id', 'added_date_time', 'updated_date_time',
     )
-
-    @property
-    def user_timezone(self):
-        request = self._request
-        user_timezone = request.user.timezone.name if hasattr(
-            request.user, 'timezone') and request.user.timezone else 'UTC'
-        return user_timezone
 
     def date_joined_local(self, obj):
         """
@@ -44,14 +39,6 @@ class UserAdmin(admin.ModelAdmin):
             return localtime(obj.date_joined).strftime("%Y-%m-%d %I:%M:%S %p")
 
     date_joined_local.short_description = "Date Joined (Local)"
-
-    def get_queryset(self, request):
-        """
-            Attach the request object to the admin instance
-            for access in custom methods.
-        """
-        self._request = request
-        return super().get_queryset(request)
 
     def save_model(self, request, obj, form, change):
         if "password" in form.changed_data:
