@@ -1,7 +1,9 @@
 from django.contrib import admin
-from django.utils import timezone
+from django.utils.timezone import localtime
 
 import pytz
+
+from BookShelf.core.admin import BaseModelAdmin
 
 from activity_api.models import Device
 from activity_api.models import ActivityLog
@@ -9,18 +11,21 @@ from activity_api.models import EventLog
 
 
 @admin.register(Device)
-class DeviceAdmin(admin.ModelAdmin):
+class DeviceAdmin(BaseModelAdmin):
     list_display = [
         'id', 'user', 'os', 'browser', 'ip_address',
         'added_on_local',
     ]
-    display_timezone = pytz.timezone('Asia/Dhaka')
 
     def added_on_local(self, obj):
-        return timezone.localtime(
-            obj.added_on,
-            self.display_timezone
-        ).strftime("%Y-%m-%d %I:%M:%S %p")
+        try:
+            display_timezone = pytz.timezone(self.user_timezone)
+            return localtime(
+                obj.added_on,
+                display_timezone
+            ).strftime("%d %B, %Y %I:%M:%S %p")
+        except pytz.UnknownTimeZoneError:
+            return localtime(obj.added_on).strftime("%Y-%m-%d %I:%M:%S %p")
 
     added_on_local.short_description = 'Added On (Local)'
 
@@ -39,10 +44,25 @@ class DeviceAdmin(admin.ModelAdmin):
 
 
 @admin.register(ActivityLog)
-class ActivityLogAdmin(admin.ModelAdmin):
+class ActivityLogAdmin(BaseModelAdmin):
     list_display = [
-        'id', 'user', 'device', 'activity_time',
+        'id', 'user', 'device', 'activity_time_local',
     ]
+
+    def activity_time_local(self, obj):
+        try:
+            display_timezone = pytz.timezone(self.user_timezone)
+            return localtime(
+                obj.activity_time,
+                display_timezone
+            ).strftime("%d %B, %Y %I:%M:%S %p")
+        except pytz.UnknownTimeZoneError:
+            return localtime(
+                obj.activity_time
+            ).strftime("%Y-%m-%d %I:%M:%S %p")
+
+    activity_time_local.short_description = 'Activity Time (Local)'
+
     list_per_page = 10
     list_display_links = (
         'user', 'device',
@@ -56,10 +76,25 @@ class ActivityLogAdmin(admin.ModelAdmin):
 
 
 @admin.register(EventLog)
-class EventLogAdmin(admin.ModelAdmin):
+class EventLogAdmin(BaseModelAdmin):
     list_display = [
-        'id', 'event', 'object', 'user', 'device', 'added_date_time',
+        'id', 'event', 'object', 'user', 'device', 'added_date_time_local',
     ]
+
+    def added_date_time_local(self, obj):
+        try:
+            display_timezone = pytz.timezone(self.user_timezone)
+            return localtime(
+                obj.added_date_time,
+                display_timezone
+            ).strftime("%d %B, %Y %I:%M:%S %p")
+        except pytz.UnknownTimeZoneError:
+            return localtime(
+                obj.added_date_time
+            ).strftime("%Y-%m-%d %I:%M:%S %p")
+
+    added_date_time_local.short_description = 'Added Date Time (Local)'
+
     list_per_page = 10
     list_display_links = (
         'user', 'device',
