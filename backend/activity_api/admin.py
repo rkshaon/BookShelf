@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.utils import timezone
+
+import pytz
 
 from activity_api.models import Device
 from activity_api.models import ActivityLog
@@ -8,11 +11,22 @@ from activity_api.models import EventLog
 @admin.register(Device)
 class DeviceAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'user', 'os', 'browser', 'ip_address', 'added_on',
+        'id', 'user', 'os', 'browser', 'ip_address',
+        'added_on_local',
     ]
+    display_timezone = pytz.timezone('Asia/Dhaka')
+
+    def added_on_local(self, obj):
+        return timezone.localtime(
+            obj.added_on,
+            self.display_timezone
+        ).strftime("%Y-%m-%d %I:%M:%S %p")
+
+    added_on_local.short_description = 'Added On (Local)'
+
     list_per_page = 10
     list_display_links = (
-        'user', 'os', 'browser', 'ip_address', 'added_on',
+        'user', 'os', 'browser', 'ip_address',
     )
     search_fields = ('os', 'browser', 'ip_address')
     readonly_fields = (
