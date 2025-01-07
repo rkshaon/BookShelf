@@ -1,15 +1,12 @@
 <template>
   <div class="book-list-page p-6 bg-gray-50 min-h-screen">
-    <AddBookModal
-      :visible="showModal"
-      :book="book"
-      :isAPISuccess="isAPISuccess"
-      title="Add Book"
-      @close="showModal = false"
-      @confirm="handleConfirm"
-    />
+    <AddBookModal :visible="showBookAddModal" :book="book" :isAPISuccess="isAPISuccess" title="Add Book"
+      @close="showBookAddModal = false" @confirm="handleConfirm" />
+    <EditBookModal :visible="showBookEditModal" :book="editBook" :isAPISuccess="isAPISuccess" title="Edit Book"
+      @close="showBookEditModal = false" @confirm="handleConfirm" />
     <div class="flex justify-end mb-4">
-      <button @click="showModal = true" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
+      <button @click="showBookAddModal = true"
+        class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
         Add Book
       </button>
     </div>
@@ -42,7 +39,8 @@
                 class="w-24 h-24 shadow-lg rounded-lg" />
             </td>
             <td class="py-3 px-6 text-center space-x-2">
-              <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
+              <button @click="showBookEditModal = true; setBookData(book)"
+                 class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
                 Edit
               </button>
               <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">
@@ -67,19 +65,22 @@ import { getCoverImage } from '@/helpers/getCoverImage'
 import DashboardPaginationComponent from '@/components/dashboard/DashboardPaginationComponent .vue'
 import LoaderComponent from '@/components/general/LoaderComponent.vue'
 import AddBookModal from '@/modals/book/AddBookModal.vue'
+import EditBookModal from '@/modals/book/EditBookModal.vue'
 
 export default {
   name: 'BookListPage',
   components: {
     DashboardPaginationComponent,
     LoaderComponent,
-    AddBookModal
+    AddBookModal,
+    EditBookModal
   },
   data () {
     return {
       isSaving: false,
       currentPage: 0,
-      showModal: false,
+      showBookAddModal: false,
+      showBookEditModal: false,
       book: {
         title: '',
         genres: [],
@@ -94,6 +95,7 @@ export default {
         book: '',
         cover_image: ''
       },
+      editBook: {},
       isAPISuccess: false
     }
   },
@@ -192,7 +194,7 @@ export default {
         const result = await this.addBook(formData)
 
         if (result.success) {
-          this.showModal = false
+          this.showBookAddModal = false
           this.isAPISuccess = true
           toast.success('Book created successfully!')
         } else {
@@ -205,6 +207,12 @@ export default {
       } finally {
         this.isSaving = false
       }
+    },
+    setBookData (book) {
+      console.log('exist book data:', this.editBook)
+      console.log('selected book:', book)
+      this.editBook = book
+      console.log('updated book data:', this.editBook)
     }
   }
 }
