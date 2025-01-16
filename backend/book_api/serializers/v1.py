@@ -59,5 +59,8 @@ class BookSerializer(serializers.ModelSerializer):
             representation['publisher'] = PublisherSerializer(
                 instance.publisher
             ).data
+        if instance.cover_image:
+            representation['cover_image'] = instance.cover_image.url
+        print(representation['cover_image'])
 
         return representation
