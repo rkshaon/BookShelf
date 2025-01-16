@@ -30,13 +30,6 @@ class BookSerializer(serializers.ModelSerializer):
             'added_by',
         ]
 
-    # def validate_published_year(self, value):
-    #     print("\n\nCalling...\n\n")
-    #     if value == "":
-    #         return None
-
-    #     return value
-
     def to_internal_value(self, data):
         if data.get('published_year') == "":
             data['published_year'] = None
@@ -61,6 +54,5 @@ class BookSerializer(serializers.ModelSerializer):
             ).data
         if instance.cover_image:
             representation['cover_image'] = instance.cover_image.url
-        print(representation['cover_image'])
 
         return representation
