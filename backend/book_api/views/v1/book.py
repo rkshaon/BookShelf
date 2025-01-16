@@ -25,6 +25,25 @@ class BookViewSet(ModelViewSet):
     ]
     filter_backends = [SearchFilter]
     search_fields = ['title']
+    lookup_field = 'book_code'
+
+    def retrieve(self, request, *args, **kwargs):
+        """Log the event when retrieving a single item."""
+        response = super().retrieve(request, *args, **kwargs)
+        instance = self.get_object()
+        event_logger(
+            event='retrieve',
+            object='book',
+            user=request.user,
+            device=request.device,
+            ip_address=request.ip_address,
+            data={
+                'model': 'Book',
+                'id': instance.id,
+            }
+        )
+
+        return response
 
     def list(self, request, *args, **kwargs):
         """Log the event when retrieving a list of items."""
@@ -44,57 +63,6 @@ class BookViewSet(ModelViewSet):
 # @method_decorator(cache_page(60*1), name='get')
 # class BookView(APIView):
 #     permission_classes = [AllowAny]
-
-#     def get(self, request, *args, **kwargs):
-#         book_code = kwargs.get('book_code', None)
-#         genre = request.query_params.get('genre', None)
-#         topic = request.query_params.get('topic', None)
-
-#         if book_code:
-#             try:
-#                 book = Book.objects.get(book_code=book_code, is_deleted=False)
-#             except Book.DoesNotExist:
-#                 raise NotFound(detail="Book not found.")
-
-#             event_logger(
-#                 event='retrieve',
-#                 object='book',
-#                 user=request.user,
-#                 device=request.device,
-#                 ip_address=request.ip_address,
-#                 data={
-#                     'model': 'Book',
-#                     'id': book.id
-#                 }
-#             )
-
-#             return Response(BookSerializer(book).data)
-
-#         books = Book.objects.filter(
-#             is_deleted=False
-#         )
-
-#         if genre:
-#             books = books.filter(genres__id=genre)
-
-#         if topic:
-#             books = books.filter(topics__id=topic)
-
-#         books = books.order_by('-id')
-#         paginator = Pagination()
-#         page = paginator.paginate_queryset(books, request)
-
-#         event_logger(
-#             event='retrieve',
-#             object='book',
-#             user=request.user,
-#             device=request.device,
-#             ip_address=request.ip_address,
-#         )
-
-#         return paginator.get_paginated_response(
-#             BookSerializer(page, many=True).data
-#         )
 
 #     def post(self, request, *args, **kwargs):
 #         self.permission_classes = [IsAdminOrModerator]
