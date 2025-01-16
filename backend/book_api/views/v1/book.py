@@ -39,6 +39,19 @@ class BookViewSet(ModelViewSet):
     ]
     lookup_field = 'book_code'
 
+    def get_queryset(self):
+        queryset = self.queryset
+        genre = self.request.query_params.get('genre', None)
+        topic = self.request.query_params.get('topic', None)
+
+        if genre:
+            queryset = queryset.filter(genres__id=genre)
+
+        if topic:
+            queryset = queryset.filter(topics__id=topic)
+
+        return queryset
+
     def perform_create(self, serializer):
         serializer.save(added_by=self.request.user)
 
