@@ -18,7 +18,7 @@ from book_api.serializers.v1 import BookSerializer
 
 class BookViewSet(ModelViewSet):
     serializer_class = BookSerializer
-    queryset = Book.objects.filter(is_deleted=False)
+    queryset = Book.objects.filter(is_deleted=False).order_by('-id')
     permission_classes = [
         IsAdminOrModerator,
     ]
