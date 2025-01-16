@@ -1,11 +1,10 @@
-from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from rest_framework.exceptions import NotFound
+from rest_framework import status
+# from rest_framework.exceptions import NotFound
 
-from django.views.decorators.cache import cache_page
-from django.utils.decorators import method_decorator
+# from django.views.decorators.cache import cache_page
+# from django.utils.decorators import method_decorator
 
 from BookShelf.utilities.pagination import Pagination
 from BookShelf.utilities.permissions import IsAdminOrModerator
@@ -24,12 +23,36 @@ class BookViewSet(ModelViewSet):
         IsAdminOrModerator,
     ]
     filter_backends = [SearchFilter]
-    search_fields = ['title']
+    pagination_class = Pagination
+    search_fields = [
+        'title', 'description',
+        'authors__first_name',
+        'authors__middle_name',
+        'authors__last_name',
+        'authors__biography',
+        'genres__name',
+        'genres__description',
+        'topics__name',
+        'publisher__name',
+    ]
     lookup_field = 'book_code'
-
 
     def perform_create(self, serializer):
         serializer.save(added_by=self.request.user)
+
+    # def perform_update(self, serializer):
+    #     serializer.save(updated_by=self.request.user)
+
+    def perform_destroy(self, instance):
+        instance.is_deleted = True
+        instance.save()
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({
+            "message": f"Book '{instance.title}' has been successfully deleted."    # noqa
+        }, status=status.HTTP_200_OK)
 
     def retrieve(self, request, *args, **kwargs):
         """Log the event when retrieving a single item."""
@@ -61,21 +84,3 @@ class BookViewSet(ModelViewSet):
         )
 
         return response
-
-
-
-# @method_decorator(cache_page(60*1), name='get')
-# class BookView(APIView):
-#     permission_classes = [AllowAny]
-
-#     def post(self, request, *args, **kwargs):
-#         self.permission_classes = [IsAdminOrModerator]
-#         self.check_permissions(request)
-#         request.data['added_by'] = request.user.id
-#         serializer = BookSerializer(
-#             data=request.data,
-#         )
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-
-#         return Response(serializer.data, status=201)
