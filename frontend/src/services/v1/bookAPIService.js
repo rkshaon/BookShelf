@@ -52,7 +52,7 @@ export const searchV1Books = async (query = '', page = 1, pageSize = 8) => {
   pageSize = pageSize ?? 8
 
   // const URL = `${API_BASE_URL}/${content}/${version}/?search=${encodeURIComponent(query)}&page_size=${pageSize}&page=${page}`
-  const URL = `${API_BASE_URL}/${content}/${version}/search?q=${encodeURIComponent(
+  const URL = `${API_BASE_URL}/${content}/${version}/?search=${encodeURIComponent(
     query
   )}`
 
