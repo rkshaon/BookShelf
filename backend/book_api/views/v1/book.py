@@ -27,6 +27,10 @@ class BookViewSet(ModelViewSet):
     search_fields = ['title']
     lookup_field = 'book_code'
 
+
+    def perform_create(self, serializer):
+        serializer.save(added_by=self.request.user)
+
     def retrieve(self, request, *args, **kwargs):
         """Log the event when retrieving a single item."""
         response = super().retrieve(request, *args, **kwargs)
