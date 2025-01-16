@@ -26,6 +26,18 @@ class BookViewSet(ModelViewSet):
     filter_backends = [SearchFilter]
     search_fields = ['title']
 
+    def list(self, request, *args, **kwargs):
+        """Log the event when retrieving a list of items."""
+        response = super().list(request, *args, **kwargs)
+        event_logger(
+            event='retrieve',
+            object='book',
+            user=request.user,
+            device=request.device,
+            ip_address=request.ip_address,
+        )
+
+        return response
 
 
 
