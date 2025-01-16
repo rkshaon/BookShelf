@@ -1,10 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
-# from rest_framework.exceptions import NotFound
 
-# from django.views.decorators.cache import cache_page
-# from django.utils.decorators import method_decorator
+from django.db.models import Q
 
 from BookShelf.utilities.pagination import Pagination
 from BookShelf.utilities.permissions import IsAdminOrModerator
@@ -44,13 +42,13 @@ class BookViewSet(ModelViewSet):
         genre = self.request.query_params.get('genre', None)
         topic = self.request.query_params.get('topic', None)
 
+        filters = Q()
         if genre:
-            queryset = queryset.filter(genres__id=genre)
-
+            filters &= Q(genres__id=genre)
         if topic:
-            queryset = queryset.filter(topics__id=topic)
-
-        return queryset
+            filters &= Q(topics__id=topic)
+    
+        return queryset.filter(filters)
 
     def perform_create(self, serializer):
         serializer.save(added_by=self.request.user)
