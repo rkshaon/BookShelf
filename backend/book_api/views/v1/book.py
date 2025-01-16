@@ -1,13 +1,14 @@
-from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from rest_framework.exceptions import NotFound
+from rest_framework import status
+# from rest_framework.exceptions import NotFound
 
-from django.views.decorators.cache import cache_page
-from django.utils.decorators import method_decorator
+# from django.views.decorators.cache import cache_page
+# from django.utils.decorators import method_decorator
 
 from BookShelf.utilities.pagination import Pagination
 from BookShelf.utilities.permissions import IsAdminOrModerator
+from BookShelf.utilities.filters import SearchFilter
 from activity_api.utilities.event import event_logger
 
 from book_api.models import Book
@@ -15,49 +16,65 @@ from book_api.models import Book
 from book_api.serializers.v1 import BookSerializer
 
 
-@method_decorator(cache_page(60*1), name='get')
-class BookView(APIView):
-    permission_classes = [AllowAny]
+class BookViewSet(ModelViewSet):
+    serializer_class = BookSerializer
+    queryset = Book.objects.filter(is_deleted=False)
+    permission_classes = [
+        IsAdminOrModerator,
+    ]
+    filter_backends = [SearchFilter]
+    pagination_class = Pagination
+    search_fields = [
+        'title', 'description',
+        'authors__first_name',
+        'authors__middle_name',
+        'authors__last_name',
+        'authors__biography',
+        'genres__name',
+        'genres__description',
+        'topics__name',
+        'publisher__name',
+    ]
+    lookup_field = 'book_code'
 
-    def get(self, request, *args, **kwargs):
-        book_code = kwargs.get('book_code', None)
-        genre = request.query_params.get('genre', None)
-        topic = request.query_params.get('topic', None)
+    def perform_create(self, serializer):
+        serializer.save(added_by=self.request.user)
 
-        if book_code:
-            try:
-                book = Book.objects.get(book_code=book_code, is_deleted=False)
-            except Book.DoesNotExist:
-                raise NotFound(detail="Book not found.")
+    # def perform_update(self, serializer):
+    #     serializer.save(updated_by=self.request.user)
 
-            event_logger(
-                event='retrieve',
-                object='book',
-                user=request.user,
-                device=request.device,
-                ip_address=request.ip_address,
-                data={
-                    'model': 'Book',
-                    'id': book.id
-                }
-            )
+    def perform_destroy(self, instance):
+        instance.is_deleted = True
+        instance.save()
 
-            return Response(BookSerializer(book).data)
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({
+            "message": f"Book '{instance.title}' has been successfully deleted."    # noqa
+        }, status=status.HTTP_200_OK)
 
-        books = Book.objects.filter(
-            is_deleted=False
+    def retrieve(self, request, *args, **kwargs):
+        """Log the event when retrieving a single item."""
+        response = super().retrieve(request, *args, **kwargs)
+        instance = self.get_object()
+        event_logger(
+            event='retrieve',
+            object='book',
+            user=request.user,
+            device=request.device,
+            ip_address=request.ip_address,
+            data={
+                'model': 'Book',
+                'id': instance.id,
+            }
         )
 
-        if genre:
-            books = books.filter(genres__id=genre)
+        return response
 
-        if topic:
-            books = books.filter(topics__id=topic)
-
-        books = books.order_by('-id')
-        paginator = Pagination()
-        page = paginator.paginate_queryset(books, request)
-
+    def list(self, request, *args, **kwargs):
+        """Log the event when retrieving a list of items."""
+        response = super().list(request, *args, **kwargs)
         event_logger(
             event='retrieve',
             object='book',
@@ -66,18 +83,4 @@ class BookView(APIView):
             ip_address=request.ip_address,
         )
 
-        return paginator.get_paginated_response(
-            BookSerializer(page, many=True).data
-        )
-
-    def post(self, request, *args, **kwargs):
-        self.permission_classes = [IsAdminOrModerator]
-        self.check_permissions(request)
-        request.data['added_by'] = request.user.id
-        serializer = BookSerializer(
-            data=request.data,
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=201)
+        return response
