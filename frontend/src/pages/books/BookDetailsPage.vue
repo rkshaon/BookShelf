@@ -5,6 +5,11 @@
       <div class="flex justify-center">
         <img :src="getCoverImage(bookDetails.cover_image, API_BASE_URL)" alt="Book Cover"
           class="max-w-full h-auto shadow-lg rounded-lg" />
+        <div v-if="isAdmin && bookDetails.cover_image == null" class="">
+          Update Cover Image from
+          <input type="number"> page
+          <button class="bg-green-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">Update</button>
+        </div>
       </div>
       <div>
         <router-link :to="{
@@ -117,7 +122,8 @@ export default {
     ...mapGetters({
       bookDetails: 'getBookDetails',
       isLoading: 'isBookLoading',
-      errors: 'bookDetailsError'
+      errors: 'bookDetailsError',
+      isAdmin: 'isAdmin'
     }),
     API_BASE_URL () {
       return process.env.VUE_APP_BACKEND_URL
