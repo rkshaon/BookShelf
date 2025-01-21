@@ -1,0 +1,23 @@
+name: Enforce Branch Naming Convention
+
+on:
+  create:
+    branches:
+      - '**'
+
+jobs:
+  validate-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch name
+        run: |
+          branch_name="${GITHUB_REF#refs/heads/}"
+          echo "Checking branch name: $branch_name"
+          
+          # Pattern: bs- followed by one or more digits
+          if [[ ! "$branch_name" =~ ^bs-[0-9]+$ ]]; then
+            echo "❌ Branch name '$branch_name' does not follow the pattern 'bs-<issue-number>'."
+            exit 1
+          fi
+
+          echo "✅ Branch name '$branch_name' is valid."
