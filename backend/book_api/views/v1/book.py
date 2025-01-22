@@ -146,6 +146,7 @@ class UpdateCoverPageFromBook(APIView):
                 last_page=page_number,
                 dpi=200
             )
+
             if not images:
                 return Response({
                     "error": "Failed to extract page"
