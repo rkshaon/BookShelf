@@ -15,4 +15,4 @@ def update_book_page_count(sender, instance, created, **kwargs):
             instance.pages = len(reader.pages)
             instance.save()
         except Exception as e:
-            print(f"Error calculating page count: {e}")
+            print(f"\nError calculating page count: {e}\n")
