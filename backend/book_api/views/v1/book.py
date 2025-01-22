@@ -114,7 +114,7 @@ class UpdateCoverPageFromBook(APIView):
     def patch(self, request, *args, **kwargs):
         book_code = kwargs.get('book_code', None)
         page_number = request.data.get('page_number', 1)
-        print(book_code, page_number)
+
         try:
             book = Book.objects.get(book_code=book_code)
         except Book.DoesNotExist:
@@ -123,7 +123,11 @@ class UpdateCoverPageFromBook(APIView):
             }, status=status.HTTP_404_NOT_FOUND)
 
         book_path = book.book.path
-        print(book_path, type(book_path))
+
+        if book.pages < page_number:
+            return Response({
+                'error': 'Invalid page number.'
+            }, status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE)
 
         if not os.path.exists(book_path):
             return Response({
@@ -131,7 +135,6 @@ class UpdateCoverPageFromBook(APIView):
             }, status=status.HTTP_404_NOT_FOUND)
 
         try:
-            # Extract the specific page as an image
             images = convert_from_path(
                 book_path,
                 first_page=page_number,
@@ -143,22 +146,23 @@ class UpdateCoverPageFromBook(APIView):
                     "error": "Failed to extract page"
                 }, status=status.HTTP_400_BAD_REQUEST)
 
-            # Save the extracted page as an image
-            output_dir = Path(settings.MEDIA_ROOT) / "cover_images"
+            output_dir = Path(settings.MEDIA_ROOT) / "covers"
             output_dir.mkdir(parents=True, exist_ok=True)
 
-            cover_image_path = output_dir / f"book_{book_id}_cover.jpg"
+            cover_image_path = output_dir / f"{book.book_code}.jpg"
             images[0].save(cover_image_path, format="JPEG")
+            relative_cover_image_path = cover_image_path.relative_to(
+                settings.MEDIA_ROOT)
 
-            # Update the book's cover image path
-            book.cover_image_path = str(cover_image_path)
+            book.cover_image = str(relative_cover_image_path)
             book.save()
 
-            return Response({"message": "Cover page updated successfully", "cover_image_url": str(cover_image_path)}, status=status.HTTP_200_OK)
+            return Response(
+                BookSerializer(book).data,
+                status=status.HTTP_200_OK
+            )
 
         except Exception as e:
-            return Response({"error": f"Failed to process the PDF: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        return Response({
-            'data': 'coming-soon',
-        })
+            return Response({
+                "error": f"Failed to process the PDF: {str(e)}"
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
