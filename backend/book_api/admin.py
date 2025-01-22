@@ -47,7 +47,7 @@ class BookAdmin(admin.ModelAdmin):
 
     def open_url(self, obj):
         return format_html(
-            '<a href="{}" target="_blank">Open the Book</a>',
+            '<a href="{}" target="_blank">Click</a>',
             f"{FRONTEND_BASE_URL}/book/{obj.book_code}"
         )
     open_url.short_description = 'Read'
