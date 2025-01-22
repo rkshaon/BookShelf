@@ -1,8 +1,15 @@
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
 
 from django.db.models import Q
+from django.conf import settings
+
+from pdf2image import convert_from_path
+from pathlib import Path
+
+import os
 
 from BookShelf.utilities.pagination import Pagination
 from BookShelf.utilities.permissions import IsAdminOrModerator
@@ -47,7 +54,7 @@ class BookViewSet(ModelViewSet):
             filters &= Q(genres__id=genre)
         if topic:
             filters &= Q(topics__id=topic)
-    
+
         return queryset.filter(filters)
 
     def perform_create(self, serializer):
@@ -97,3 +104,61 @@ class BookViewSet(ModelViewSet):
         )
 
         return response
+
+
+class UpdateCoverPageFromBook(APIView):
+    permission_classes = [
+        IsAdminOrModerator,
+    ]
+
+    def patch(self, request, *args, **kwargs):
+        book_code = kwargs.get('book_code', None)
+        page_number = request.data.get('page_number', 1)
+        print(book_code, page_number)
+        try:
+            book = Book.objects.get(book_code=book_code)
+        except Book.DoesNotExist:
+            return Response({
+                'error': 'Book Not Found',
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        book_path = book.book.path
+        print(book_path, type(book_path))
+
+        if not os.path.exists(book_path):
+            return Response({
+                "error": "Book is not available on the location."
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            # Extract the specific page as an image
+            images = convert_from_path(
+                book_path,
+                first_page=page_number,
+                last_page=page_number,
+                dpi=200
+            )
+            if not images:
+                return Response({
+                    "error": "Failed to extract page"
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+            # Save the extracted page as an image
+            output_dir = Path(settings.MEDIA_ROOT) / "cover_images"
+            output_dir.mkdir(parents=True, exist_ok=True)
+
+            cover_image_path = output_dir / f"book_{book_id}_cover.jpg"
+            images[0].save(cover_image_path, format="JPEG")
+
+            # Update the book's cover image path
+            book.cover_image_path = str(cover_image_path)
+            book.save()
+
+            return Response({"message": "Cover page updated successfully", "cover_image_url": str(cover_image_path)}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"error": f"Failed to process the PDF: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response({
+            'data': 'coming-soon',
+        })
