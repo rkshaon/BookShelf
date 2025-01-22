@@ -172,6 +172,7 @@ class Book(models.Model):
         validators=[validate_book_file_type],
     )
     cover_image = models.ImageField(
+        max_length=255,
         upload_to=cover_upload_path,
         blank=True,
         null=True,
