@@ -122,6 +122,11 @@ class UpdateCoverPageFromBook(APIView):
                 'error': 'Book Not Found',
             }, status=status.HTTP_404_NOT_FOUND)
 
+        if not book.book:
+            return Response({
+                'error': 'Book File Not Found.',
+            }, status=status.HTTP_404_NOT_FOUND)
+
         book_path = book.book.path
 
         if book.pages < page_number:
