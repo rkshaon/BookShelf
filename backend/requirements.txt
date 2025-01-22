@@ -13,3 +13,4 @@ PyPDF2
 django-user-agents
 celery
 django-celery-results
+pdf2image
