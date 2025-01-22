@@ -70,13 +70,7 @@ export default {
       console.log(getRefreshToken())
     },
     async logout ({ commit }) {
-      console.log('Before logout')
-      console.log(getAccessToken())
-      console.log(getRefreshToken())
       commit('CLEAR_AUTH')
-      console.log('After logout')
-      console.log(getAccessToken())
-      console.log(getRefreshToken())
     }
   }
 }
