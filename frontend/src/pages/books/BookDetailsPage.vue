@@ -7,8 +7,8 @@
           class="max-w-full h-auto shadow-lg rounded-lg" />
         <div v-if="isAdmin && bookDetails.cover_image == null" class="">
           Update Cover Image from
-          <input type="number"> page
-          <button class="bg-green-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">Update</button>
+          <input type="number" v-model="updateCoverPageNumber"> page
+          <button @click="updateCoverPage" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">Update</button>
         </div>
       </div>
       <div>
@@ -118,6 +118,11 @@ export default {
       ]
     }
   },
+  data () {
+    return {
+      updateCoverPageNumber: 1
+    }
+  },
   computed: {
     ...mapGetters({
       bookDetails: 'getBookDetails',
@@ -157,7 +162,10 @@ export default {
   },
   methods: {
     ...mapActions(['fetchBookDetails']),
-    getCoverImage
+    getCoverImage,
+    async updateCoverPage () {
+      console.log('cover page', this.updateCoverPageNumber)
+    }
   }
 }
 </script>
