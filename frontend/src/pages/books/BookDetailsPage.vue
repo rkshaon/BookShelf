@@ -161,10 +161,16 @@ export default {
     document.title = 'Book Shelf | Loading ...'
   },
   methods: {
-    ...mapActions(['fetchBookDetails']),
+    ...mapActions(['fetchBookDetails', 'updateBookCoverPage']),
     getCoverImage,
     async updateCoverPage () {
       console.log('cover page', this.updateCoverPageNumber)
+      await this.updateBookCoverPage({
+        data: {
+          page_number: this.updateCoverPageNumber
+        },
+        bookCode: this.bookDetails.book_code
+      })
     }
   }
 }
