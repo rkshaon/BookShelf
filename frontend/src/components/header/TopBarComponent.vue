@@ -97,7 +97,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['logout', 'fetchUserProfile']),
+    ...mapActions(['logout', 'fetchUserProfile', 'clearProfileData']),
     getProfileImage,
     toggleDropdown () {
       this.dropdownOpen = !this.dropdownOpen
@@ -121,8 +121,8 @@ export default {
       this.threeDotOptionsDropdownOpen = false
     },
     async logoutUser () {
-      console.log('Logout')
       await this.logout()
+      await this.clearProfileData()
       const toast = useToast()
       toast.info('You have successfully logged out')
       this.$router.push({ name: 'SignIn' })

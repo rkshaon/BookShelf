@@ -14,3 +14,4 @@ django-user-agents
 celery
 django-celery-results
 pdf2image
+pycryptodome

@@ -38,6 +38,9 @@ export default {
     CLEAR_SUCCESS_MESSAGE (state) {
       state.editSuccessMessage = null
     },
+    CLEAR_PROFILE_DATA (state) {
+      state.user = {}
+    },
     SET_IS_ADMIN (state, role) {
       if (role === 1) {
         state.isAdmin = true
@@ -78,6 +81,9 @@ export default {
       } finally {
         commit('SET_LOADING', false)
       }
+    },
+    clearProfileData ({ commit }) {
+      commit('CLEAR_PROFILE_DATA')
     },
     clearSuccessMessage ({ commit }) {
       commit('CLEAR_SUCCESS_MESSAGE')
