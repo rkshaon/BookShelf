@@ -58,10 +58,19 @@ class AuthorView(APIView):
             is_deleted=False
         ).order_by('-id')
 
+        # if query:
+        #     search_query = Q()
+        #     for field in self.search_fields:
+        #         search_query |= Q(**{f"{field}__icontains": query})
+        #     authors = authors.filter(search_query)
         if query:
             search_query = Q()
-            for field in self.search_fields:
-                search_query |= Q(**{f"{field}__icontains": query})
+            search_terms = query.split()
+            for term in search_terms:
+                term_query = Q()
+                for field in self.search_fields:
+                    term_query |= Q(**{f"{field}__icontains": term})
+                search_query &= term_query
             authors = authors.filter(search_query)
 
         paginator = Pagination()
