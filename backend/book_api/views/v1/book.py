@@ -129,6 +129,11 @@ class UpdateCoverPageFromBook(APIView):
 
         book_path = book.book.path
 
+        if not book.pages:
+            return Response({
+                "error": "Page numbers are unavailable."
+            }, status=status.HTTP_404_NOT_FOUND)
+
         if book.pages < page_number:
             return Response({
                 'error': 'Invalid page number.'
