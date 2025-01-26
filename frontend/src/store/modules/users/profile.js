@@ -11,14 +11,16 @@ export default {
     loading: false,
     editFailed: false,
     editSuccessMessage: null,
-    errors: null
+    errors: null,
+    isAdmin: null
   },
   getters: {
     userProfile: (state) => state.user,
     isLoading: (state) => state.loading,
     isEditFailed: (state) => state.editFailed,
     editProfileError: (state) => state.errors,
-    editSuccessMessage: (state) => state.editSuccessMessage
+    editSuccessMessage: (state) => state.editSuccessMessage,
+    isAdmin: (state) => state.isAdmin
   },
   mutations: {
     SET_ERROR (state, error) {
@@ -35,6 +37,16 @@ export default {
     },
     CLEAR_SUCCESS_MESSAGE (state) {
       state.editSuccessMessage = null
+    },
+    CLEAR_PROFILE_DATA (state) {
+      state.user = {}
+    },
+    SET_IS_ADMIN (state, role) {
+      if (role === 1) {
+        state.isAdmin = true
+      } else {
+        state.isAdmin = false
+      }
     }
   },
   actions: {
@@ -43,6 +55,7 @@ export default {
       try {
         const response = await getV1UserProfile()
         commit('SET_USER', response)
+        commit('SET_IS_ADMIN', response.role)
       } catch (error) {
         console.log(error)
       } finally {
@@ -68,6 +81,9 @@ export default {
       } finally {
         commit('SET_LOADING', false)
       }
+    },
+    clearProfileData ({ commit }) {
+      commit('CLEAR_PROFILE_DATA')
     },
     clearSuccessMessage ({ commit }) {
       commit('CLEAR_SUCCESS_MESSAGE')

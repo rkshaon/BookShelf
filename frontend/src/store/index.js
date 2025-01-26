@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 // book modules
 import books from '@/store/modules/books/books'
 import bookDetails from '@/store/modules/books/bookDetails'
+// import updateBookCoverPage from '@/store/modules/books/bookDetails'
 import bookSearch from '@/store/modules/books/bookSearch'
 // publisher modules
 import publishers from '@/store/modules/publishers/publishers'
@@ -24,6 +25,7 @@ export default new Vuex.Store({
   modules: {
     books,
     bookDetails,
+    // updateBookCoverPage,
     bookSearch,
     publishers,
     authorDetails,

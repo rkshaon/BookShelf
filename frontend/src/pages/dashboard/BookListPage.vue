@@ -30,7 +30,9 @@
           <tr v-for="book in allBooks" :key="book.id" class="border-b hover:bg-gray-100">
             <td class="py-3 px-6">
               <router-link :to="{ name: 'BookDetails', params: { book_code: book.book_code } }"
-                class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition">
+                class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition"
+                target="_blank"
+              >
                 {{ book.title }}
               </router-link>
             </td>

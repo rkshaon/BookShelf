@@ -36,7 +36,7 @@ class TopicAdmin(admin.ModelAdmin):
 class BookAdmin(admin.ModelAdmin):
     list_display = [
         'id', 'book_code', 'title', 'cover', 'edition',
-        'isbn', 'published_year', 'language',
+        'pages', 'isbn', 'published_year', 'language',
         'is_deleted', 'uploader', 'open_url',
     ]
     list_per_page = 10
@@ -47,7 +47,7 @@ class BookAdmin(admin.ModelAdmin):
 
     def open_url(self, obj):
         return format_html(
-            '<a href="{}" target="_blank">Open the Book</a>',
+            '<a href="{}" target="_blank">🚀</a>',
             f"{FRONTEND_BASE_URL}/book/{obj.book_code}"
         )
     open_url.short_description = 'Read'

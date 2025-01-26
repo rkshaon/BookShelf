@@ -5,6 +5,11 @@
       <div class="flex justify-center">
         <img :src="getCoverImage(bookDetails.cover_image, API_BASE_URL)" alt="Book Cover"
           class="max-w-full h-auto shadow-lg rounded-lg" />
+        <div v-if="isAdmin && bookDetails.cover_image == null" class="">
+          Update Cover Image from
+          <input type="number" v-model="updateCoverPageNumber"> page
+          <button @click="updateCoverPage" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">Update</button>
+        </div>
       </div>
       <div>
         <router-link :to="{
@@ -113,11 +118,17 @@ export default {
       ]
     }
   },
+  data () {
+    return {
+      updateCoverPageNumber: 1
+    }
+  },
   computed: {
     ...mapGetters({
       bookDetails: 'getBookDetails',
       isLoading: 'isBookLoading',
-      errors: 'bookDetailsError'
+      errors: 'bookDetailsError',
+      isAdmin: 'isAdmin'
     }),
     API_BASE_URL () {
       return process.env.VUE_APP_BACKEND_URL
@@ -150,8 +161,17 @@ export default {
     document.title = 'Book Shelf | Loading ...'
   },
   methods: {
-    ...mapActions(['fetchBookDetails']),
-    getCoverImage
+    ...mapActions(['fetchBookDetails', 'updateBookCoverPage']),
+    getCoverImage,
+    async updateCoverPage () {
+      console.log('cover page', this.updateCoverPageNumber)
+      await this.updateBookCoverPage({
+        data: {
+          page_number: this.updateCoverPageNumber
+        },
+        bookCode: this.bookDetails.book_code
+      })
+    }
   }
 }
 </script>

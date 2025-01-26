@@ -1,6 +1,9 @@
 // src/store/modules/bookDetails.js
 
-import { fetchV1BookDetails } from '@/services/v1/bookAPIService'
+import {
+  fetchV1BookDetails,
+  updateCoverPageV1Book
+} from '@/services/v1/bookAPIService'
 
 export default {
   state: {
@@ -30,6 +33,23 @@ export default {
       commit('SET_BOOK_ERROR', null)
       try {
         const bookDetails = await fetchV1BookDetails(bookCode)
+        commit('SET_BOOK_DETAILS', bookDetails)
+      } catch (error) {
+        const errorMessages = []
+        for (const [key, value] of Object.entries(error.response.data)) {
+          errorMessages.push(value)
+          console.log(`Book fetch... ${key}: ${value}`)
+        }
+        commit('SET_BOOK_ERROR', errorMessages)
+      } finally {
+        commit('SET_BOOK_LOADING', false)
+      }
+    },
+    async updateBookCoverPage ({ commit }, { data, bookCode }) {
+      commit('SET_BOOK_LOADING', true)
+      commit('SET_BOOK_ERROR', null)
+      try {
+        const bookDetails = await updateCoverPageV1Book(data, bookCode)
         commit('SET_BOOK_DETAILS', bookDetails)
       } catch (error) {
         const errorMessages = []
