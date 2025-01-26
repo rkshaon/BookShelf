@@ -2,6 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
 
+from BookShelf.utilities.pagination import Pagination
 from BookShelf.utilities.permissions import IsAdminOrModerator
 from BookShelf.utilities.filters import SearchFilter
 from activity_api.utilities.event import event_logger
@@ -12,12 +13,13 @@ from book_api.serializers.v1 import GenreSerializer
 
 
 class GenreViewSet(ModelViewSet):
-    queryset = Genre.objects.filter(is_deleted=False).order_by('name')
     serializer_class = GenreSerializer
+    queryset = Genre.objects.filter(is_deleted=False).order_by('name')
     permission_classes = [
         IsAdminOrModerator,
     ]
     filter_backends = [SearchFilter]
+    pagination_class = Pagination
     search_fields = ['name']
 
     def perform_create(self, serializer):
