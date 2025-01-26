@@ -41,7 +41,7 @@
                 class="w-24 h-24 shadow-lg rounded-lg" />
             </td>
             <td class="py-3 px-6 text-center space-x-2">
-              <button @click="showBookEditModal = true; setBookData(book)"
+              <button @click="setBookData(book)"
                  class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
                 Edit
               </button>
@@ -214,7 +214,8 @@ export default {
       console.log('exist book data:', this.editBook)
       console.log('selected book:', book)
       this.editBook = book
-      console.log('updated book data:', this.editBook)
+      console.log('after update the book data:', this.editBook)
+      this.showBookEditModal = true
     }
   }
 }
