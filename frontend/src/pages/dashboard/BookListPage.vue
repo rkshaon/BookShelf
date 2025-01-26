@@ -2,8 +2,8 @@
   <div class="book-list-page p-6 bg-gray-50 min-h-screen">
     <AddBookModal :visible="showBookAddModal" :book="book" :isAPISuccess="isAPISuccess" title="Add Book"
       @close="showBookAddModal = false" @confirm="handleConfirm" />
-    <EditBookModal :visible="showBookEditModal" :book="editBook" :isAPISuccess="isAPISuccess" title="Edit Book"
-      @close="showBookEditModal = false" @confirm="handleConfirm" />
+    <EditBookModal :key="editBook.id || Date.now()" :visible="showBookEditModal" :book="editBook"
+      :isAPISuccess="isAPISuccess" title="Edit Book" @close="showBookEditModal = false" @confirm="handleConfirm" />
     <div class="flex justify-end mb-4">
       <button @click="showBookAddModal = true"
         class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
@@ -31,8 +31,7 @@
             <td class="py-3 px-6">
               <router-link :to="{ name: 'BookDetails', params: { book_code: book.book_code } }"
                 class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition"
-                target="_blank"
-              >
+                target="_blank">
                 {{ book.title }}
               </router-link>
             </td>
@@ -41,8 +40,8 @@
                 class="w-24 h-24 shadow-lg rounded-lg" />
             </td>
             <td class="py-3 px-6 text-center space-x-2">
-              <button @click="setBookData(book)"
-                 class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
+              <button @click="showBookEditModal = true;  setBookData(book)"
+                class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
                 Edit
               </button>
               <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">
@@ -213,9 +212,10 @@ export default {
     setBookData (book) {
       console.log('exist book data:', this.editBook)
       console.log('selected book:', book)
-      this.editBook = book
+      // this.editBook = book
+      this.editBook = Object.assign({}, book)
       console.log('after update the book data:', this.editBook)
-      this.showBookEditModal = true
+      // this.showBookEditModal = true
     }
   }
 }

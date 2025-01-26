@@ -62,11 +62,22 @@
             </div>
             <div class="mb-4">
               <label for="book" class="block text-gray-700 text-sm font-bold mb-2">Book</label>
+              <div v-if="previewImage" class="mb-4">
+                <router-link :to="{ name: 'BookDetails', params: { book_code: book.book_code } }"
+                  class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition"
+                  target="_blank">
+                  {{ book.title }}
+                </router-link>
+              </div>
               <input type="file" id="book" accept="application/pdf" @change="handleBookFile"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
             </div>
             <div class="mb-4">
               <label for="cover_image" class="block text-gray-700 text-sm font-bold mb-2">Cover Image</label>
+              <div v-if="previewImage" class="mb-4">
+                <img :src="getCoverImage(previewImage, API_BASE_URL)" alt="Cover Preview"
+                  class="w-32 h-32 object-cover rounded" />
+              </div>
               <input type="file" id="cover_image" accept="image/*" @change="handleCoverImage"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
             </div>
@@ -74,7 +85,7 @@
           <div v-else-if="currentTab === 'Publish'">
             <div class="mb-4 relative">
               <label for="publisher" class="block text-gray-700 text-sm font-bold mb-2">Publisher</label>
-              <input type="text" id="publisher" v-model="localPublisher" @input="performPublisherSearch"
+              <input type="text" id="publisher" v-model="localBook.publisher.name" @input="performPublisherSearch"
                 @blur="closeDropdown" @focus="performPublisherSearch"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
               <ul v-if="showDropdown && publishers.length"
@@ -117,7 +128,7 @@
               </li>
             </ul>
             <div class="flex flex-wrap mt-2">
-              <span v-for="(author, index) in selectedAuthors" :key="author.id"
+              <span v-for="(author, index) in localBook.authors" :key="author.id"
                 class="flex items-center bg-gray-200 text-gray-700 px-2 py-1 mr-2 mb-2 rounded-full shadow">
                 {{ author.full_name }}
                 <button @click="removeAuthor(index)" class="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
@@ -142,7 +153,7 @@
               </li>
             </ul>
             <div class="flex flex-wrap mt-2">
-              <span v-for="(genre, index) in selectedGenres" :key="genre.id"
+              <span v-for="(genre, index) in localBook.genres" :key="genre.id"
                 class="flex items-center bg-gray-200 text-gray-700 px-2 py-1 mr-2 mb-2 rounded-full shadow">
                 {{ genre.name }}
                 <button @click="removeGenre(index)" class="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
@@ -165,7 +176,7 @@
               </li>
             </ul>
             <div class="flex flex-wrap mt-2">
-              <span v-for="(topic, index) in selectedTopics" :key="topic.id"
+              <span v-for="(topic, index) in localBook.topics" :key="topic.id"
                 class="flex items-center bg-gray-200 text-gray-700 px-2 py-1 mr-2 mb-2 rounded-full shadow">
                 {{ topic.name }}
                 <button @click="removeTopic(index)" class="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
@@ -195,6 +206,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { getCoverImage } from '@/helpers/getCoverImage'
 
 export default {
   name: 'AddAuthorModal',
@@ -238,17 +250,31 @@ export default {
       localPublisher: '',
       localAuthor: '',
       localGenre: '',
-      localTopic: ''
+      localTopic: '',
+      previewImage: null
     }
   },
   watch: {
+    book: {
+      handler (newValue) {
+        console.log('Book updated:', newValue)
+        this.localBook = { ...newValue }
+        this.previewImage = newValue.cover_image || null
+      },
+      immediate: true, // Trigger the watcher on component mount
+      deep: true // Watch nested properties
+    }
   },
   computed: {
-    ...mapGetters([])
+    ...mapGetters([]),
+    API_BASE_URL () {
+      return process.env.VUE_APP_BACKEND_URL
+    }
   },
   emits: [],
   methods: {
-    ...mapActions([])
+    ...mapActions([]),
+    getCoverImage
   }
 }
 </script>
