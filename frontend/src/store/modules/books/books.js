@@ -3,6 +3,7 @@
 import {
   fetchV1Books,
   createV1Book
+  // upd
 } from '@/services/v1/bookAPIService'
 
 export default {
@@ -88,8 +89,32 @@ export default {
         const message =
           error.response?.data?.message || 'Failed to add book.'
         return { success: false, message }
-        // return error
       }
     }
+    // async editBook ({ commit }, book) {
+    //   try {
+    //     const response = await createV1Book(book)
+    //     console.log('Created book:', response)
+    //     if (response.error) {
+    //       const errorMessages = []
+    //       errorMessages.push(response.message)
+    //       commit('SET_ERROR', errorMessages)
+    //       return { success: false, message: response.message }
+    //     }
+    //     return { success: true, data: response }
+    //   } catch (error) {
+    //     const errorMessages = []
+    //     for (const [key, value] of Object.entries(error.response.data)) {
+    //       errorMessages.push(value[0])
+    //       console.log(`Book create... ${key}: ${value}`)
+    //     }
+    //     commit('SET_ERROR', errorMessages)
+    //     // throw error
+    //     const message =
+    //       error.response?.data?.message || 'Failed to add book.'
+    //     return { success: false, message }
+    //     // return error
+    //   }
+    // }
   }
 }
