@@ -6,9 +6,11 @@ from book_api.views import v1
 
 router = DefaultRouter()
 
+
+router.register('genres', v1.GenreViewSet, basename='genre')
+router.register('topics', v1.TopicViewSet, basename='topic')
 router.register('', v1.BookViewSet, basename='book')
-router.register('genre', v1.GenreViewSet, basename='genre')
-router.register('topic', v1.TopicViewSet, basename='topic')
+
 
 urlpatterns = [
     path(

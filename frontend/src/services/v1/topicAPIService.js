@@ -3,7 +3,7 @@
 import api from '@/services/axiosInstance'
 
 const API_BASE_URL = process.env.VUE_APP_BACKEND_URL
-const content = 'topic'
+const content = 'topics'
 const version = 'v1'
 
 export const fetchV1TopicDetails = async (id = null) => {
