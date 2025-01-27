@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from BookShelf.utilities.permissions import IsAdminOrModerator
+from BookShelf.utilities.pagination import Pagination
 from BookShelf.utilities.filters import SearchFilter
 from activity_api.utilities.event import event_logger
 
@@ -18,6 +19,7 @@ class TopicViewSet(ModelViewSet):
         IsAdminOrModerator,
     ]
     filter_backends = [SearchFilter]
+    pagination_class = Pagination
     search_fields = ['name']
 
     def perform_create(self, serializer):
