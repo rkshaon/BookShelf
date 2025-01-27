@@ -11,7 +11,7 @@ RESET='\033[0m'  # No Color (reset to default)
 echo -e "${GREEN}Deployment proces start...${RESET}"
 echo -e "${BLUE}Pull the latest code from GitHub${RESET}"
 echo -e "${YELLOW}=======================================${RESET}"
-
+cd /var/www/bookshelf.rkshaon.info/
 sudo git pull origin master
 
 echo -e "${BLUE}Navigate to the FRONTEND directory${RESET}"
