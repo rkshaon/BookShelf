@@ -2,8 +2,8 @@
   <div class="book-list-page p-6 bg-gray-50 min-h-screen">
     <AddBookModal :visible="showBookAddModal" :book="book" :isAPISuccess="isAPISuccess" title="Add Book"
       @close="showBookAddModal = false" @confirm="handleConfirm" />
-    <EditBookModal :key="editBook.id || Date.now()" :visible="showBookEditModal" :book="editBook"
-      :isAPISuccess="isAPISuccess" title="Edit Book" @close="showBookEditModal = false" @confirm="handleConfirm" />
+    <EditBookModal :key="editBook.id || Date.now()" :visible="showBookEditModal" :bookId="editBookId" :book="editBook"
+      :isAPISuccess="isAPISuccess" title="Edit Book" @close="showBookEditModal = false" @confirm="handleEditConfirm" />
     <div class="flex justify-end mb-4">
       <button @click="showBookAddModal = true"
         class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
@@ -97,6 +97,7 @@ export default {
         cover_image: ''
       },
       editBook: {},
+      editBookId: 0,
       isAPISuccess: false
     }
   },
@@ -154,7 +155,6 @@ export default {
       this.$router.push({ query: { page } })
     },
     async handleConfirm (updatedBook) {
-      console.log('before prepare data to save:', updatedBook)
       const toast = useToast()
       const formData = new FormData()
 
@@ -163,7 +163,6 @@ export default {
       formData.append('published_year', updatedBook.published_year || '')
       formData.append('publisher', updatedBook.publisher || '')
       formData.append('edition', updatedBook.edition || '')
-      // formData.append('isbn', updatedBook.isbn || '')
       if (updatedBook.isbn) {
         formData.append('isbn', updatedBook.isbn)
       }
@@ -191,7 +190,6 @@ export default {
 
       try {
         this.isSaving = true
-        console.log('updatedBook:', formData)
         const result = await this.addBook(formData)
 
         if (result.success) {
@@ -199,23 +197,74 @@ export default {
           this.isAPISuccess = true
           toast.success('Book created successfully!')
         } else {
-          console.log('Else Error:', result.message)
           toast.error(result.message || 'An error occurred.')
         }
       } catch (error) {
-        console.error('Catch Error:', error)
         toast.error('Unexpected error occurred.')
       } finally {
         this.isSaving = false
       }
     },
     setBookData (book) {
-      console.log('exist book data:', this.editBook)
-      console.log('selected book:', book)
-      // this.editBook = book
       this.editBook = Object.assign({}, book)
-      console.log('after update the book data:', this.editBook)
-      // this.showBookEditModal = true
+      console.log('edit book id before...', this.editBookId)
+      this.editBookId = parseInt(book.book_code)
+      console.log('edit book id after...', this.editBookId)
+    },
+    async handleEditConfirm (bookId, updatedBook) {
+      const toast = useToast()
+      const formData = new FormData()
+
+      formData.append('title', updatedBook.title || '')
+      formData.append('description', updatedBook.description || '')
+      formData.append('published_year', updatedBook.published_year || '')
+      formData.append('publisher', updatedBook.publisher || '')
+      formData.append('edition', updatedBook.edition || '')
+      if (updatedBook.isbn) {
+        formData.append('isbn', updatedBook.isbn)
+      }
+      formData.append('language', updatedBook.language || '')
+
+      updatedBook.authors.forEach((authorId) => {
+        formData.append('authors', authorId)
+      })
+
+      updatedBook.genres.forEach((genreId) => {
+        formData.append('genres', genreId)
+      })
+
+      updatedBook.topics.forEach((topicId) => {
+        formData.append('topics', topicId)
+      })
+
+      if (updatedBook.book) {
+        formData.append('book', updatedBook.book)
+      }
+
+      if (updatedBook.cover_image) {
+        formData.append('cover_image', updatedBook.cover_image)
+      }
+      console.log('...Book Updated Data...', bookId, updatedBook)
+      console.log('form data', bookId, formData)
+      this.showBookAddModal = false
+      this.isAPISuccess = true
+      toast.info('WIP')
+      // try {
+      //   this.isSaving = true
+      //   const result = await this.addBook(formData)
+
+      //   if (result.success) {
+      //     this.showBookAddModal = false
+      //     this.isAPISuccess = true
+      //     toast.success('Book created successfully!')
+      //   } else {
+      //     toast.error(result.message || 'An error occurred.')
+      //   }
+      // } catch (error) {
+      //   toast.error('Unexpected error occurred.')
+      // } finally {
+      //   this.isSaving = false
+      // }
     }
   }
 }

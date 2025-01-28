@@ -219,8 +219,17 @@ export default {
       type: String,
       default: 'Modal Title'
     },
+    bookId: {
+      type: Number,
+      required: true,
+      default: 0,
+      validator (value) {
+        return value !== null
+      }
+    },
     book: {
       type: Object,
+      required: true,
       default: () => ({
         title: '',
         genres: [],
@@ -271,10 +280,17 @@ export default {
       return process.env.VUE_APP_BACKEND_URL
     }
   },
-  emits: [],
+  emits: ['close', 'confirm'],
   methods: {
     ...mapActions([]),
-    getCoverImage
+    getCoverImage,
+    closeModal () {
+      this.$emit('close')
+    },
+    onConfirm () {
+      console.log('book id in edit modal', this.bookId)
+      this.$emit('confirm', this.localBook)
+    }
   }
 }
 </script>
