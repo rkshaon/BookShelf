@@ -308,10 +308,8 @@ export default {
       }, 500)
     },
     selectPublisher (publisher) {
-      console.log('before update publisher...', this.previewPublisher)
       this.previewPublisher = publisher
       this.showDropdown = false
-      console.log('after update publisher...', this.previewPublisher)
     },
     closeModal () {
       this.$emit('close')
@@ -332,13 +330,9 @@ export default {
       })
 
       if (this.previewPublisher) {
-        console.log(this.previewPublisher)
         if (this.book.publisher) {
-          console.log('publisher already exist')
-        } else {
-          console.log('publisher does not exist.')
-          formData.append('publisher', this.previewPublisher.id || '')
-        }
+          if (this.book.publisher.id !== this.previewPublisher.id) formData.append('publisher', this.previewPublisher.id || '')
+        } else formData.append('publisher', this.previewPublisher.id || '')
       }
 
       formData.forEach((value, key) => {

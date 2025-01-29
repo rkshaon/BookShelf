@@ -223,7 +223,7 @@ export default {
         const result = await this.editBook({ bookId: bookId, book: editedData })
 
         if (result.success) {
-          this.showBookAddModal = false
+          this.showBookEditModal = false
           this.isAPISuccess = true
           toast.success('Book updated successfully!')
         } else {
