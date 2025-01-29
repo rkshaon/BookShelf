@@ -288,22 +288,16 @@ export default {
       this.$emit('close')
     },
     onConfirm () {
-      console.log('confirm function... book id in edit modal', this.bookId)
-      console.log('confirm function... data... ', this.localBook)
-      // this.$emit('confirm', this.localBook)
-      // if (this.book.description ===)
-      console.log('book', this.book.description, 'local book', this.localBook.description)
       const formData = new FormData()
+
       if (this.book.description !== this.localBook.description) {
         formData.append('description', this.localBook.description || '')
-        // console.log('description added')
       }
-      // console.log('on confirm... form data...', formData)
+
       formData.forEach((value, key) => {
         console.log(`${key}: ${value}`)
       })
-      // this.$emit('confirm', { this.bookId, formData })
-      // this.$emit('confirm', { bookId: this.bookId, formData });
+
       this.$emit('confirm', { bookId: this.bookId, editedData: formData })
     }
   }

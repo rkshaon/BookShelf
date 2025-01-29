@@ -207,55 +207,13 @@ export default {
     },
     setBookData (book) {
       this.editBookData = Object.assign({}, book)
-      console.log('edit book id before...', this.editBookId)
-      // this.editBookId = parseInt(book.book_code)
       this.editBookId = book.book_code
-      console.log('edit book id after...', this.editBookId)
     },
     async handleEditConfirm (bookData) {
       const toast = useToast()
       const { bookId, editedData } = bookData
-      console.log('book id...', bookId)
-      console.log('data...', editedData)
-      // const formData = new FormData()
-
-      // formData.append('title', updatedBook.title || '')
-      // formData.append('description', updatedBook.description || '')
-      // formData.append('published_year', updatedBook.published_year || '')
-      // formData.append('publisher', updatedBook.publisher || '')
-      // formData.append('edition', updatedBook.edition || '')
-      // if (updatedBook.isbn) {
-      //   formData.append('isbn', updatedBook.isbn)
-      // }
-      // formData.append('language', updatedBook.language || '')
-
-      // updatedBook.authors.forEach((authorId) => {
-      //   formData.append('authors', authorId)
-      // })
-
-      // updatedBook.genres.forEach((genreId) => {
-      //   formData.append('genres', genreId)
-      // })
-
-      // updatedBook.topics.forEach((topicId) => {
-      //   formData.append('topics', topicId)
-      // })
-
-      // if (updatedBook.book) {
-      //   formData.append('book', updatedBook.book)
-      // }
-
-      // if (updatedBook.cover_image) {
-      //   formData.append('cover_image', updatedBook.cover_image)
-      // }
-      // console.log('...Book Updated Data...', bookId, updatedBook)
-      // console.log('form data', bookId, formData)
-      // this.showBookAddModal = false
-      // this.isAPISuccess = true
-      toast.info('WIP')
       try {
         this.isSaving = true
-        // const result = await this.editBook(formData)
         const result = await this.editBook({ bookId: bookId, book: editedData })
 
         if (result.success) {
@@ -266,7 +224,6 @@ export default {
           toast.error(result.message || 'An error occurred.')
         }
       } catch (error) {
-        console.log(error)
         toast.error('Unexpected error occurred.')
       } finally {
         this.isSaving = false
