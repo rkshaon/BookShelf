@@ -94,7 +94,6 @@ export default {
     async editBook ({ commit }, { bookId, book }) {
       try {
         const response = await editV1Book(bookId, book)
-        console.log('Edit book:', response)
         if (response.error) {
           const errorMessages = []
           errorMessages.push(response.message)

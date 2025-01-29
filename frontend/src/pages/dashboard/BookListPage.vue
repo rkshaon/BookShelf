@@ -212,6 +212,12 @@ export default {
     async handleEditConfirm (bookData) {
       const toast = useToast()
       const { bookId, editedData } = bookData
+
+      if (editedData.entries().next().done) {
+        toast.warning('No value has been updated!')
+        return
+      }
+
       try {
         this.isSaving = true
         const result = await this.editBook({ bookId: bookId, book: editedData })

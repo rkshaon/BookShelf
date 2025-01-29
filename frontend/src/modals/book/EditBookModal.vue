@@ -85,7 +85,7 @@
           <div v-else-if="currentTab === 'Publish'">
             <div class="mb-4 relative">
               <label for="publisher" class="block text-gray-700 text-sm font-bold mb-2">Publisher</label>
-              <input type="text" id="publisher" v-model="localBook.publisher.name" @input="performPublisherSearch"
+              <input type="text" id="publisher" v-model="previewPublisher.name" @input="performPublisherSearch"
                 @blur="closeDropdown" @focus="performPublisherSearch"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
               <ul v-if="showDropdown && publishers.length"
@@ -250,13 +250,16 @@ export default {
     return {
       currentTab: 'Book',
       localBook: { ...this.book },
+      // publisher: {},
       selectedAuthors: [],
       selectedGenres: [],
       selectedTopics: [],
       showDropdown: false,
       showTopicDropdown: false,
       searchTimeout: null,
-      localPublisher: '',
+      // localPublisher: '',
+      localPublisher: {},
+      previewPublisher: {},
       localAuthor: '',
       localGenre: '',
       localTopic: '',
@@ -266,36 +269,80 @@ export default {
   watch: {
     book: {
       handler (newValue) {
-        console.log('in watcher... Book updated:', newValue)
         this.localBook = { ...newValue }
         this.previewImage = newValue.cover_image || null
+        this.previewPublisher = newValue.publisher || {}
       },
       immediate: true, // Trigger the watcher on component mount
       deep: true // Watch nested properties
     }
   },
   computed: {
-    ...mapGetters([]),
+    ...mapGetters(['publishers']),
     API_BASE_URL () {
       return process.env.VUE_APP_BACKEND_URL
     }
   },
   emits: ['close', 'confirm'],
   methods: {
-    ...mapActions([]),
+    ...mapActions(['searchPublisher']),
     getCoverImage,
+    async performPublisherSearch () {
+      if (this.previewPublisher.name && this.previewPublisher.name.length < 2) {
+        this.showDropdown = false
+        return
+      }
+      console.log('proceed', this.previewPublisher)
+      if (this.searchTimeout) {
+        clearTimeout(this.searchTimeout)
+      }
+
+      this.searchTimeout = setTimeout(() => {
+        // if (this.previewPublisher.name.trim()) {
+        if (this.previewPublisher.name) {
+          this.showDropdown = true
+          this.searchPublisher({ query: this.previewPublisher.name.trim() })
+        } else {
+          this.showDropdown = false
+        }
+      }, 500)
+    },
+    selectPublisher (publisher) {
+      console.log('before update publisher...', this.previewPublisher)
+      this.previewPublisher = publisher
+      this.showDropdown = false
+      console.log('after update publisher...', this.previewPublisher)
+    },
     closeModal () {
       this.$emit('close')
     },
     onConfirm () {
       const formData = new FormData()
+      // handle book
+      // handle cover image
+      // handle publisher
+      // handle authors
+      // handle genres
+      // handle topics
 
-      if (this.book.description !== this.localBook.description) {
-        formData.append('description', this.localBook.description || '')
+      Object.keys(this.book).forEach(key => {
+        if (this.book[key] !== this.localBook[key]) {
+          formData.append(key, this.localBook[key] || '')
+        }
+      })
+
+      if (this.previewPublisher) {
+        console.log(this.previewPublisher)
+        if (this.book.publisher) {
+          console.log('publisher already exist')
+        } else {
+          console.log('publisher does not exist.')
+          formData.append('publisher', this.previewPublisher.id || '')
+        }
       }
 
       formData.forEach((value, key) => {
-        console.log(`${key}: ${value}`)
+        console.log('updated data: ', `${key}: ${value}`)
       })
 
       this.$emit('confirm', { bookId: this.bookId, editedData: formData })

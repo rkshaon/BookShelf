@@ -247,11 +247,6 @@ export default {
         this.clearForm()
       }
     }
-    // 'localBook.publisher' (value) {
-    //   if (value) {
-    //     this.localPublisher = this.publishers.find((publisher) => publisher.id === value).name
-    //   }
-    // }
   },
   computed: {
     ...mapGetters([
