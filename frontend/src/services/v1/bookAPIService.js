@@ -85,7 +85,9 @@ export const createV1Book = async (data) => {
 }
 
 export const editV1Book = async (bookId, data) => {
-  const URL = `${API_BASE_URL}/${content}/${version}/${bookId}`
+  console.log('service file... book id:', bookId)
+  console.log('service file... data: ', data)
+  const URL = `${API_BASE_URL}/${content}/${version}/${bookId}/`
   try {
     const response = await api.patch(URL, data)
     return response.data

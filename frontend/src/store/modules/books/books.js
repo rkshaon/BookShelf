@@ -92,6 +92,8 @@ export default {
       }
     },
     async editBook ({ commit }, { bookId, book }) {
+      console.log('store file... book id: ', bookId)
+      console.log('store file... data: ', book)
       try {
         const response = await editV1Book(bookId, book)
         console.log('Edit book:', response)
