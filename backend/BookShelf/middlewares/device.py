@@ -25,7 +25,22 @@ class DeviceMiddleware(MiddlewareMixin):
         ip_address
     ):
         user_agent = get_user_agent(request)
-        device, created = Device.objects.get_or_create(
+        # device, created = Device.objects.get_or_create(
+        #     user=user,
+        #     user_agent=user_agent.ua_string,
+        #     device_type=get_device_type(
+        #         user_agent.is_mobile,
+        #         user_agent.is_tablet,
+        #         user_agent.is_pc
+        #     ),
+        #     browser=user_agent.browser.family,
+        #     browser_version=user_agent.browser.version_string,
+        #     os=user_agent.os.family,
+        #     os_version=user_agent.os.version_string,
+        #     ip_address=ip_address,
+        #     screen_resolution=None,
+        # )
+        device = Device.objects.filter(
             user=user,
             user_agent=user_agent.ua_string,
             device_type=get_device_type(
@@ -39,6 +54,23 @@ class DeviceMiddleware(MiddlewareMixin):
             os_version=user_agent.os.version_string,
             ip_address=ip_address,
             screen_resolution=None,
-        )
+        ).first()
+
+        if not device:
+            device = Device.objects.create(
+                user=user,
+                user_agent=user_agent.ua_string,
+                device_type=get_device_type(
+                    user_agent.is_mobile,
+                    user_agent.is_tablet,
+                    user_agent.is_pc
+                ),
+                browser=user_agent.browser.family,
+                browser_version=user_agent.browser.version_string,
+                os=user_agent.os.family,
+                os_version=user_agent.os.version_string,
+                ip_address=ip_address,
+                screen_resolution=None,
+            )
 
         return device
