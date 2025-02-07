@@ -2,16 +2,16 @@
   <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
     <LoaderComponent v-if="isLoading" />
     <div v-else-if="bookDetails" class="bg-white shadow rounded-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div class="flex justify-center">
+      <div class="book-cover-container">
         <img :src="getCoverImage(bookDetails.cover_image, API_BASE_URL)" alt="Book Cover"
-          class="max-w-full h-auto shadow-lg rounded-lg" />
-        <div v-if="isAdmin && bookDetails.cover_image == null" class="">
+          class="max-w-full h-auto shadow-lg rounded-lg book-cover-image" />
+        <div v-if="isAdmin && bookDetails.cover_image == null" class="cover-overlay">
           Update Cover Image from
-          <input type="number" v-model="updateCoverPageNumber"> page
-          <button @click="updateCoverPage" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">Update</button>
+          <input type="number" v-model="updateCoverPageNumber" class="cover-input"> page
+          <button @click="updateCoverPage" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition cover-button">Update</button>
         </div>
       </div>
-      <div>
+    <div>
         <router-link :to="{
           name: 'Book',
           params: { book_code: bookDetails.book_code },
@@ -177,5 +177,67 @@ export default {
 </script>
 
 <style scoped>
-/* Custom styles for BookDetailsPage.vue */
+/* Container for the book cover */
+.book-cover-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Book cover image */
+.book-cover-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Overlay that appears on hover */
+.cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 8px;
+}
+
+/* Show overlay when hovering */
+.book-cover-container:hover .cover-overlay {
+  opacity: 1;
+}
+
+/* Styling for input field */
+.cover-input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 160px;
+  margin: 8px 0;
+  text-align: center;
+  color: black;
+}
+
+/* Styling for button */
+.cover-button {
+  background: #28a745;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  margin-top:9px;
+  width: 160px;
+}
+
+.cover-button:hover {
+  background: #1e7e34;
+}
 </style>
