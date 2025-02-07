@@ -39,7 +39,7 @@
           </button> -->
           <!-- Eye Icon (Fixed Alignment) -->
           <button type="button" @click="togglePassword"
-            class="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 focus:outline-none">
+            class="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 focus:outline-none pt-8">
             <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
               <!-- Open Eye Icon -->
