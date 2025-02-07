@@ -196,7 +196,9 @@ export default {
 /* Overlay that appears on hover */
 .cover-overlay {
   position: absolute;
-  inset: 0;
+  top: 0; /* Fix to the top */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust centering */
   background: rgba(0, 0, 0, 0.6);
   color: white;
   display: flex;
@@ -206,6 +208,9 @@ export default {
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
   border-radius: 8px;
+  height: 50%; /* Set height */
+  width: 50%; /* Ensure full width */
+  margin: auto;
 }
 
 /* Show overlay when hovering */
