@@ -7,7 +7,7 @@ Pillow
 psycopg2-binary
 django-cors-headers
 elasticsearch-dsl
-django-elasticsearch-dsl
+# django-elasticsearch-dsl
 django-redis
 PyPDF2
 django-user-agents

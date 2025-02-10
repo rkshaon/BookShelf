@@ -8,7 +8,7 @@ from BookShelf.env import ALLOWED_HOSTS_SETTINGS
 from BookShelf.env import SECRET_KEY_SETTINGS
 from BookShelf.env import CORS_ALLOWED_ORIGINS_SETTINGS
 from BookShelf.env import X_FRAME_OPTIONS_SETTINGS
-from BookShelf.env import ELASTICSEARCH_DSL_SETTINGS
+# from BookShelf.env import ELASTICSEARCH_DSL_SETTINGS
 from BookShelf.env import FRONTEND_BASE_URL_SETTINGS
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +31,7 @@ LIBRARY_APPS = [
     'rest_framework',
     'drf_yasg',
     'corsheaders',
-    'django_elasticsearch_dsl',
+    # 'django_elasticsearch_dsl',
     'django_celery_results',
 ]
 PROJECT_APPS = [
@@ -106,7 +106,7 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-ELASTICSEARCH_DSL = ELASTICSEARCH_DSL_SETTINGS
+# ELASTICSEARCH_DSL = ELASTICSEARCH_DSL_SETTINGS
 
 CACHES = {
     'default': {
