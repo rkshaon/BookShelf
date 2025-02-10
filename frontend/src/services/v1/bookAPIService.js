@@ -84,6 +84,22 @@ export const createV1Book = async (data) => {
   }
 }
 
+export const editV1Book = async (bookId, data) => {
+  const URL = `${API_BASE_URL}/${content}/${version}/${bookId}/`
+  try {
+    const response = await api.patch(URL, data)
+    return response.data
+  } catch (error) {
+    console.error('Error creating book at service:', error)
+
+    if (error.response && error.response.status === 403) {
+      return { error: true, message: 'Permission denied to create an author' }
+    }
+
+    throw error
+  }
+}
+
 export const updateCoverPageV1Book = async (data, bookCode = null) => {
   const URL = `${API_BASE_URL}/${content}/${version}/update-cover-page/${bookCode}/`
   try {

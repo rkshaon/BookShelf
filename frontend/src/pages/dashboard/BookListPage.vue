@@ -1,15 +1,12 @@
 <template>
   <div class="book-list-page p-6 bg-gray-50 min-h-screen">
-    <AddBookModal
-      :visible="showModal"
-      :book="book"
-      :isAPISuccess="isAPISuccess"
-      title="Add Book"
-      @close="showModal = false"
-      @confirm="handleConfirm"
-    />
+    <AddBookModal :visible="showBookAddModal" :book="book" :isAPISuccess="isAPISuccess" title="Add Book"
+      @close="showBookAddModal = false" @confirm="handleConfirm" />
+    <EditBookModal :key="editBookData.id || Date.now()" :visible="showBookEditModal" :bookId="editBookId" :book="editBookData"
+      :isAPISuccess="isAPISuccess" title="Edit Book" @close="showBookEditModal = false" @confirm="handleEditConfirm" />
     <div class="flex justify-end mb-4">
-      <button @click="showModal = true" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
+      <button @click="showBookAddModal = true"
+        class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">
         Add Book
       </button>
     </div>
@@ -34,8 +31,7 @@
             <td class="py-3 px-6">
               <router-link :to="{ name: 'BookDetails', params: { book_code: book.book_code } }"
                 class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition"
-                target="_blank"
-              >
+                target="_blank">
                 {{ book.title }}
               </router-link>
             </td>
@@ -44,7 +40,8 @@
                 class="w-24 h-24 shadow-lg rounded-lg" />
             </td>
             <td class="py-3 px-6 text-center space-x-2">
-              <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
+              <button @click="showBookEditModal = true;  setBookData(book)"
+                class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
                 Edit
               </button>
               <button class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">
@@ -69,19 +66,22 @@ import { getCoverImage } from '@/helpers/getCoverImage'
 import DashboardPaginationComponent from '@/components/dashboard/DashboardPaginationComponent .vue'
 import LoaderComponent from '@/components/general/LoaderComponent.vue'
 import AddBookModal from '@/modals/book/AddBookModal.vue'
+import EditBookModal from '@/modals/book/EditBookModal.vue'
 
 export default {
   name: 'BookListPage',
   components: {
     DashboardPaginationComponent,
     LoaderComponent,
-    AddBookModal
+    AddBookModal,
+    EditBookModal
   },
   data () {
     return {
       isSaving: false,
       currentPage: 0,
-      showModal: false,
+      showBookAddModal: false,
+      showBookEditModal: false,
       book: {
         title: '',
         genres: [],
@@ -96,6 +96,8 @@ export default {
         book: '',
         cover_image: ''
       },
+      editBookData: {},
+      editBookId: '',
       isAPISuccess: false
     }
   },
@@ -146,14 +148,13 @@ export default {
   },
   methods: {
     ...mapActions([
-      'fetchBooks', 'addBook'
+      'fetchBooks', 'addBook', 'editBook'
     ]),
     getCoverImage,
     changePage (page) {
       this.$router.push({ query: { page } })
     },
     async handleConfirm (updatedBook) {
-      console.log('before prepare data to save:', updatedBook)
       const toast = useToast()
       const formData = new FormData()
 
@@ -162,7 +163,6 @@ export default {
       formData.append('published_year', updatedBook.published_year || '')
       formData.append('publisher', updatedBook.publisher || '')
       formData.append('edition', updatedBook.edition || '')
-      // formData.append('isbn', updatedBook.isbn || '')
       if (updatedBook.isbn) {
         formData.append('isbn', updatedBook.isbn)
       }
@@ -190,19 +190,46 @@ export default {
 
       try {
         this.isSaving = true
-        console.log('updatedBook:', formData)
         const result = await this.addBook(formData)
 
         if (result.success) {
-          this.showModal = false
+          this.showBookAddModal = false
           this.isAPISuccess = true
           toast.success('Book created successfully!')
         } else {
-          console.log('Else Error:', result.message)
           toast.error(result.message || 'An error occurred.')
         }
       } catch (error) {
-        console.error('Catch Error:', error)
+        toast.error('Unexpected error occurred.')
+      } finally {
+        this.isSaving = false
+      }
+    },
+    setBookData (book) {
+      this.editBookData = Object.assign({}, book)
+      this.editBookId = book.book_code
+    },
+    async handleEditConfirm (bookData) {
+      const toast = useToast()
+      const { bookId, editedData } = bookData
+
+      if (editedData.entries().next().done) {
+        toast.warning('No value has been updated!')
+        return
+      }
+
+      try {
+        this.isSaving = true
+        const result = await this.editBook({ bookId: bookId, book: editedData })
+
+        if (result.success) {
+          this.showBookEditModal = false
+          this.isAPISuccess = true
+          toast.success('Book updated successfully!')
+        } else {
+          toast.error(result.message || 'An error occurred.')
+        }
+      } catch (error) {
         toast.error('Unexpected error occurred.')
       } finally {
         this.isSaving = false

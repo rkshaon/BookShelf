@@ -36,22 +36,34 @@ class BookSerializer(serializers.ModelSerializer):
 
         return super().to_internal_value(data)
 
+    def update(self, instance, validated_data):
+        """
+        Handle updating many-to-many fields (authors, genres, topics)
+        """
+        if 'authors' in validated_data:
+            instance.authors.set(validated_data['authors'])
+        if 'genres' in validated_data:
+            instance.genres.set(validated_data['genres'])
+        if 'topics' in validated_data:
+            instance.topics.set(validated_data['topics'])
+
+        for attr, value in validated_data.items():
+            if attr not in ['authors', 'genres', 'topics']:
+                setattr(instance, attr, value)
+
+        instance.save()
+        return instance
+
     def to_representation(self, instance):
         representation = super().to_representation(instance)
 
-        representation['authors'] = AuthorSerializer(
-            instance.authors, many=True
-        ).data
-        representation['genres'] = GenreSerializer(
-            instance.genres, many=True
-        ).data
-        representation['topics'] = TopicSerializer(
-            instance.topics, many=True
-        ).data
+        representation['authors'] = AuthorSerializer(instance.authors, many=True).data  # noqa
+        representation['genres'] = GenreSerializer(instance.genres, many=True).data     # noqa
+        representation['topics'] = TopicSerializer(instance.topics, many=True).data     # noqa
+
         if instance.publisher:
-            representation['publisher'] = PublisherSerializer(
-                instance.publisher
-            ).data
+            representation['publisher'] = PublisherSerializer(instance.publisher).data  # noqa
+
         if instance.cover_image:
             representation['cover_image'] = instance.cover_image.url
 

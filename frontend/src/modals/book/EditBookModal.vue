@@ -62,11 +62,22 @@
             </div>
             <div class="mb-4">
               <label for="book" class="block text-gray-700 text-sm font-bold mb-2">Book</label>
+              <div v-if="previewImage" class="mb-4">
+                <router-link :to="{ name: 'BookDetails', params: { book_code: book.book_code } }"
+                  class="px-4 py-2 bg-blue-100 text-blue-600 font-semibold rounded-md hover:bg-blue-200 hover:text-blue-700 transition"
+                  target="_blank">
+                  {{ book.title }}
+                </router-link>
+              </div>
               <input type="file" id="book" accept="application/pdf" @change="handleBookFile"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
             </div>
             <div class="mb-4">
               <label for="cover_image" class="block text-gray-700 text-sm font-bold mb-2">Cover Image</label>
+              <div v-if="previewImage" class="mb-4">
+                <img :src="getCoverImage(previewImage, API_BASE_URL)" alt="Cover Preview"
+                  class="w-32 h-32 object-cover rounded" />
+              </div>
               <input type="file" id="cover_image" accept="image/*" @change="handleCoverImage"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
             </div>
@@ -74,7 +85,7 @@
           <div v-else-if="currentTab === 'Publish'">
             <div class="mb-4 relative">
               <label for="publisher" class="block text-gray-700 text-sm font-bold mb-2">Publisher</label>
-              <input type="text" id="publisher" v-model="localPublisher" @input="performPublisherSearch"
+              <input type="text" id="publisher" v-model="previewPublisher.name" @input="performPublisherSearch"
                 @blur="closeDropdown" @focus="performPublisherSearch"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
               <ul v-if="showDropdown && publishers.length"
@@ -117,7 +128,7 @@
               </li>
             </ul>
             <div class="flex flex-wrap mt-2">
-              <span v-for="(author, index) in selectedAuthors" :key="author.id"
+              <span v-for="(author, index) in localBook.authors" :key="author.id"
                 class="flex items-center bg-gray-200 text-gray-700 px-2 py-1 mr-2 mb-2 rounded-full shadow">
                 {{ author.full_name }}
                 <button @click="removeAuthor(index)" class="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
@@ -142,7 +153,7 @@
               </li>
             </ul>
             <div class="flex flex-wrap mt-2">
-              <span v-for="(genre, index) in selectedGenres" :key="genre.id"
+              <span v-for="(genre, index) in localBook.genres" :key="genre.id"
                 class="flex items-center bg-gray-200 text-gray-700 px-2 py-1 mr-2 mb-2 rounded-full shadow">
                 {{ genre.name }}
                 <button @click="removeGenre(index)" class="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
@@ -165,7 +176,7 @@
               </li>
             </ul>
             <div class="flex flex-wrap mt-2">
-              <span v-for="(topic, index) in selectedTopics" :key="topic.id"
+              <span v-for="(topic, index) in localBook.topics" :key="topic.id"
                 class="flex items-center bg-gray-200 text-gray-700 px-2 py-1 mr-2 mb-2 rounded-full shadow">
                 {{ topic.name }}
                 <button @click="removeTopic(index)" class="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
@@ -195,6 +206,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { getCoverImage } from '@/helpers/getCoverImage'
 
 export default {
   name: 'AddAuthorModal',
@@ -207,8 +219,17 @@ export default {
       type: String,
       default: 'Modal Title'
     },
+    bookId: {
+      type: String,
+      required: true,
+      default: '',
+      validator (value) {
+        return value !== null
+      }
+    },
     book: {
       type: Object,
+      required: true,
       default: () => ({
         title: '',
         genres: [],
@@ -229,214 +250,96 @@ export default {
     return {
       currentTab: 'Book',
       localBook: { ...this.book },
+      // publisher: {},
       selectedAuthors: [],
       selectedGenres: [],
       selectedTopics: [],
       showDropdown: false,
       showTopicDropdown: false,
       searchTimeout: null,
-      localPublisher: '',
+      // localPublisher: '',
+      localPublisher: {},
+      previewPublisher: {},
       localAuthor: '',
       localGenre: '',
-      localTopic: ''
+      localTopic: '',
+      previewImage: null
     }
   },
   watch: {
-    visible (value) {
-      if (!value) {
-        this.clearForm()
-      }
+    book: {
+      handler (newValue) {
+        this.localBook = { ...newValue }
+        this.previewImage = newValue.cover_image || null
+        this.previewPublisher = newValue.publisher || {}
+      },
+      immediate: true, // Trigger the watcher on component mount
+      deep: true // Watch nested properties
     }
   },
   computed: {
-    ...mapGetters([
-      'publishers', 'authors', 'genres', 'topics'
-    ])
+    ...mapGetters(['publishers']),
+    API_BASE_URL () {
+      return process.env.VUE_APP_BACKEND_URL
+    }
   },
   emits: ['close', 'confirm'],
   methods: {
-    ...mapActions([
-      'searchPublisher',
-      'searchAuthor',
-      'searchGenre',
-      'searchTopic'
-    ]),
-    handleBookFile (event) {
-      const file = event.target.files[0]
-      if (file && file.type === 'application/pdf') {
-        this.localBook.book = file
-      } else {
-        alert('Please select a valid PDF file.')
-      }
-    },
-    handleCoverImage (event) {
-      const file = event.target.files[0]
-      if (file && file.type.startsWith('image/')) {
-        this.localBook.cover_image = file
-      } else {
-        alert('Please select a valid image file.')
-      }
-    },
-    // publisher
+    ...mapActions(['searchPublisher']),
+    getCoverImage,
     async performPublisherSearch () {
-      if (this.localPublisher.length < 2) {
+      if (this.previewPublisher.name && this.previewPublisher.name.length < 2) {
         this.showDropdown = false
         return
       }
+      console.log('proceed', this.previewPublisher)
       if (this.searchTimeout) {
         clearTimeout(this.searchTimeout)
       }
 
       this.searchTimeout = setTimeout(() => {
-        if (this.localPublisher.trim()) {
+        // if (this.previewPublisher.name.trim()) {
+        if (this.previewPublisher.name) {
           this.showDropdown = true
-          this.searchPublisher({ query: this.localPublisher.trim() })
+          this.searchPublisher({ query: this.previewPublisher.name.trim() })
         } else {
           this.showDropdown = false
         }
       }, 500)
     },
     selectPublisher (publisher) {
-      this.localBook.publisher = publisher.id
-      this.localPublisher = publisher.name
+      this.previewPublisher = publisher
       this.showDropdown = false
-    },
-    // author
-    async performAuthorSearch () {
-      if (this.localAuthor.length < 2) {
-        this.showDropdown = false
-        return
-      }
-      if (this.searchTimeout) {
-        clearTimeout(this.searchTimeout)
-      }
-
-      this.searchTimeout = setTimeout(() => {
-        if (this.localAuthor.trim()) {
-          this.showDropdown = true
-          this.searchAuthor({ query: this.localAuthor.trim() })
-        } else {
-          this.showDropdown = false
-        }
-      }, 500)
-    },
-    selectAuthor (author) {
-      if (!this.selectedAuthors.some((a) => a.id === author.id)) {
-        this.localBook.authors.push(author.id)
-        this.selectedAuthors.push(author)
-      }
-
-      this.searchQuery = ''
-      this.showDropdown = false
-    },
-    removeAuthor (index) {
-      this.localBook.authors.splice(index, 1)
-      this.selectedAuthors.splice(index, 1)
-    },
-    // genre
-    async performGenreSearch () {
-      if (this.localGenre.length < 2) {
-        this.showDropdown = false
-        return
-      }
-      if (this.searchTimeout) {
-        clearTimeout(this.searchTimeout)
-      }
-
-      this.searchTimeout = setTimeout(() => {
-        if (this.localGenre.trim()) {
-          this.showDropdown = true
-          this.searchGenre({ query: this.localGenre.trim() })
-        } else {
-          this.showDropdown = false
-        }
-      }, 500)
-    },
-    selectGenre (genre) {
-      if (!this.selectedGenres.some((g) => g.id === genre.id)) {
-        this.localBook.genres.push(genre.id)
-        this.selectedGenres.push(genre)
-      }
-
-      this.localGenre = ''
-      this.showDropdown = false
-    },
-    removeGenre (index) {
-      this.localBook.genres.splice(index, 1)
-      this.selectedGenres.splice(index, 1)
-    },
-    // topic
-    async performTopicSearch () {
-      if (this.localTopic.length < 2) {
-        this.showTopicDropdown = false
-        return
-      }
-      if (this.searchTimeout) {
-        clearTimeout(this.searchTimeout)
-      }
-
-      this.searchTimeout = setTimeout(() => {
-        if (this.localTopic.trim()) {
-          this.showTopicDropdown = true
-          this.searchTopic({ query: this.localTopic.trim() })
-        } else {
-          this.showTopicDropdown = false
-        }
-      }, 500)
-    },
-    selectTopic (topic) {
-      if (!this.selectedTopics.some((t) => t.id === topic.id)) {
-        this.localBook.topics.push(topic.id)
-        this.selectedTopics.push(topic)
-      }
-
-      this.localTopic = ''
-      this.showTopicDropdown = false
-    },
-    removeTopic (index) {
-      this.localBook.topics.splice(index, 1)
-      this.selectedTopics.splice(index, 1)
-    },
-    closeDropdown () {
-      setTimeout(() => {
-        this.showDropdown = false
-      }, 200)
     },
     closeModal () {
       this.$emit('close')
     },
     onConfirm () {
-      this.$emit('confirm', this.localBook)
-    },
-    clearForm () {
-      this.currentTab = 'Book'
-      this.localBook = { ...this.book }
-      // this.localBook.book = null
-      // this.localBook = {
-      //   title: '',
-      //   genres: [],
-      //   topics: [],
-      //   authors: [],
-      //   publisher: null,
-      //   description: '',
-      //   edition: '',
-      //   isbn: '',
-      //   published_year: '',
-      //   language: '',
-      //   book: null,
-      //   cover_image: ''
-      // }
-      // this.localPublisher = ''
-      // this.localAuthor = ''
-      // this.localGenre = ''
-      // this.localTopic = ''
-      // this.selectedAuthors = []
-      // this.selectedGenres = []
-      // this.selectedTopics = []
-      // this.publishers = []
-      // this.authors = []
-      // this.genres = []
-      // this.topics = []
+      const formData = new FormData()
+      // handle book
+      // handle cover image
+      // handle publisher
+      // handle authors
+      // handle genres
+      // handle topics
+
+      Object.keys(this.book).forEach(key => {
+        if (this.book[key] !== this.localBook[key]) {
+          formData.append(key, this.localBook[key] || '')
+        }
+      })
+
+      if (this.previewPublisher) {
+        if (this.book.publisher) {
+          if (this.book.publisher.id !== this.previewPublisher.id) formData.append('publisher', this.previewPublisher.id || '')
+        } else formData.append('publisher', this.previewPublisher.id || '')
+      }
+
+      formData.forEach((value, key) => {
+        console.log('updated data: ', `${key}: ${value}`)
+      })
+
+      this.$emit('confirm', { bookId: this.bookId, editedData: formData })
     }
   }
 }
