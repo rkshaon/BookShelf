@@ -188,6 +188,22 @@ class Book(models.Model):
     added_date_time = models.DateTimeField(auto_now_add=True)
     updated_date_time = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if self.pk:
+            exist_book = Book.objects.filter(pk=self.pk).first()
+            old_book = exist_book.book
+            old_cover_image = exist_book.cover_image
+
+            if old_book and old_book != self.book:
+                if os.path.isfile(old_book.path):
+                    os.remove(old_book.path)
+
+            if old_cover_image and old_cover_image != self.cover_image:
+                if os.path.isfile(old_cover_image.path):
+                    os.remove(old_cover_image.path)
+
+        super().save(*args, **kwargs)
+
     @property
     def cover(self) -> bool:
         return bool(self.cover_image)

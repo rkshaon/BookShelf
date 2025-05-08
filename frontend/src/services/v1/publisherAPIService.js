@@ -18,7 +18,7 @@ export const searchV1Publishers = async (
     query
   )}`
 
-  console.log('Search Publisher API:', URL)
+  console.log('Service Search Publisher API:', URL)
 
   try {
     const response = await api.get(URL)
